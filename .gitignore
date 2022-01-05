@@ -43,7 +43,7 @@ yarn-error.log*
 *.tar.gz
 *.tgz
 *.rar
-*.imi
+*.iml
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
@@ -65,4 +65,8 @@ gradle-app.setting
 # # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
 # gradle/wrapper/gradle-wrapper.properties
 
-
+front-end/.idea/
+back-end/.idea/
+back-end/gradle/
+back-end/out/
+.idea/
