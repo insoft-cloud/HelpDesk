@@ -1,55 +1,51 @@
 import React from 'react';
 import './App.css';
-import './assets/css/libs.bundle.css'
+import './assets/js/theme.bundle.js'
 import './assets/css/theme.bundle.css'
-import './assets/css/mapbox-gl.css'
 import './assets/js/vendor.bundle'
-import './assets/js/theme.bundle'
-import './assets/js/mapbox-gl'
+import './assets/css/libs.bundle.css'
+import 'react-map-gl'
 import mainImage from "./assets/img/dashboard/mainImage.png";
 import HeaderComponent from "./component/layout/HeaderComponent";
 
 function App() {
 
-
-
-  const testData : any[] = [{
-    firstname: 'hello',
-    lastname : 'world',
-    testValue : '@test'
-  },
-    {
-      firstname: 'hello2',
-      lastname : 'world2',
-      testValue : '@test2'
-    },
-    {
-      firstname: 'hello3',
-      lastname : 'world3',
-      testValue : '@test3'
-    }
-  ];
-
-  const testData2 : any[] = [{
-    firstname: 'hello4',
-    lastname : 'world4',
-    testValue : '@test4'
-  },
-    {
-      firstname: 'hello5',
-      lastname : 'world5',
-      testValue : '@test5'
-    },
-    {
-      firstname: 'hello6',
-      lastname : 'world6',
-      testValue : '@test6'
-    }
-  ];
+  // const testData : any[] = [{
+  //   firstname: 'hello',
+  //   lastname : 'world',
+  //   testValue : '@test'
+  // },
+  //   {
+  //     firstname: 'hello2',
+  //     lastname : 'world2',
+  //     testValue : '@test2'
+  //   },
+  //   {
+  //     firstname: 'hello3',
+  //     lastname : 'world3',
+  //     testValue : '@test3'
+  //   }
+  // ];
+  //
+  // const testData2 : any[] = [{
+  //   firstname: 'hello4',
+  //   lastname : 'world4',
+  //   testValue : '@test4'
+  // },
+  //   {
+  //     firstname: 'hello5',
+  //     lastname : 'world5',
+  //     testValue : '@test5'
+  //   },
+  //   {
+  //     firstname: 'hello6',
+  //     lastname : 'world6',
+  //     testValue : '@test6'
+  //   }
+  // ];
   return (
       <div>
-
-      <HeaderComponent></HeaderComponent>
+      <HeaderComponent/>
       <div className="App">
         <div>
           <div>
@@ -63,7 +59,7 @@ function App() {
             서비스 요청사항을 작성하고
             피드백 받을 수 있습니다.
           </div>
-          <img src={mainImage}>
+          <img src={mainImage} alt={""}>
           </img>
           {/*<TableComponent tableData={testData}></TableComponent>*/}
           {/*<TableComponent tableClassName={"table table-dark"} tableData={testData2}></TableComponent>*/}
