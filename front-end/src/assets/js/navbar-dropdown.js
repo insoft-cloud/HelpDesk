@@ -4,7 +4,8 @@
 //
 
 // Selectors
-const drops = document.querySelectorAll('.navbar-nav .dropdown, .navbar-nav .dropend');
+let drops = document.querySelectorAll('.navbar-nav .dropdown, .navbar-nav .dropend');
+
 
 // Events
 const showEvents = ['mouseenter', 'focusin'];
@@ -15,9 +16,6 @@ const transitionDuration = 200;
 
 // Breakpoint
 const desktopSize = 992;
-
-console.log("실행함");
-
 
 // Show drop
 function showDrop(menu) {
@@ -59,7 +57,6 @@ function hideDrop(e, menu) {
 
 drops.forEach(function (dropdown) {
   const menu = dropdown.querySelector('.dropdown-menu');
-
   // Show drop
   showEvents.forEach(function (event) {
     dropdown.addEventListener(event, function () {
@@ -69,6 +66,7 @@ drops.forEach(function (dropdown) {
 
   // Hide drop
   hideEvents.forEach(function (event) {
+    console.log("제발 먹혀");
     dropdown.addEventListener(event, function (e) {
       hideDrop(e, menu);
     });

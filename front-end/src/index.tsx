@@ -8,6 +8,7 @@ import {
 import 'assets/css/theme.bundle.css';
 import 'assets/css/libs.bundle.css';
 import "./assets/css/mapbox-gl.css";
+
 import './index.css';
 
 import App from './App';

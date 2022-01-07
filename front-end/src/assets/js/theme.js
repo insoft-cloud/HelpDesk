@@ -18,7 +18,7 @@ import './highlight';
 import './isotope';
 import './jarallax';
 import './modal';
-import './navbar-dropdown';
+// import './navbar-dropdown';
 import './navbar';
 import './popover';
 import './pricing';

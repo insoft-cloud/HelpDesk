@@ -1,7 +1,6 @@
 import React from 'react';
 import mainImage from "./assets/img/dashboard/mainImage.png";
 import HeaderComponent from "./component/layout/HeaderComponent";
-import "./assets/js/theme"
 function App() {
 
   // const testData : any[] = [{

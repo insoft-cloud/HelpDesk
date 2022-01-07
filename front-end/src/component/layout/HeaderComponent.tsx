@@ -1,8 +1,37 @@
-import React from "react";
+import React, { useEffect } from "react";
+import 'assets/js/theme';
 
+// Transition
+const transitionDuration = 200;
 
+// Breakpoint
+const desktopSize = 992;
 
 function HeaderComponent(){
+
+    useEffect(()=> {
+        const showEvents = ['mouseenter', 'focusin'];
+        const hideEvents = ['mouseleave', 'click', 'focusout'];
+        let drops = document.querySelectorAll('.navbar-nav .dropdown, .navbar-nav .dropend');
+        console.log(drops);
+        drops.forEach(function (dropdown) {
+            const menu = dropdown.querySelector('.dropdown-menu');
+            // Show drop
+            showEvents.forEach(function (event) {
+                dropdown.addEventListener(event, function () {
+                    showDrop(menu);
+                });
+            });
+
+            // Hide drop
+            hideEvents.forEach(function (event) {
+                dropdown.addEventListener(event, function (e) {
+                    hideDrop(e, menu);
+                });
+            });
+        });
+    }, []);
+
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-white border-bottom">
             <div className="container-fluid">
@@ -140,7 +169,46 @@ function HeaderComponent(){
 
             </div>
         </nav>
+
     );
 }
 
+function showDrop(menu) {
+    if (window.innerWidth < desktopSize) {
+        return;
+    }
+
+    menu.classList.add('showing');
+
+    setTimeout(function () {
+        menu.classList.remove('showing');
+        menu.classList.add('show');
+    }, 1);
+}
+
+// Hide drop
+function hideDrop(e, menu) {
+    setTimeout(function () {
+        if (window.innerWidth < desktopSize) {
+            return;
+        }
+
+        if (!menu.classList.contains('show')) {
+            return;
+        }
+
+        if (e.type === 'click' && e.target.closest('.dropdown-menu form')) {
+            return;
+        }
+
+        menu.classList.add('showing');
+        menu.classList.remove('show');
+
+        setTimeout(function () {
+            menu.classList.remove('showing');
+        }, transitionDuration);
+    }, 2);
+}
+
 export default HeaderComponent
+
