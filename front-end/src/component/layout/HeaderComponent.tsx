@@ -1,11 +1,8 @@
 import React from "react";
-import { Link } from "react-router-dom";
+
 
 
 function HeaderComponent(){
-    const backgroundStyle = {
-        backgroundImage: "url(./assets/img/photos/photo-3.jpg)"
-    };
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-white border-bottom">
             <div className="container-fluid">
