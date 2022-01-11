@@ -2,6 +2,8 @@ import FooterComponent from 'component/layout/FooterComponent';
 import React from 'react';
 import mainImage from "./assets/img/dashboard/mainImage.png";
 import HeaderComponent from "./component/layout/HeaderComponent";
+import Button2Component from "./component/button/Button2Component";
+
 function App() {
 
   // const testData : any[] = [{
@@ -56,6 +58,7 @@ function App() {
                 </div>
                 <img src={mainImage} alt={"main"}>
                 </img>
+                <Button2Component/>
               </div>
               <div>
 
