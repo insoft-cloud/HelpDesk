@@ -2,7 +2,7 @@ import React from 'react'
 
 function RequestListComponent() {
     return (
-<div className="container-fluid">
+        <div>
             <span>
                 <a href="{() => false}">
                      최근 등록된 업무 목록

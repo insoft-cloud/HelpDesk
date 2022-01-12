@@ -4,7 +4,8 @@ import RequestListComponent from 'component/list/RequestListComponent';
 import HomeComponent from 'component/HomeComponent';
 import React from 'react';
 import HeaderComponent from "./component/layout/HeaderComponent";
-import Button2Component from "./component/button/Button2Component";
+import NewServiceRequestButtonComponent from './component/button/NewServiceRequestButtonComponent';
+import ServiceProgressButtonComponent from './component/button/ServiceProgressButtonComponent';
 
 function App() {
 
@@ -48,7 +49,8 @@ function App() {
               <HomeComponent />
                 <div>
                   <div>
-                    <Button2Component />
+                    <NewServiceRequestButtonComponent />
+                    <ServiceProgressButtonComponent />
                   </div>
                   <RequestListComponent />
                 </div>
