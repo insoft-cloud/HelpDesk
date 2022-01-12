@@ -1,11 +1,11 @@
 import FooterComponent from 'component/layout/FooterComponent';
-import NoticeComponent from 'component/list/NoticeComponent';
 import RequestListComponent from 'component/list/RequestListComponent';
 import HomeComponent from 'component/HomeComponent';
 import React from 'react';
 import HeaderComponent from "./component/layout/HeaderComponent";
 import NewServiceRequestButtonComponent from './component/button/NewServiceRequestButtonComponent';
 import ServiceProgressButtonComponent from './component/button/ServiceProgressButtonComponent';
+import NoticeListComponent from 'component/list/NoticeListComponent';
 
 function App() {
 
@@ -45,17 +45,19 @@ function App() {
   return (
         <div>
             <HeaderComponent/>
-              <div className="App">
-              <HomeComponent />
+              <div>
                 <div>
-                  <div>
-                    <NewServiceRequestButtonComponent />
-                    <ServiceProgressButtonComponent />
-                  </div>
-                  <RequestListComponent />
-                </div>
-                  <NoticeComponent />
-              </div> 
+                  <HomeComponent />
+                    <div>
+                      <div className="row justify-content-center">
+                         <NewServiceRequestButtonComponent />
+                         <ServiceProgressButtonComponent />
+                      </div>
+                      <RequestListComponent />
+                    </div>
+                    <NoticeListComponent />
+                </div> 
+              </div>
             <FooterComponent/>
         </div>
   );

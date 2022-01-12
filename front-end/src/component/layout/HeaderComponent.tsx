@@ -1,21 +1,15 @@
 import React, { useEffect } from "react";
 // import 'assets/js/theme';
 
-// Transition
-const transitionDuration = 200;
-
-// Breakpoint
-const desktopSize = 992;
 
 function HeaderComponent(){
-
     useEffect(()=> {
         import('assets/js/theme');
     }, []);
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-white border-bottom">
             <div className="container-fluid">
-                <a className="navbar-brand" href="{() => false}">
+                <a className="navbar-brand text-gray-900" href="{() => false}">
                     중소벤처24 Help Desk
                 </a>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -152,44 +146,6 @@ function HeaderComponent(){
 
 
     );
-}
-
-function showDrop(menu) {
-    if (window.innerWidth < desktopSize) {
-        return;
-    }
-
-    menu.classList.add('showing');
-
-    setTimeout(function () {
-        menu.classList.remove('showing');
-        menu.classList.add('show');
-    }, 1);
-}
-
-// Hide drop
-function hideDrop(e, menu) {
-    setTimeout(function () {
-        if (window.innerWidth < desktopSize) {
-            return;
-        }
-
-        if (!menu.classList.contains('show')) {
-            return;
-        }
-
-        if (e.type === 'click' && e.target.closest('.dropdown-menu form')) {
-            return;
-        }
-
-        menu.classList.add('showing');
-        menu.classList.remove('show');
-
-        setTimeout(function () {
-            menu.classList.remove('showing');
-        }, transitionDuration);
-    }, 2);
-}
-
+};
 export default HeaderComponent
 
