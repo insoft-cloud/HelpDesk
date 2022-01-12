@@ -1,5 +1,7 @@
 package com.insoft.helpdesk.application.biz.code.port.out;
 
+import com.insoft.helpdesk.application.domain.common.Content;
+import com.insoft.helpdesk.application.domain.common.ResponseMessage;
 import com.insoft.helpdesk.application.domain.jpa.entity.code.Group;
 
 import java.util.List;
@@ -23,7 +25,7 @@ public interface CodeGroupOutPort {
      * @description : CodeGroup 의 전체 데이터 수 조회
      * @return      : long
      */
-    long selectCountCodeGroups();
+    ResponseMessage selectCountCodeGroups();
 
     /**
      * @Method      : selectCountCodeGroups
@@ -33,7 +35,7 @@ public interface CodeGroupOutPort {
      * @description : CodeGroup 의 userId가 일치한 데이터 수 조회
      * @return      : long
      */
-    long selectCountCodeGroups(String userId);
+    ResponseMessage selectCountCodeGroups(String userId);
 
     /**
      * @Method      : selectCodeGroups
@@ -43,7 +45,7 @@ public interface CodeGroupOutPort {
      * @description : CodeGroup 의 전체 데이터 조회
      * @return      : java.util.List
      */
-    List selectCodeGroups();
+    ResponseMessage selectCodeGroups();
 
     /**
      * @Method      : selectCodeGroups
@@ -53,7 +55,7 @@ public interface CodeGroupOutPort {
      * @description : CodeGroup 의 param 속성 값과 일치한 데이터 조회
      * @return      : java.util.List
      */
-    List selectCodeGroups(String userId);
+    ResponseMessage selectCodeGroups(String userId);
 
     /**
      * @Method      : selectCodeGroupId
@@ -63,7 +65,7 @@ public interface CodeGroupOutPort {
      * @description : CodeGroup 의 ID 값과 일치한 데이터 조회
      * @return      : com.insoft.helpdesk.jpa.entity.code.Group
      */
-     Optional<Group> selectCodeGroupId(String id);
+    ResponseMessage selectCodeGroupId(String id);
 
     /**
      * @Method      : saveCodeGroup
@@ -73,7 +75,7 @@ public interface CodeGroupOutPort {
      * @description : CodeGroup 의  데이터 저장
      * @return      : com.insoft.helpdesk.jpa.entity.code.Group
      */
-    Group saveCodeGroup(Group group);
+   ResponseMessage saveCodeGroup(Group group);
 
     /**
      * @Method      : updateCodeGroup
@@ -83,7 +85,7 @@ public interface CodeGroupOutPort {
      * @description : CodeGroup 의  데이터 변경
      * @return      : com.insoft.helpdesk.jpa.entity.code.Group
      */
-    Group updateCodeGroup(Group group);
+    ResponseMessage updateCodeGroup(Group group);
 
     /**
      * @Method      : deleteCodeGroup
@@ -93,5 +95,5 @@ public interface CodeGroupOutPort {
      * @description : CodeGroup 의  데이터 삭제
      * @return      : void
      */
-    void deleteCodeGroup(Group group);
+    ResponseMessage deleteCodeGroup(Group group);
 }
