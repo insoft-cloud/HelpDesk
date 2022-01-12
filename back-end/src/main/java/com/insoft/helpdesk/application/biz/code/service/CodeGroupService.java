@@ -2,7 +2,9 @@ package com.insoft.helpdesk.application.biz.code.service;
 
 import com.insoft.helpdesk.application.biz.code.port.in.CodeGroupInPort;
 import com.insoft.helpdesk.application.biz.code.port.out.CodeGroupOutPort;
+import com.insoft.helpdesk.application.domain.common.ResponseMessage;
 import com.insoft.helpdesk.application.domain.jpa.entity.code.Group;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,42 +21,42 @@ public class CodeGroupService implements CodeGroupInPort {
 
 
     @Override
-    public long selectCountCodeGroups() {
+    public ResponseMessage selectCountCodeGroups() {
         return codeGroupOutPort.selectCountCodeGroups();
     }
 
     @Override
-    public long selectCountCodeGroups(String userId) {
+    public ResponseMessage selectCountCodeGroups(String userId) {
         return codeGroupOutPort.selectCountCodeGroups(userId);
     }
 
     @Override
-    public List selectCodeGroups() {
+    public ResponseMessage selectCodeGroups() {
         return codeGroupOutPort.selectCodeGroups();
     }
 
     @Override
-    public List selectCodeGroups(String userId) {
+    public ResponseMessage selectCodeGroups(String userId) {
         return codeGroupOutPort.selectCodeGroups(userId);
     }
 
     @Override
-    public Optional<Group> selectCodeGroupId(String id) {
+    public ResponseMessage selectCodeGroupId(String id) {
         return codeGroupOutPort.selectCodeGroupId(id);
     }
 
     @Override
-    public Group saveCodeGroup(Group group) {
+    public ResponseMessage saveCodeGroup(Group group) {
         return codeGroupOutPort.saveCodeGroup(group);
     }
 
     @Override
-    public Group updateCodeGroup(Group group) {
+    public ResponseMessage updateCodeGroup(Group group) {
         return codeGroupOutPort.updateCodeGroup(group);
     }
 
     @Override
-    public void deleteCodeGroup(Group group) {
-        codeGroupOutPort.deleteCodeGroup(group);
+    public ResponseMessage deleteCodeGroup(Group group) {
+        return codeGroupOutPort.deleteCodeGroup(group);
     }
 }

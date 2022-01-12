@@ -1,13 +1,17 @@
 package com.insoft.helpdesk.application.adapter.out.db.code;
 
 import com.insoft.helpdesk.application.biz.code.port.out.CodeGroupOutPort;
+import com.insoft.helpdesk.application.domain.common.ResponseMessage;
 import com.insoft.helpdesk.application.domain.jpa.entity.code.Group;
 import com.insoft.helpdesk.application.domain.jpa.repo.code.GroupRepo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -22,42 +26,42 @@ public class DBCodeGroupAdapter implements CodeGroupOutPort {
     }
 
     @Override
-    public long selectCountCodeGroups() {
-        return groupRepo.count();
+    public ResponseMessage selectCountCodeGroups() {
+        return ResponseMessage.builder().count(Long.valueOf(groupRepo.count()).intValue()).build();
     }
 
     @Override
-    public long selectCountCodeGroups(String userId) {
-        return groupRepo.countAllByUserId(userId);
+    public ResponseMessage selectCountCodeGroups(String groupId) {
+        return ResponseMessage.builder().count(Long.valueOf(groupRepo.countAllByUserId(groupId)).intValue()).build();
     }
 
     @Override
-    public List selectCodeGroups() {
-        return groupRepo.findAll();
+    public ResponseMessage selectCodeGroups() {
+        return ResponseMessage.builder().data(groupRepo.findAll()).count(Long.valueOf(groupRepo.count()).intValue()).build();
     }
 
     @Override
-    public List selectCodeGroups(String groupId) {
-        return groupRepo.findAllByUserId(groupId);
+    public ResponseMessage selectCodeGroups(String groupId) {
+        return ResponseMessage.builder().data(groupRepo.findAllByUserId(groupId)).count(Long.valueOf(groupRepo.countAllByUserId(groupId)).intValue()).build();
     }
 
     @Override
-    public Optional<Group> selectCodeGroupId(String id) {
-        return groupRepo.findById(id);
+    public ResponseMessage selectCodeGroupId(String id) {
+        return ResponseMessage.builder().data(groupRepo.findById(id)).build();
     }
 
     @Override
-    public Group saveCodeGroup(Group group) {
-        return groupRepo.save(group);
+    public ResponseMessage saveCodeGroup(Group group) {
+        return ResponseMessage.builder().build();
     }
 
     @Override
-    public Group updateCodeGroup(Group group) {
-        return groupRepo.save(group);
+    public ResponseMessage updateCodeGroup(Group group) {
+        return ResponseMessage.builder().build();
     }
 
     @Override
-    public void deleteCodeGroup(Group group) {
-        groupRepo.delete(group);
+    public ResponseMessage deleteCodeGroup(Group group) {
+        return ResponseMessage.builder().build();
     }
 }

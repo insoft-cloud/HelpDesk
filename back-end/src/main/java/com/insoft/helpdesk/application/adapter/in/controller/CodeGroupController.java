@@ -2,6 +2,7 @@ package com.insoft.helpdesk.application.adapter.in.controller;
 
 
 import com.insoft.helpdesk.application.biz.code.port.in.CodeGroupInPort;
+import com.insoft.helpdesk.application.domain.common.ResponseMessage;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -24,7 +25,7 @@ public class CodeGroupController {
     @Tag(name = "CodeGroup")
     @Operation(summary  = "코드 그룹 리스트 조회", description  = "코드 그룹 데이터 리스트 전체를 조회합니다.")
     @GetMapping
-    public List selectCodeGroups(){
+    public ResponseMessage selectCodeGroups(){
         return codeGroupInPort.selectCodeGroups();
     }
 
