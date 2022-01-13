@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import logo from "assets/img/ect-logo-big.svg";
-import'assets/css/style.css';
 
 
 function HeaderComponent(){

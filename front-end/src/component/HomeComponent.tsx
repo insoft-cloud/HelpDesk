@@ -1,5 +1,6 @@
 import React from 'react'
 import mainImage from "assets/img/new_img/main_visual.png";
+import'assets/css/style.css';
 
 function HomeComponent() {
   return(
