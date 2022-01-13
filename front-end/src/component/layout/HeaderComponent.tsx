@@ -12,6 +12,7 @@ function HeaderComponent(){
             <div className="container-fluid">
                 <a className="navbar-brand" href="{() => false}">
                     <img src={ logo } className="navbar-brand-img" alt="중소벤처24 Help Desk" />
+                    <span>Help Desk</span>
                 </a>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false"
