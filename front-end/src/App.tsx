@@ -1,14 +1,38 @@
 import FooterComponent from 'component/layout/FooterComponent';
-import RequestListComponent from 'component/list/RequestListComponent';
 import HomeComponent from 'component/HomeComponent';
 import React from 'react';
 import HeaderComponent from "./component/layout/HeaderComponent";
-import NewServiceRequestButtonComponent from './component/button/NewServiceRequestButtonComponent';
-import ServiceProgressButtonComponent from './component/button/ServiceProgressButtonComponent';
-import NoticeListComponent from 'component/list/NoticeListComponent';
-
 function App() {
 
+  // const notice : any[] = [
+  //   {
+  //   no: '1',
+  //   title : '첫번째'
+  // },
+  //   {
+  //     no: '3',
+  //     title : '세번째'
+  //   },
+  //   {
+  //     no: '2',
+  //     title : '두번째'
+  //   },
+  //   {
+  //     no: '4',
+  //     title : '네번째'
+  //   }
+  // ];
+  
+  // const request : any[] = [{
+  //   no: '1',
+  //   title : 'request1'
+  // },
+  //   {
+  //     no: '2',
+  //     title : 'request2'
+  //   }
+  // ];
+  
   // const testData : any[] = [{
   //   firstname: 'hello',
   //   lastname : 'world',
@@ -25,14 +49,14 @@ function App() {
   //     testValue : '@test3'
   //   }
   // ];
-  //
+  
   // const testData2 : any[] = [{
   //   firstname: 'hello4',
   //   lastname : 'world4',
   //   testValue : '@test4'
   // },
   //   {
-  //     firstname: 'hello5',
+  //     firstname: 'hello5', 
   //     lastname : 'world5',
   //     testValue : '@test5'
   //   },
@@ -45,19 +69,9 @@ function App() {
   return (
         <div>
             <HeaderComponent/>
-              <div>
                 <div>
-                  <HomeComponent />
-                    <div>
-                      <div className="row justify-content-center">
-                         <NewServiceRequestButtonComponent />
-                         <ServiceProgressButtonComponent />
-                      </div>
-                      <RequestListComponent />
-                    </div>
-                    <NoticeListComponent />
-                </div> 
-              </div>
+                <HomeComponent />
+                </div>
             <FooterComponent/>
         </div>
   );

@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
-// import 'assets/js/theme';
+import logo from "assets/img/ect-logo-big.svg";
+import'assets/css/style.css';
 
 
 function HeaderComponent(){
@@ -9,8 +10,8 @@ function HeaderComponent(){
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-white border-bottom">
             <div className="container-fluid">
-                <a className="navbar-brand text-gray-900" href="{() => false}">
-                    중소벤처24 Help Desk
+                <a className="navbar-brand" href="{() => false}">
+                    <img src={ logo } className="navbar-brand-img" alt="중소벤처24 Help Desk" />
                 </a>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false"

@@ -66,7 +66,6 @@ drops.forEach(function (dropdown) {
 
   // Hide drop
   hideEvents.forEach(function (event) {
-    console.log("제발 먹혀");
     dropdown.addEventListener(event, function (e) {
       hideDrop(e, menu);
     });
