@@ -5,17 +5,19 @@ import com.insoft.helpdesk.application.domain.common.Content;
 import com.insoft.helpdesk.application.domain.common.JwtTokenProvider;
 import com.insoft.helpdesk.application.domain.common.ResponseMessage;
 import com.insoft.helpdesk.application.domain.jpa.entity.MemberTest;
-import com.insoft.helpdesk.application.domain.jpa.repo.MemberTestRepo;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
-
+@RequiredArgsConstructor
 @RestController
 public class LoginController extends Content {
 
@@ -25,14 +27,7 @@ public class LoginController extends Content {
 
     private final MemberService memberService;
 
-
-
-    public LoginController(PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider, MemberService memberService) {
-        this.passwordEncoder = passwordEncoder;
-        this.jwtTokenProvider = jwtTokenProvider;
-        this.memberService = memberService;
-
-    }
+    private final RedisTemplate redisTemplate;
 
     @PostMapping(value = "/signin")
     public ResponseMessage signInUser(@RequestBody MemberTest memberTest) {
@@ -42,11 +37,38 @@ public class LoginController extends Content {
             map.put("error", "ID or Password is invalid.");
         }else {
             List<String> roleList = Arrays.asList(result.getRole().split(","));
-            map.put("token", jwtTokenProvider.createToken(result.getUserId(), roleList));
+            String refreshToken = jwtTokenProvider.createRefreshToken();
+            String token = jwtTokenProvider.createToken(result.getUserId(), roleList);
+            map.put("token", token);
+            map.put("tokenExpired", jwtTokenProvider.getTokenExpiredTime(token));
+            map.put("refreshToken", refreshToken);
+            redisTemplate.opsForValue()
+                    .set(refreshToken, memberTest.getUserId(), jwtTokenProvider.getRefreshTokenExpiredTime(refreshToken) - new Timestamp(System.currentTimeMillis()).getTime(), TimeUnit.MILLISECONDS);
         }
         return ResponseMessage.builder().data(map).build();
     }
 
+    @PostMapping(value = "/refresh-token")
+    public ResponseMessage refreshToken(@RequestHeader(value="REFRESH-TOKEN") String refreshToken ) {
+        Map map = new HashMap<>();
+        Object redisValue = redisTemplate.opsForValue().get(refreshToken);
+        if(redisValue == null) {
+            map.put("error", "refresh token expired");
+        }else {
+            redisTemplate.delete(refreshToken);
+            String userId = redisValue.toString();
+            MemberTest result = memberService.getMember(userId);
+            List<String> roleList = Arrays.asList(result.getRole().split(","));
+            String token = jwtTokenProvider.createToken(result.getUserId(), roleList);
+            String newRefreshToken = jwtTokenProvider.createRefreshToken();
+            map.put("token", token);
+            map.put("tokenExpired", jwtTokenProvider.getTokenExpiredTime(token));
+            map.put("refreshToken", newRefreshToken);
+            redisTemplate.opsForValue()
+                    .set(newRefreshToken, result.getUserId(), jwtTokenProvider.getRefreshTokenExpiredTime(refreshToken) - new Timestamp(System.currentTimeMillis()).getTime(), TimeUnit.MILLISECONDS);
+        }
+        return ResponseMessage.builder().data(map).build();
+    }
 
     @PostMapping(value = "/signup")
     public Object addUser(@RequestBody MemberTest memberTest) {
