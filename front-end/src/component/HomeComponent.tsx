@@ -1,5 +1,5 @@
 import React from 'react'
-import mainImage from "assets/img/dashboard/mainImage.png";
+import mainImage from "assets/img/new_img/main_visual.png";
 import'assets/css/style.css';
 
 function HomeComponent() {
@@ -37,7 +37,7 @@ function HomeComponent() {
                 </p>
                 <p>
                     <a href="{() => false}" className="btn btn-dark-soft lift">
-                        서비스 관리 테스트 버튼
+                        서비스 관리
                     </a>
                 </p>
             </div>
