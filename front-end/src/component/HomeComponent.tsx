@@ -37,7 +37,7 @@ function HomeComponent() {
                 </p>
                 <p>
                     <a href="{() => false}" className="btn btn-dark-soft lift">
-                        서비스 관리
+                        서비스 관리 테스트 버튼
                     </a>
                 </p>
             </div>
