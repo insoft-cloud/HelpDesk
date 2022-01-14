@@ -13,7 +13,6 @@ import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Entity
-//@Table(name = "TB_HELP_CD_GRP")
 @Table(name = "TB_HELP_CD_GRP")
 @Data
 @Builder
