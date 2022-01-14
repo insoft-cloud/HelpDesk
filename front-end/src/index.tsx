@@ -16,16 +16,20 @@ import reportWebVitals from './reportWebVitals';
 import Expenses from "./domain/test/Expenses";
 import Invoices from "./domain/test/Invoices";
 import {ContextPath} from "./utils/ContextPath";
+import HeaderComponent from 'component/layout/HeaderComponent';
+import FooterComponent from 'component/layout/FooterComponent';
 const rootElement = document.getElementById('root');
 
 ReactDOM.render(
 
   <BrowserRouter>
+    <HeaderComponent />
       <Routes>
           <Route path={ContextPath("")} element={<App />} />
           <Route path={ContextPath("/expenses")} element={<Expenses />} />
           <Route path={ContextPath("/invoices")} element={<Invoices />} />
       </Routes>
+    <FooterComponent />
   </BrowserRouter>,
     rootElement
 );

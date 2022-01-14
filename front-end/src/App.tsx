@@ -1,7 +1,5 @@
-import FooterComponent from 'component/layout/FooterComponent';
 import HomeComponent from 'component/HomeComponent';
 import React from 'react';
-import HeaderComponent from "./component/layout/HeaderComponent";
 function App() {
 
   // const notice : any[] = [
@@ -68,11 +66,7 @@ function App() {
   // ];
   return (
         <div>
-            <HeaderComponent/>
-                <div>
-                <HomeComponent />
-                </div>
-            <FooterComponent/>
+          <HomeComponent />
         </div>
   );
 }
