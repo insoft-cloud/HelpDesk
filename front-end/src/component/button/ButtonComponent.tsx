@@ -1,11 +1,22 @@
-import React from "react";
+import React from 'react'
 import ButtonModel from "../../interface/ButtonInterface";
 
-export const ButtonComponent = ({url} : ButtonModel) => {
+
+
+export const ButtonComponent = ({url, btnName, btnClassName} : ButtonModel) => {
     return (
-        <a className="navbar-btn btn btn-sm btn-primary lift ms-auto"
+        <a className={btnClassName}
            href={url} target="_blank" rel="noopener noreferrer">
-            Buy now
+            {btnName}
         </a>
     );
 }
+
+
+// function ButtonComponent( btnName : any, func : Function) {
+//     return (
+//         <button onClick={ func }>{ btnName }</button>
+//     )
+// }
+// export default ButtonComponent
+

@@ -1,6 +1,7 @@
 import React from 'react'
 import mainImage from "assets/img/new_img/main_visual.png";
 import'assets/css/style.css';
+import { ButtonComponent } from 'component/button/ButtonComponent';
 
 function HomeComponent() {
   return(
@@ -26,19 +27,13 @@ function HomeComponent() {
 
             <div className="text-center text-md-start main_btn">
                 <p>
-                    <a href="{() => false}" className="btn btn-primary shadow lift">
-                        신규 서비스 요청 작성 <i className="fe fe-arrow-right d-none d-md-inline ms-3"></i>
-                    </a>
+                    <ButtonComponent btnName='신규 서비스 요청 작성' url="/" btnClassName="btn btn-primary shadow lift" />
                 </p>
                 <p>
-                    <a href="{() => false}" className="btn btn-primary-soft lift">
-                        서비스 요청 진행사항 확인
-                    </a>
+                    <ButtonComponent btnName='서비스 요청 진행사항 확인' url="/" btnClassName="btn btn-primary-soft lift" />
                 </p>
                 <p>
-                    <a href="{() => false}" className="btn btn-dark-soft lift">
-                        서비스 관리
-                    </a>
+                    <ButtonComponent btnName='서비스관리' url="/" btnClassName="btn btn-dark-soft lift" />
                 </p>
             </div>
         </div>
