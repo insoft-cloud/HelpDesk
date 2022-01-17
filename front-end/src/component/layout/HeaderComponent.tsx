@@ -1,6 +1,14 @@
 import React, { useEffect } from "react";
 import logo from "assets/img/ect-logo-big.svg";
+import { ButtonComponent } from "component/button/ButtonComponent";
 
+/**
+ * @Project     : HelpDesk
+ * @FileName    : HeaderComponent.tsx
+ * @Date        : 2021-01-17
+ * @author      : 김지인
+ * @description : 화면 상단에 고정되는 헤더 컴포넌트
+ */
 
 function HeaderComponent(){
     useEffect(()=> {
@@ -40,9 +48,8 @@ function HeaderComponent(){
                                                     <h6 className="dropdown-header">
                                                         대시보드
                                                     </h6>
-                                                    <a className="dropdown-item" href="{() => false}">
-                                                        서비스 요청 현황
-                                                    </a>
+                                                    <ButtonComponent btnClassName="dropdown-item" 
+                                                        btnName="서비스 요청 현황" url="/dashBoard"/>
                                                 </div>
                                             </div>
                                         </div>

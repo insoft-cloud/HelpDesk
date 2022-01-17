@@ -16,6 +16,7 @@ import reportWebVitals from './reportWebVitals';
 import {ContextPath} from "./utils/ContextPath";
 import HeaderComponent from 'component/layout/HeaderComponent';
 import FooterComponent from 'component/layout/FooterComponent';
+import DashBoardComponent from 'domain/service/dashboard/DashBoardComponent';
 const rootElement = document.getElementById('root');
 
 ReactDOM.render(
@@ -24,6 +25,7 @@ ReactDOM.render(
     <HeaderComponent />
       <Routes>
           <Route path={ContextPath("")} element={<App />} />
+          <Route path={ContextPath("/dashBoard")} element={<DashBoardComponent />} />
       </Routes>
     <FooterComponent />
   </BrowserRouter>,

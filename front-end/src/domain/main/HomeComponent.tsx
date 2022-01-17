@@ -33,7 +33,7 @@ function HomeComponent() {
                     <ButtonComponent btnName='서비스 요청 진행사항 확인' url="/" btnClassName="btn btn-primary-soft lift" />
                 </p>
                 <p>
-                    <ButtonComponent btnName='서비스관리' url="/" btnClassName="btn btn-dark-soft lift" />
+                    <ButtonComponent btnName='서비스관리' url="/dashBoard" btnClassName="btn btn-dark-soft lift" />
                 </p>
             </div>
         </div>
