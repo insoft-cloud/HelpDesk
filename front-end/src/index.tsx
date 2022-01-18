@@ -6,7 +6,6 @@ import {
     Route
 } from "react-router-dom";
 import 'assets/css/theme.bundle.css';
-import 'assets/css/libs.bundle.css';
 import "./assets/css/mapbox-gl.css";
 import 'component/layout/HeaderComponent.css';
 import './index.css';

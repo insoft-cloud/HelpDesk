@@ -1,6 +1,7 @@
 import React from 'react'
 import mainImage from "assets/img/new_img/main_visual.png";
 import './HomeComponent.css'
+import 'assets/css/libs.bundle.css';
 import { ButtonComponent } from 'component/button/ButtonComponent';
 
 function HomeComponent() {
