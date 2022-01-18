@@ -7,7 +7,7 @@ import { ButtonComponent } from 'component/button/ButtonComponent';
 
 function HomeComponent() {
 
-    useState(AOS.init());
+    useState( () => {AOS.init(); AOS.refresh();});
 
 
     return(
