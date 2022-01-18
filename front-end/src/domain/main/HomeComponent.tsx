@@ -1,11 +1,16 @@
-import React from 'react'
+import React, {useState} from 'react'
 import mainImage from "assets/img/new_img/main_visual.png";
 import './HomeComponent.css'
 import 'assets/css/libs.bundle.css';
+import AOS from 'aos';
 import { ButtonComponent } from 'component/button/ButtonComponent';
 
 function HomeComponent() {
-  return(
+
+    useState(AOS.init());
+
+
+    return(
     <section className='pt-4 pt-md-11'>
       <div className="container">
          <div className="row align-items-center ">
