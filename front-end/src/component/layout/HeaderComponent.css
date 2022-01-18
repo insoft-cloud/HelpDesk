@@ -1,0 +1,27 @@
+
+.fl_wrap:after {display:block; visibility:hidden; clear:both; content:""}
+.fl_left {float:left !important;}
+.fl_right {float:right !important;}
+
+/**** gnb ****/
+.navbar-brand{
+	position: relative;
+}
+.navbar-brand span{
+	position: absolute;
+    display: block;
+	top: 15px;
+    left: 151px;
+    font-size: 11px;
+    color: #ffffff;
+    line-height: 21px;
+    text-align: center;
+    letter-spacing: 1px;
+    width: 80px;
+    height: 21px;
+    background-color: #7c7c7c;
+    border-radius: 4px;
+    margin-left: 15px;
+}
+
+/**** footer-brand ****/

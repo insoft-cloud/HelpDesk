@@ -1,6 +1,6 @@
 import React from 'react'
 import footerImg from "assets/img/ect-logo-big.svg"
-
+import './FooterComponent.css'
 /**
  * @Project     : HelpDesk
  * @FileName    : FooterComponent.tsx

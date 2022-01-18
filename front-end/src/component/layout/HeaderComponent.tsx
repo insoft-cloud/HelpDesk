@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import logo from "assets/img/ect-logo-big.svg";
+import './HeaderComponent.css'
 import { ButtonComponent } from "component/button/ButtonComponent";
 
 /**

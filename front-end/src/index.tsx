@@ -8,7 +8,7 @@ import {
 import 'assets/css/theme.bundle.css';
 import 'assets/css/libs.bundle.css';
 import "./assets/css/mapbox-gl.css";
-
+import 'component/layout/HeaderComponent.css';
 import './index.css';
 
 import App from './App';
@@ -17,18 +17,19 @@ import {ContextPath} from "./utils/ContextPath";
 import HeaderComponent from 'component/layout/HeaderComponent';
 import FooterComponent from 'component/layout/FooterComponent';
 import DashBoardComponent from 'domain/service/dashboard/DashBoardComponent';
+
+
 const rootElement = document.getElementById('root');
 
 ReactDOM.render(
-
-  <BrowserRouter>
-    <HeaderComponent />
-      <Routes>
-          <Route path={ContextPath("")} element={<App />} />
-          <Route path={ContextPath("/dashBoard")} element={<DashBoardComponent />} />
-      </Routes>
-    <FooterComponent />
-  </BrowserRouter>,
+    <BrowserRouter>
+        <HeaderComponent/>
+        <Routes>
+            <Route path={ContextPath("")} element={<App/>}/>
+            <Route path={ContextPath("/dashBoard")} element={<DashBoardComponent/>}/>
+        </Routes>
+        <FooterComponent/>
+    </BrowserRouter>,
     rootElement
 );
 
