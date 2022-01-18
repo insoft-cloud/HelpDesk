@@ -5,6 +5,6 @@ describe('Home component test', () => {
     test('renders test', () => {
       render(<HomeComponent />);
       const mainImg = screen.getByRole('img');
-      expect(mainImg).toHaveAttribute('alt', 'main');
+      expect(mainImg).toHaveAttribute('alt', '...');
     });
   });

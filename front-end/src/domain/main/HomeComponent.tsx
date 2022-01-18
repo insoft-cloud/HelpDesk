@@ -5,10 +5,17 @@ import 'assets/css/libs.bundle.css';
 import AOS from 'aos';
 import { ButtonComponent } from 'component/button/ButtonComponent';
 
+/**
+ * @Project     : HelpDesk
+ * @FileName    : ListComponent.tsx
+ * @Date        : 2021-01-18
+ * @author      : 김지인
+ * @description : 메인화면 컴포넌트
+ */
+
 function HomeComponent() {
 
     useState( () => {AOS.init(); AOS.refresh();});
-
 
     return(
     <section className='pt-4 pt-md-11'>
