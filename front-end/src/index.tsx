@@ -16,6 +16,7 @@ import {ContextPath} from "./utils/ContextPath";
 import HeaderComponent from 'component/layout/HeaderComponent';
 import FooterComponent from 'component/layout/FooterComponent';
 import DashBoardComponent from 'domain/service/dashboard/DashBoardComponent';
+import AdminMainComponent from 'component/admin/AdminMainComponent';
 
 
 const rootElement = document.getElementById('root');
@@ -26,6 +27,7 @@ ReactDOM.render(
         <Routes>
             <Route path={ContextPath("")} element={<App/>}/>
             <Route path={ContextPath("/dashBoard")} element={<DashBoardComponent/>}/>
+            <Route path={ContextPath("/admin")} element={<AdminMainComponent/>}/>
         </Routes>
         <FooterComponent/>
     </BrowserRouter>,
