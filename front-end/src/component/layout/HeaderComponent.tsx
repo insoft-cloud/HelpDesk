@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import logo from "assets/img/ect-logo-big.svg";
 import './HeaderComponent.css'
 import { ButtonComponent } from "component/button/ButtonComponent";
+import { Link } from "react-router-dom";
+import {ContextPath} from "../../utils/ContextPath";
 
 /**
  * @Project     : HelpDesk
@@ -110,11 +112,10 @@ function HeaderComponent(){
                             </div>    
                             
                         </li>
-                        <li className="nav-item dropdown">
-                            <a className="nav-link dropdown-toggle" id="navbarDocumentation" data-bs-toggle="dropdown"
-                               href="{() => false}" aria-expanded="false">
+                        <li className="nav-item">
+                            <Link className="nav-link" id="navbarDocumentation" to={ContextPath("/login")} aria-expanded="false">
                                 로그인
-                            </a>
+                            </Link>
                         </li>
                         <li className="nav-item dropdown">
                             <a className="nav-link dropdown-toggle" id="navbarDocumentation" data-bs-toggle="dropdown"

@@ -22,8 +22,6 @@ public class Group {
 
     @Id
     @Column(name = "CD_NO", length = 16, nullable = false, updatable = false)
-//    @GenericGenerator(name = "uuid2", strategy = "uuid2")
-//    @GeneratedValue(generator = "uuid2")
     @Comment("코드번호")
     @Size(max = 16)
     private String id;
@@ -45,7 +43,7 @@ public class Group {
     private String userId;
 
     @Column(name = "REGIST_DT", length = 8, nullable = false)
-    @Comment("등록일시: 디폴트 CURRENT_TIMESTAMP")
+    @Comment("등록일시")
     @CreationTimestamp
     private LocalDateTime registDt;
 

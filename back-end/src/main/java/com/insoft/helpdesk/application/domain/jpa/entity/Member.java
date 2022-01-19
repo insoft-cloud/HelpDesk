@@ -1,5 +1,7 @@
 package com.insoft.helpdesk.application.domain.jpa.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -7,14 +9,16 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @Entity
 @Table(name = "TB_HELP_MBR")
@@ -22,7 +26,8 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Member {
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class Member implements UserDetails {
 
     @Id
     @Column(name = "USER_ID", length = 32, nullable = false)
@@ -30,15 +35,15 @@ public class Member {
     @Size(max = 32)
     private String userId;
 
-    @Column(name = "PSWD", length = 32, nullable = false)
+    @Column(name = "PSWD", length = 100, nullable = false)
     @Comment("비밀번호")
-    @Size(max = 32)
+    @Size(max = 100)
     private String password;
 
-    @Column(name = "LOGIN_RETRY_CNT", length = 4)
+    @Column(name = "LOGIN_RETRY_CNT", length =  4)
     @Comment("로그인 재시도수")
-    @Size(max = 4)
-    private BigDecimal loginRetryCnt;
+    @Builder.Default
+    private BigDecimal loginRetryCnt = BigDecimal.ZERO;
 
     @Column(name = "PSITN_INSTT_CD", length = 16, nullable = false)
     @Comment("소속기관 코드")
@@ -63,7 +68,7 @@ public class Member {
     @Column(name = "NM", length = 16, nullable = false)
     @Comment("이름")
     @Size(max = 16)
-    private String userName;
+    private String username;
 
     @Column(name = "EMAIL_ADDR", length = 64, nullable = false)
     @Comment("이메일")
@@ -104,4 +109,45 @@ public class Member {
     @Comment("수정일시")
     @UpdateTimestamp
     private LocalDateTime updateDt;
+
+    @Transient
+    @JsonIgnore
+    private Collection<? extends GrantedAuthority> authorities;
+
+    @Transient
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        ArrayList<GrantedAuthority> auth = new ArrayList<>();
+        auth.add(new SimpleGrantedAuthority("USER"));
+        auth.add(new SimpleGrantedAuthority("ADMIN"));
+        return auth;
+    }
+
+    @Override
+    @JsonIgnore
+    @Transient
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    @JsonIgnore
+    @Transient
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    @JsonIgnore
+    @Transient
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    @JsonIgnore
+    @Transient
+    public boolean isEnabled() {
+        return true;
+    }
 }

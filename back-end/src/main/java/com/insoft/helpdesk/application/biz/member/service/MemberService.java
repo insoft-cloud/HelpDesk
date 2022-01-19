@@ -1,31 +1,44 @@
 package com.insoft.helpdesk.application.biz.member.service;
 
-import com.insoft.helpdesk.application.domain.jpa.entity.MemberTest;
-import com.insoft.helpdesk.application.domain.jpa.repo.MemberTestRepo;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import com.insoft.helpdesk.application.biz.member.port.in.MemberInPort;
+import com.insoft.helpdesk.application.biz.member.port.out.MemberOutPort;
+import com.insoft.helpdesk.application.domain.jpa.entity.Member;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
-public class MemberService implements UserDetailsService {
+@RequiredArgsConstructor
+public class MemberService implements MemberInPort {
 
+    final MemberOutPort memberOutPort;
 
-    @Autowired
-    MemberTestRepo memberTestRepo;
+    @Override
+    public ResponseEntity getMembers() {
+        return ResponseEntity.ok(memberOutPort.getMembers());
+    }
+
+    @Override
+    public ResponseEntity getMemberId(String id) {
+        return ResponseEntity.ok(memberOutPort.getMemberId(id));
+    }
 
 
     @Override
-    public MemberTest loadUserByUsername(String id) throws UsernameNotFoundException {
-        return memberTestRepo.findById(id).get();
+    public ResponseEntity createMember(Member member) {
+        memberOutPort.createMember(member);
+        return ResponseEntity.status(201).body(null);
     }
 
-    public MemberTest getMember(String id){
-        return memberTestRepo.findById(id).get();
+    @Override
+    public ResponseEntity updateMember(Member member) {
+        memberOutPort.updateMember(member);
+        return ResponseEntity.accepted().body(null);
     }
 
-    public void save(MemberTest memberTest){
-        memberTestRepo.save(memberTest);
+    @Override
+    public ResponseEntity deleteMember(Member member) {
+        memberOutPort.deleteMember(member);
+        return ResponseEntity.accepted().body(null);
     }
 }

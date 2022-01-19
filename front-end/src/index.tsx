@@ -12,25 +12,16 @@ import './index.css';
 
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import {ContextPath} from "./utils/ContextPath";
-import HeaderComponent from 'component/layout/HeaderComponent';
-import FooterComponent from 'component/layout/FooterComponent';
-import DashBoardComponent from 'domain/service/dashboard/DashBoardComponent';
-import AdminMainComponent from 'component/admin/AdminMainComponent';
+import {TokenProvider} from "./utils/TokenContext";
+
 
 
 const rootElement = document.getElementById('root');
 
 ReactDOM.render(
-    <BrowserRouter>
-        <HeaderComponent/>
-        <Routes>
-            <Route path={ContextPath("")} element={<App/>}/>
-            <Route path={ContextPath("/dashBoard")} element={<DashBoardComponent/>}/>
-            <Route path={ContextPath("/admin")} element={<AdminMainComponent/>}/>
-        </Routes>
-        <FooterComponent/>
-    </BrowserRouter>,
+    <TokenProvider>
+    <App/>
+    </TokenProvider>,
     rootElement
 );
 

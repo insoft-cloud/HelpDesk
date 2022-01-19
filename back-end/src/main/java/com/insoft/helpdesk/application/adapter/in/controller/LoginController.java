@@ -1,21 +1,25 @@
 package com.insoft.helpdesk.application.adapter.in.controller;
 
+import com.insoft.helpdesk.application.biz.member.port.in.LoginInPort;
 import com.insoft.helpdesk.application.biz.member.service.MemberService;
 import com.insoft.helpdesk.application.domain.common.Content;
 import com.insoft.helpdesk.application.domain.common.JwtTokenProvider;
 import com.insoft.helpdesk.application.domain.common.ResponseMessage;
-import com.insoft.helpdesk.application.domain.jpa.entity.MemberTest;
+import com.insoft.helpdesk.application.domain.entity.login.HelpDeskToken;
+import com.insoft.helpdesk.application.domain.jpa.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RestController
@@ -25,56 +29,54 @@ public class LoginController extends Content {
 
     private final JwtTokenProvider jwtTokenProvider;
 
-    private final MemberService memberService;
+    private final LoginInPort loginInPort;
 
     private final RedisTemplate redisTemplate;
 
+    @Transactional(readOnly = true)
     @PostMapping(value = "/signin")
-    public ResponseMessage signInUser(@RequestBody MemberTest memberTest) {
-        MemberTest result = memberService.getMember(memberTest.getUserId());
-        Map map = new HashMap<>();
-        if (!passwordEncoder.matches(memberTest.getPassword(), result.getPassword())) {
-            map.put("error", "ID or Password is invalid.");
+    public ResponseEntity signInUser(@RequestBody Member member) {
+        Member result = loginInPort.SignIn(member);
+        if (!passwordEncoder.matches(member.getPassword(), result.getPassword())) {
+            return ResponseEntity.badRequest().body("패스워드 불일치");
         }else {
-            List<String> roleList = Arrays.asList(result.getRole().split(","));
+            List<GrantedAuthority> roleList = result.getAuthorities().stream().collect(Collectors.toList());
             String refreshToken = jwtTokenProvider.createRefreshToken();
             String token = jwtTokenProvider.createToken(result.getUserId(), roleList);
-            map.put("token", token);
-            map.put("tokenExpired", jwtTokenProvider.getTokenExpiredTime(token));
-            map.put("refreshToken", refreshToken);
+            long tokenExpiredTime = jwtTokenProvider.getTokenExpiredTime(token);
+            long refreshTokenExpiredTime = jwtTokenProvider.getRefreshTokenExpiredTime(refreshToken);
             redisTemplate.opsForValue()
-                    .set(refreshToken, memberTest.getUserId(), jwtTokenProvider.getRefreshTokenExpiredTime(refreshToken) - new Timestamp(System.currentTimeMillis()).getTime(), TimeUnit.MILLISECONDS);
+                    .set(refreshToken, result.getUserId(),  tokenExpiredTime - new Timestamp(System.currentTimeMillis()).getTime(), TimeUnit.MILLISECONDS);
+            return ResponseEntity.ok(HelpDeskToken.builder().accessToken(token).refreshToken(refreshToken).refreshTokenExpired(refreshTokenExpiredTime).tokenExpired(tokenExpiredTime).build());
         }
-        return ResponseMessage.builder().data(map).build();
+
     }
 
+    @Transactional(readOnly = true)
     @PostMapping(value = "/refresh-token")
-    public ResponseMessage refreshToken(@RequestHeader(value="REFRESH-TOKEN") String refreshToken ) {
-        Map map = new HashMap<>();
+    public ResponseEntity refreshToken(@RequestHeader(value="REFRESH-TOKEN") String refreshToken ) {
         Object redisValue = redisTemplate.opsForValue().get(refreshToken);
         if(redisValue == null) {
-            map.put("error", "refresh token expired");
+            return ResponseEntity.badRequest().body("토큰이 없거나 만료되었습니다.");
         }else {
             redisTemplate.delete(refreshToken);
             String userId = redisValue.toString();
-            MemberTest result = memberService.getMember(userId);
-            List<String> roleList = Arrays.asList(result.getRole().split(","));
+            Member result = loginInPort.SignIn(Member.builder().userId(userId).build());
+            List<GrantedAuthority> roleList = result.getAuthorities().stream().collect(Collectors.toList());
             String token = jwtTokenProvider.createToken(result.getUserId(), roleList);
             String newRefreshToken = jwtTokenProvider.createRefreshToken();
-            map.put("token", token);
-            map.put("tokenExpired", jwtTokenProvider.getTokenExpiredTime(token));
-            map.put("refreshToken", newRefreshToken);
+            long tokenExpiredTime = jwtTokenProvider.getTokenExpiredTime(token);
+            long refreshTokenExpiredTime = jwtTokenProvider.getRefreshTokenExpiredTime(newRefreshToken);
             redisTemplate.opsForValue()
                     .set(newRefreshToken, result.getUserId(), jwtTokenProvider.getRefreshTokenExpiredTime(refreshToken) - new Timestamp(System.currentTimeMillis()).getTime(), TimeUnit.MILLISECONDS);
+            return ResponseEntity.ok(HelpDeskToken.builder().accessToken(token).refreshToken(newRefreshToken).refreshTokenExpired(refreshTokenExpiredTime).tokenExpired(tokenExpiredTime).build());
         }
-        return ResponseMessage.builder().data(map).build();
     }
 
     @PostMapping(value = "/signup")
-    public Object addUser(@RequestBody MemberTest memberTest) {
-        memberTest.setRole("ROLE_USER");
-        memberTest.setPassword(passwordEncoder.encode(memberTest.getPassword()));
-        memberService.save(memberTest);
+    public Object addUser(@RequestBody Member member) {
+        member.setPassword(passwordEncoder.encode(member.getPassword()));
+        loginInPort.SignUp(member);
         return true;
 //        SignVO signVO = new SignVO();
 //        int result = customUserDetailService.signInUser(user);
@@ -94,8 +96,8 @@ public class LoginController extends Content {
     }
 
     @PostMapping(value = "/test")
-    public boolean userCheck(@RequestBody MemberTest memberTest){
-        return passwordEncoder.matches(memberTest.getPassword(), memberService.loadUserByUsername(memberTest.getUserId()).getPassword());
+    public boolean userCheck(@RequestBody Member member){
+        return passwordEncoder.matches(member.getPassword(), loginInPort.SignIn(member).getPassword());
     }
 
     @GetMapping(value = "/auth")

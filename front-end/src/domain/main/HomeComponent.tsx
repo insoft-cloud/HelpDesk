@@ -1,9 +1,11 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import mainImage from "assets/img/new_img/main_visual.png";
 import './HomeComponent.css'
 import 'assets/css/libs.bundle.css';
 import AOS from 'aos';
 import { ButtonComponent } from 'component/button/ButtonComponent';
+import {useTokenDispatch} from "../../utils/TokenContext";
+
 
 /**
  * @Project     : HelpDesk
@@ -15,7 +17,14 @@ import { ButtonComponent } from 'component/button/ButtonComponent';
 
 function HomeComponent() {
 
+    let dispatch = useTokenDispatch()
+
     useState( () => {AOS.init(); AOS.refresh();});
+
+    useEffect(() => {
+        dispatch({ type: 'SET_PAGE', page: "HOME"})
+    }, []);
+
 
     return(
     <section className='pt-4 pt-md-11'>

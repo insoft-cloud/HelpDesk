@@ -6,22 +6,14 @@ import com.insoft.helpdesk.application.domain.jpa.entity.code.Group;
 import com.insoft.helpdesk.application.domain.jpa.repo.code.GroupRepo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
 @Service
-public class DBCodeGroupAdapter implements CodeGroupOutPort {
-
-    private static final Logger logger = LoggerFactory.getLogger(DBCodeGroupAdapter.class);
+public class CodeGroupAdapter implements CodeGroupOutPort {
 
     private final GroupRepo groupRepo;
 
-    public DBCodeGroupAdapter(GroupRepo groupRepo) {
+    public CodeGroupAdapter(GroupRepo groupRepo) {
         this.groupRepo = groupRepo;
     }
 
