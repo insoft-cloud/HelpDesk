@@ -1,5 +1,5 @@
 import HomeComponent from 'domain/main/HomeComponent';
-import React from 'react';
+import React, {useState} from 'react';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import HeaderComponent from "./component/layout/HeaderComponent";
 import {ContextPath} from "./utils/ContextPath";
@@ -9,6 +9,7 @@ import AdminMainComponent from "./component/admin/AdminMainComponent";
 import FooterComponent from "./component/layout/FooterComponent";
 import {useTokenState} from "./utils/TokenContext";
 import PrivateRoute from "./component/route/PrivateRoute";
+import SignUpComponent from "./domain/login/SignUpComponent";
 
 function App() {
 
@@ -21,7 +22,8 @@ function App() {
             }
             <Routes>
                 <Route path={ContextPath("")} element={<HomeComponent/>}/>
-                    <Route path={ContextPath("/login")} element={<LoginComponent/>}/>
+                    <Route path={ContextPath("/login")} element={<LoginComponent prePath={window.location.pathname}/>}/>
+                    <Route path={ContextPath("/signup")} element={<SignUpComponent/>}/>
                     <Route path={ContextPath("/dashBoard")} element={<PrivateRoute component={DashBoardComponent} status={state}/>}/>
                     <Route path={ContextPath("/admin")} element={<PrivateRoute component={AdminMainComponent} status={state}/>}/>
             </Routes>

@@ -40,7 +40,7 @@ export function procGetAxiosHeader(url : string, header : AxiosRequestHeaders, c
         });
 }
 
-export function procPostAxios(url, token, contentType : string, data : any, callback : Function ){
+export function procPostAxios(url, token, contentType : string, data : any, callback : Function, errorCallback : Function ){
     axios.post(url,data,{
         headers: {
             'Content-Type' : contentType,
@@ -50,25 +50,25 @@ export function procPostAxios(url, token, contentType : string, data : any, call
         .then(function (response){
             callback(response['data']);
         })
-        .then(function (error: any){
-
+        .catch(function (error){
+            errorCallback(error)
         })
-        .then(function (){
+        .finally(function (){
 
         });
 }
 
-export function procPostAxiosHeader(url :string, header: AxiosRequestHeaders,data : any, callback : Function ){
+export function procPostAxiosHeader(url :string, header: AxiosRequestHeaders,data : any, callback : Function, errorCallback : Function ){
     axios.post(url,data,{
         headers: header
     })
         .then(function (response){
             callback(response['data']);
         })
-        .then(function (error : any){
-
+        .catch(function (error){
+            errorCallback(error)
         })
-        .then(function (){
+        .finally(function (){
 
         });
 }

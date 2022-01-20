@@ -2,10 +2,11 @@ import React, {ChangeEvent, useEffect, useState} from "react";
 import LoginModel from "../../interface/Login/LoginModel";
 import {procPostAxios, procPostAxiosHeader} from "../../axios/Axios";
 import {useTokenDispatch} from "../../utils/TokenContext";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {AxiosRequestHeaders} from "axios";
+import {ContextPath} from "../../utils/ContextPath";
 
-export default function LoginComponent() {
+export default function LoginComponent({prePath : path}) {
 
     let [email, setEmail] = useState("");
     let [password, setPassword] = useState("");
@@ -14,12 +15,12 @@ export default function LoginComponent() {
     let [refreshToken, setRefreshToken] = useState(sessionStorage.getItem("refreshToken"));
     let [refreshTokenExpired, setRefreshTokenExpired]  = useState(sessionStorage.getItem("refreshTokenExpired"));
 
-
     useEffect(() => {
         dispatch({ type: 'SET_PAGE', page: "LOGIN"})
+    }, []);
+
+    useState(() => {
         if(refreshToken !== null && refreshToken !== undefined){
-            console.log(new Date().getTime());
-            console.log(refreshTokenExpired);
             if(Number(refreshTokenExpired) > new Date().getTime())
             {
                 let header : AxiosRequestHeaders;
@@ -27,14 +28,11 @@ export default function LoginComponent() {
                     'Content-Type' : "application/json",
                     'REFRESH-TOKEN' : refreshToken
                 }
-                procPostAxiosHeader("/refresh-token",header,null, ok);
+                procPostAxiosHeader("/refresh-token",header,null, ok, error);
             }
         }
+    });
 
-
-
-
-    }, []);
 
 
     return(
@@ -65,7 +63,7 @@ export default function LoginComponent() {
                                 Sign in
                             </button>
                         <p className="mb-0 fs-sm text-center text-muted">
-                            회원가입을 아직 하지 않으셨나요? <a href="signup.html">회원가입</a>.
+                            회원가입을 아직 하지 않으셨나요? <Link to={ContextPath("/signup")}>회원가입</Link>.
                         </p>
 
                     </div>
@@ -85,10 +83,9 @@ export default function LoginComponent() {
         setEmail(e.target.value);
     }
 
-
     function login(){
         let loginModel : LoginModel = new LoginModel(email, password);
-        procPostAxios("/signin","","application/json", loginModel, ok);
+        procPostAxios("/signin","","application/json", loginModel, ok, error);
     }
 
     function ok(data : any){
@@ -96,6 +93,17 @@ export default function LoginComponent() {
             tokenExpired: data['tokenExpired'] });
         sessionStorage.setItem("refreshToken", data['refreshToken']);
         sessionStorage.setItem("refreshTokenExpired", data['refreshTokenExpired']);
-        navigate('/');
+        if(path.toString().toLowerCase().indexOf("sign") > 0){
+            console.log("이곳");
+            navigate(ContextPath("/"));
+        }else {
+            console.log("여기");
+            navigate(-1);
+        }
+
+    }
+
+    function error(error){
+        alert(error);
     }
 }
