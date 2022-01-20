@@ -1,6 +1,6 @@
 import HomeComponent from 'domain/main/HomeComponent';
-import React, {useContext, useEffect, useState} from 'react';
-import {BrowserRouter, Route, Navigate, Routes} from "react-router-dom";
+import React from 'react';
+import {BrowserRouter, Route, Routes} from "react-router-dom";
 import HeaderComponent from "./component/layout/HeaderComponent";
 import {ContextPath} from "./utils/ContextPath";
 import LoginComponent from "./domain/login/LoginComponent";
@@ -20,7 +20,7 @@ function App() {
                 state.page === "LOGIN" ? null : <HeaderComponent/>
             }
             <Routes>
-                <Route path={ContextPath("")} element={<PrivateRoute component={HomeComponent} status={state}/>}/>
+                <Route path={ContextPath("")} element={<HomeComponent/>}/>
                     <Route path={ContextPath("/login")} element={<LoginComponent/>}/>
                     <Route path={ContextPath("/dashBoard")} element={<PrivateRoute component={DashBoardComponent} status={state}/>}/>
                     <Route path={ContextPath("/admin")} element={<PrivateRoute component={AdminMainComponent} status={state}/>}/>
