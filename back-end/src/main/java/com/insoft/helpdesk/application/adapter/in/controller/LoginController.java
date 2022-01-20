@@ -59,7 +59,6 @@ public class LoginController extends Content {
         if(redisValue == null) {
             return ResponseEntity.badRequest().body("토큰이 없거나 만료되었습니다.");
         }else {
-            redisTemplate.delete(refreshToken);
             String userId = redisValue.toString();
             Member result = loginInPort.SignIn(Member.builder().userId(userId).build());
             List<GrantedAuthority> roleList = result.getAuthorities().stream().collect(Collectors.toList());

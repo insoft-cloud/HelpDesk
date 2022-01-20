@@ -83,7 +83,6 @@ public class JwtTokenProvider {
     public Authentication getAuthentication(String token) {
         String id = this.getUserPk(token);
         Member member = loginInPort.SignIn(Member.builder().userId(id).build());
-        System.out.println(member.toString());
         return new UsernamePasswordAuthenticationToken(member, "", member.getAuthorities());
     }
 

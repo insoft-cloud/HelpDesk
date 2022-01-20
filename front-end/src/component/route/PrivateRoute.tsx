@@ -4,6 +4,7 @@ import {TokenContext, useTokenDispatch} from "../../utils/TokenContext";
 import {ContextPath} from "../../utils/ContextPath";
 import {AxiosRequestHeaders} from "axios";
 import {procPostAxiosHeader} from "../../axios/Axios";
+import HomeComponent from "../../domain/main/HomeComponent";
 
 
 
@@ -29,8 +30,11 @@ const PrivateRoute: React.FC<Props> = ({ component: RouteComponent ,status  }) =
                 }
                 procPostAxiosHeader("/refresh-token",header,null, callback);
             }
+            return null;
+        }else {
+            return <HomeComponent />
         }
-        return null;
+
     }
 
 
