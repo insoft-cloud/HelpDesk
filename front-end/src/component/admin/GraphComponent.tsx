@@ -3,49 +3,21 @@ import { procPostAxios } from "axios/Axios";
 import { response, Router } from "express";
 import React, { useEffect } from "react";
 import { useState } from "react";
+import ReactPaginate from "react-paginate";
+import Pagination from "./Pagination";
 
 function GraphComponent({tableClassName, tableData, arr} : any) {
 
-    // var {Client} = require('pg');
-    // const pg = new Client({
-    //     user: "insoft",
-    //     host: "172.30.88.10",
-    //     database: "postgres",
-    //     password: "Insoft!23",
-    //     port: 5432,
-    //   });
-    //   pg.connect();
-    // //연결 안돼...
+    const limit = 4; // 표시될 컨텐츠 수
+    const [posts, setPosts] = useState([]);
+    const [page, setPage] = useState(1);
+    const offset = (page - 1) * limit;
 
-    // pg.query("SELECT * FROM public.tb_help_cd_grp_test", (err, res) => {
-    //   if (!err) console.log(res);
-    //   else console.log(err);
-    //   pg.end();
-    // });
-
-
-
-    // //이거는되는데 내 데이터 가져와야지..
-    // const [data, setData] = useState(null);
-    // const onClick = ()=>{
-    //   axios.get('https://jsonplaceholder.typicode.com/todos/1').then(reponse => {
-    //     setData(reponse.data);
-    //   });
-    // }
-
-//    async function getMyData() {
-//     let retData = await axios.get("jdbc:postgresql://172.30.88.10:5432/postgres");
-//     retData = retData.data;
-//     console.log(JSON.stringify(retData));
-//     this.setState({arr:retData})
-//    }
-
-   const state = {arr:[]}
     return (
-        <div className="card-body">
-            <div className="table-responsive">
-                <table className="table table-bordered table-sm border-dark border-collpase text-center" >
-                    <thead className="table-secondary border-dark">
+        <div>
+            <div className="table-responsive table-bordered">
+                <table className="table table-sm text-center  border-dark" >
+                    <thead className="table-secondary border-dark ">
                         <tr  >
                         <th scope="col" className="col-md-1">#</th>
                         <th scope="col" className="col-md-2">코드</th>
@@ -55,28 +27,24 @@ function GraphComponent({tableClassName, tableData, arr} : any) {
                         </tr>
                     </thead>
                     <tbody>
-                    {tableData.map((table_data : any, index : number) => (
+                    {tableData.slice(offset,offset+limit).map((table_data : any, index : number) => (
                         <tr key={index}>
                             <td scope="row">{index}</td>
-                            <td>{table_data.firstname}</td>
-                            <td>{table_data.lastname}</td>
-                            <td>{table_data.testValue}</td>
-                            <td>{table_data.testValue}</td>
+                            <td>{table_data.CD_GRP_NO}</td>
+                            <td>{table_data.CD_NM}</td>
+                            <td>{table_data.USER_ID}</td>
+                            <td>{table_data.REGIST_DT}</td>
                         </tr>
                     ))}
                     </tbody>
                 </table>                           
             </div>
-            <ul className="pagination justify-content-center">
-                <li className="page-item li-sm"><a className="page-link" href="{()=>false}">&#60;&#60;</a></li>
-                <li className="page-item"><a className="page-link" href="{()=>false}">&#60;</a></li>
-                <li className="page-item"><a className="page-link" href="{()=>false}">1</a></li>
-                <li className="page-item active"><a className="page-link" href="{()=>false}">2</a></li>
-                <li className="page-item"><a className="page-link" href="{()=>false}">3</a></li>
-                <li className="page-item"><a className="page-link" href="{()=>false}">4</a></li>
-                <li className="page-item"><a className="page-link" href="{()=>false}">&#62;</a></li>
-                <li className="page-item"><a className="page-link" href="{()=>false}">&#62;&#62;</a></li>
-            </ul>
+
+            {/* 페이징처리 */}
+            <div className="justify-content-center">
+               <Pagination total={tableData.length} limit={limit} page={page} setPage={setPage} />
+            </div>
+            
         </div>
     );
 }
@@ -86,3 +54,4 @@ GraphComponent.defaultProps={
 }
 
 export default GraphComponent;
+
