@@ -1,4 +1,5 @@
-import React from 'react'
+import { ListModel } from 'interface/ListInterface';
+import React, { useState } from 'react'
 
 /**
  * @Project     : HelpDesk
@@ -10,21 +11,41 @@ import React from 'react'
 
 function ListComponent( {listName, listData } : any) {
 
+  const filter = useState( () => {
+    if(listName === "신규 요청"){
+      return "등록일 : "
+    }else if(listName === "진행"){
+      return "목표일 : "
+    }else {
+      return "완료일 : "
+    }
+  });
+
+  // const filteredComponent = (listName : string) => {
+  //   if list
+  // }
+
+  // const Ing = listName.filter('진행');
+
+ 
+
   // const hide = React.useState(data.length > 3)
   // const ListContents = hide ? data.slice(0, 3) : data
 
+  const ListCount = React.useState(listData.length);
+
         return(
-          <ul className='list-group-horizontal mb-0'>{listName}
-             {listData.map((list_data : any, index : number) => (
+          <ul className='list-group-horizontal mb-0'>{listName} {ListCount}
+             {listData.map((list_data : ListModel, index : number) => (
                <li className='list-group-item' key={index}>
                  <div>
-                 {list_data.PRIORT_CD}/{list_data.TY_CD}{list_data.SVC_RQST_NO}
+                 {list_data.PRIORT_CD}/{list_data.TY_CD} {list_data.SYS_CD}
                  </div>
                  <div>
                  {list_data.TTL}
                  </div>
                  <div>
-                 {list_data.REGIST_DT}
+                  {filter} {list_data.REGIST_DT}
                  </div>
               </li>
                ))}

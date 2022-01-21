@@ -10,6 +10,7 @@ import FooterComponent from "./component/layout/FooterComponent";
 import {useTokenState} from "./utils/TokenContext";
 import PrivateRoute from "./component/route/PrivateRoute";
 import SignUpComponent from "./domain/sign/SignUpComponent";
+import MyWorkComponent from 'domain/service/dashboard/MyWorkComponent';
 
 function App() {
 
@@ -25,6 +26,7 @@ function App() {
                     <Route path={ContextPath("/signin")} element={<SignInComponent prePath={window.location.pathname}/>}/>
                     <Route path={ContextPath("/signup")} element={<SignUpComponent/>}/>
                     <Route path={ContextPath("/dashBoard")} element={<PrivateRoute component={DashBoardComponent} status={state}/>}/>
+                    <Route path={ContextPath("/dashBoard/myWork")} element={<PrivateRoute component={MyWorkComponent} status={state}/>}/>
                     <Route path={ContextPath("/admin")} element={<PrivateRoute component={AdminMainComponent} status={state}/>}/>
             </Routes>
             {

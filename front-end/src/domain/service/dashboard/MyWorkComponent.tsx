@@ -6,17 +6,17 @@ import React from 'react'
 /**
  * @Project     : HelpDesk
  * @FileName    : DashBoardComponent.tsx
- * @Date        : 2021-01-17
+ * @Date        : 2021-01-21
  * @author      : 김지인
- * @description : 서비스 요청 현황 > 전체목록 화면 컴포넌트
+ * @description : 서비스 요청 현황 > 내 업무 화면 컴포넌트
  */
 
-function DashBoardComponent() {    
+function MyWorkComponent() {    
 
     const testData : any[] = [{
-        SYS_CD : '서비스요청번호',
-        TY_CD : '유형코드(기능개선/장애)',
-        PRIORT_CD : '우선순위코드(낮음/보통/높음/긴급)',
+        SYS_CD : 'S-10',
+        TY_CD : '기능개선',
+        PRIORT_CD : '낮음',
         TTL : '제목',
         REGIST_DT : '2020-10-10',
         UPD_DT : '2020-10-12',
@@ -63,7 +63,7 @@ function DashBoardComponent() {
             <div>
                 <h1>서비스 요청 현황</h1>
                 <hr></hr>
-                <p>지난 30일간 서비스 요청건의 진행사항 요약입니다.</p>
+                <p>지난 30일간 서비스 요청하신 진행사항 요약입니다.</p>
             </div>
 
             <div>
@@ -82,18 +82,18 @@ function DashBoardComponent() {
                 </div>
                 <div>
                     <div>
-                        <ListHearderComponent listName="Today 헬프데스크 현황" listData={testData}/>
+                        <ListHearderComponent listName="나의 업무 현황" listData={testData}/>
                     </div>
                     <div className='row'>
                         <div className='col-12 col-md-5 col-lg-4 order-md-2'>
-                    <ListComponent listName="신규 요청" listData={testData}/>
+                    <ListComponent listName="진행" listData={testData}/>
                     </div>
                     <div className='col-12 col-md-5 col-lg-4 order-md-2'>
-                    <ListComponent listName="진행" listData={testData}/>
+                    <ListComponent listName="완료" listData={testData}/>
                         </div>
                         
                     <div className='col-12 col-md-5 col-lg-4 order-md-2'>
-                    <ListComponent listName="완료/보류" listData={testData}/>
+                    <ListComponent listName="보류" listData={testData}/>
                         </div>
                     </div>
                 </div>
@@ -103,4 +103,4 @@ function DashBoardComponent() {
         </section>
     )
 }
-export default DashBoardComponent
+export default MyWorkComponent

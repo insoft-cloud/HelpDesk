@@ -1,4 +1,3 @@
-import ButtonModel from "interface/ButtonInterface";
 import React from "react";
 
 

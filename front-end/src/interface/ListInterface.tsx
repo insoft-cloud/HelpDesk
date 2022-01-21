@@ -12,15 +12,26 @@
 // UPD_DT			수정일시		
 // GOAL_DT			목표일시
 
-interface ListInterface{
-    SVC_RQST_NO : string  | undefined;
-    TY_CD : string | undefined;
-    PRIORT_CD : string | undefined;
-    SYS_CD? : string | undefined;
-    TTL : string | undefined;
-    REGIST_DT? : string | undefined;
-    UPD_DT? : string | undefined;
-    GOAL_DT? : string | undefined;
+
+
+export type RequestInProcess = {
+    key : ListNo;
+    listMember : ListModel;
+}
+
+type ListNo = {
+    SVC_RQST_NO, STTS_CD : boolean;
+}
+
+
+export type ListModel = {
+    TY_CD: string | undefined;
+    PRIORT_CD: string | undefined;
+    SYS_CD: string | undefined;
+    TTL: string | undefined;
+    REGIST_DT?: string | undefined;
+    UPD_DT?: string | undefined;
+    GOAL_DT?: string | undefined;
 }
 
 //  const testData : any[] = [{
@@ -31,14 +42,3 @@ interface ListInterface{
 //     REGIST_DT : '2020-10-10'
 //  }
 
-
-export default class ListModel implements ListInterface{
-    public SVC_RQST_NO: string | undefined;
-    public TY_CD: string | undefined;
-    public PRIORT_CD: string | undefined;
-    public SYS_CD: string | undefined;
-    public TTL: string | undefined;
-    public REGIST_DT?: string | undefined;
-    public UPD_DT?: string | undefined;
-    public GOAL_DT?: string | undefined;
-}
