@@ -5,7 +5,7 @@ import {ContextPath} from "../../utils/ContextPath";
 import {AxiosRequestHeaders} from "axios";
 import {procPostAxiosHeader} from "../../axios/Axios";
 import HomeComponent from "../../domain/main/HomeComponent";
-import LoginComponent from "../../domain/login/LoginComponent";
+import SignInComponent from "../../domain/sign/SignInComponent";
 
 
 
@@ -34,7 +34,7 @@ const PrivateRoute: React.FC<Props> = ({ component: RouteComponent ,status  }) =
             }
             return null;
         }else {
-            return <LoginComponent prePath={window.location.pathname} />
+            return <SignInComponent prePath={window.location.pathname} />
         }
 
     }

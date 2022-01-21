@@ -113,7 +113,7 @@ function HeaderComponent(){
                             
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link" id="navbarDocumentation" to={ContextPath("/login")} aria-expanded="false">
+                            <Link className="nav-link" id="navbarDocumentation" to={ContextPath("/signin")} aria-expanded="false">
                                 로그인
                             </Link>
                         </li>
