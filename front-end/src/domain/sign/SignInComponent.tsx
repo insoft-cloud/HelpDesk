@@ -6,7 +6,7 @@ import {Link, useNavigate} from "react-router-dom";
 import {AxiosRequestHeaders} from "axios";
 import {ContextPath} from "../../utils/ContextPath";
 
-export default function LoginComponent({prePath : path}) {
+export default function SignInComponent({prePath : path}) {
 
     let [email, setEmail] = useState("");
     let [password, setPassword] = useState("");
@@ -14,9 +14,11 @@ export default function LoginComponent({prePath : path}) {
     const navigate = useNavigate();
     let [refreshToken, setRefreshToken] = useState(sessionStorage.getItem("refreshToken"));
     let [refreshTokenExpired, setRefreshTokenExpired]  = useState(sessionStorage.getItem("refreshTokenExpired"));
+    const [prePath] = useState(path);
 
     useEffect(() => {
-        dispatch({ type: 'SET_PAGE', page: "LOGIN"})
+
+        dispatch({ type: 'SET_PAGE', page: "LOGIN"});
     }, []);
 
     useState(() => {
@@ -94,10 +96,8 @@ export default function LoginComponent({prePath : path}) {
         sessionStorage.setItem("refreshToken", data['refreshToken']);
         sessionStorage.setItem("refreshTokenExpired", data['refreshTokenExpired']);
         if(path.toString().toLowerCase().indexOf("sign") > 0){
-            console.log("이곳");
             navigate(ContextPath("/"));
         }else {
-            console.log("여기");
             navigate(-1);
         }
 

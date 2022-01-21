@@ -5,7 +5,7 @@ import {useTokenDispatch} from "../../utils/TokenContext";
 import LoginModel, {SignUp} from "../../interface/Login/LoginModel";
 import {procPostAxios} from "../../axios/Axios";
 import BackgroundImage from "assets/img/covers/cover-15.jpg";
-import LoginComponent from "./LoginComponent";
+import SignInComponent from "./SignInComponent";
 
 function SignUpComponent() {
 
@@ -61,7 +61,9 @@ function SignUpComponent() {
                             </button>
 
                         <p className="mb-0 fs-sm text-muted">
-                            Already have an account? <Link to={ContextPath("/login")}>Log in</Link>.
+                            Already have an account? <Link to={ContextPath("/signin")} state={
+                            {prePath : window.location.pathname}
+                        }>Log in</Link>.
                         </p>
 
                     </div>
@@ -112,7 +114,7 @@ function SignUpComponent() {
 
     function ok(data : any) : void {
         alert("회원가입 완료");
-        navigate(ContextPath("/login"));
+        navigate(ContextPath("/signin"));
     }
 
     function error(error : any) : void{
