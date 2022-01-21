@@ -114,7 +114,7 @@ function SignUpComponent() {
 
     function ok(data : any) : void {
         alert("회원가입 완료");
-        navigate(ContextPath("/signup"));
+        navigate(ContextPath("/signin"));
     }
 
     function error(error : any) : void{
