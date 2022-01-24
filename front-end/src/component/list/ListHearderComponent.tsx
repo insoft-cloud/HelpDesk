@@ -1,29 +1,15 @@
 import React from 'react';
 
-function ListHearderComponent({listName, listData } : any) {
+function ListHearderComponent({ listName, listData } : any) {
 
     const ListCount = React.useState(listData.length);
 
   return(
-  <div>
-      <div>
-        {listName}
-      </div>
-      <div className='list mb-0 list-group list-group-horizontal'>
-          <div  className='list-group-item'>
-              신청 {ListCount}
-          </div>
-          <div className='list-group-item'>
-              진행
-          </div>
-          <div className='list-group-item'>
-              완료
-          </div>
-          <div className='list-group-item'>
-              보류 
+      <div className='col-3 col-md-2 col-lg-3 order-md-1'>
+          <div className='lead text-center text-md-start mb-6 mb-lg-8'>
+            {ListCount} {listName}
           </div>
       </div>
-  </div>
   )
 }
 

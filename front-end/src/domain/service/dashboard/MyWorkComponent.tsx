@@ -80,9 +80,12 @@ function MyWorkComponent() {
                         </li>
                     </ul>
                 </div>
-                <div>
-                    <div>
-                        <ListHearderComponent listName="나의 업무 현황" listData={testData}/>
+                <div className='p-2'>
+                    <h3>나의 업무 현황</h3>
+                    <div className="row align-items-center">
+                        <ListHearderComponent listName="진행" listData={testData}/>
+                        <ListHearderComponent listName="완료" listData={testData}/>
+                        <ListHearderComponent listName="보류" listData={testData}/>
                     </div>
                     <div className='row'>
                         <div className='col-12 col-md-5 col-lg-4 order-md-2'>

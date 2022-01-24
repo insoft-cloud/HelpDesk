@@ -14,15 +14,15 @@
 
 
 
-export type RequestInProcess = {
-    key : ListNo;
-    listMember : ListModel;
-}
+// export type RequestInProcess = {
+//     key : ListNo;
+//     commonList : ListModel;
+//     REGIST_DT?: string | undefined;
+// }
 
-type ListNo = {
-    SVC_RQST_NO, STTS_CD : boolean;
-}
-
+// type ListNo = {
+//     SVC_RQST_NO, STTS_CD : boolean;
+// }
 
 export type ListModel = {
     TY_CD: string | undefined;
@@ -32,6 +32,8 @@ export type ListModel = {
     REGIST_DT?: string | undefined;
     UPD_DT?: string | undefined;
     GOAL_DT?: string | undefined;
+    SST? : string | undefined;
+    SVC_RQST_NO : number;
 }
 
 //  const testData : any[] = [{
