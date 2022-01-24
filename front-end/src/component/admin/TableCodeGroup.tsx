@@ -1,7 +1,6 @@
 import { format } from "path/posix";
 import { useState } from "react";
 import Pagination from "./Pagination";
-import ValidationTest from "./ValidationTest";
 
 
 function TableCodeGroup({tableClassName, tableData, arr} : any) {
@@ -61,9 +60,6 @@ function TableCodeGroup({tableClassName, tableData, arr} : any) {
                <Pagination total={tableData.length} limit={limit} page={page} setPage={setPage} />
             </div> 
             
-            <div>
-                <ValidationTest />
-            </div>
            
         </div>
     );
