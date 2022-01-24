@@ -1,91 +1,142 @@
 import AdminHeaderComponent from 'component/admin/AdminHeaderComponent';
 import AdminButtonComponent from 'component/admin/AdminButtonComponent';
-import FooterComponent from 'component/layout/FooterComponent';
 import React from 'react';
-import GraphComponent from './GraphComponent';
+import { ButtonComponent } from 'component/button/ButtonComponent';
+import TableCodeGroup from './TableCodeGroup';
 
 
 function AdminMainComponent() {
     
-  
-  const testData : any[] = [{
-    firstname: 'hello',
-    lastname : 'world',
-    testValue : '@test'
-  },
+  //등록 순서대로 정렬된다 , 최근순?? 등록일순?? 업데이트순??
+  //SELECT * FROM public.tb_help_cd_grp_test order by regist_dt desc
+  const testData : any[] = [
     {
-      firstname: 'hello2',
-      lastname : 'world2',
-      testValue : '@test2'
-    },
-    {
-      firstname: 'hello3',
-      lastname : 'world3',
-      testValue : '@test3'
-    },
-    {
-      firstname: 'hello4',
-      lastname : 'world4',
-      testValue : '@test4'
-    },
-    {
-      firstname: 'hello5',
-      lastname : 'world5',
-      testValue : '@test5'
-    },
-    {
-      firstname: 'hello2',
-      lastname : 'world2',
-      testValue : '@test2'
-    },
-    {
-      firstname: 'hello3',
-      lastname : 'world3',
-      testValue : '@test3'
-    }
-  ];
-  
-  const testData2 : any[] = [{
-    firstname: 'hello4',
-    lastname : 'world4',
-    testValue : '@test4'
-  },
-    {
-      firstname: 'hello5', 
-      lastname : 'world5',
-      testValue : '@test5'
-    },
-    {
-      firstname: 'hello6',
-      lastname : 'world6',
-      testValue : '@test6'
-    }
-  ];
+      CD_GRP_NO: 'A',
+      CD_NM : '우선순위',
+      DEL_YN : 'N',
+      USER_ID : '관리자',
+      REGIST_DT : '2022.01.18',
+      UPD_DT : '2022.01.18',
+    },{
+      CD_GRP_NO: 'B',
+      CD_NM : '서비스 유형',
+      DEL_YN : 'N',
+      USER_ID : '관리자',
+      REGIST_DT : '2022.01.18',
+      UPD_DT : '2022.01.18',
+    },{
+      CD_GRP_NO: 'C',
+      CD_NM : '처리 상태',
+      DEL_YN : 'N',
+      USER_ID : '관리자',
+      REGIST_DT : '2022.01.18',
+      UPD_DT : '2022.01.18',
+    },{
+      CD_GRP_NO: 'D',
+      CD_NM : '운영 기관',
+      DEL_YN : 'N',
+      USER_ID : '관리자',
+      REGIST_DT : '2022.01.18',
+      UPD_DT : '2022.01.18',
+    },{
+      CD_GRP_NO: 'E',
+      CD_NM : '서비스 영역',
+      DEL_YN : 'N',
+      USER_ID : '관리자',
+      REGIST_DT : '2022.01.18',
+      UPD_DT : '2022.01.18',
+    },{
+      CD_GRP_NO: 'F',
+      CD_NM : '우선순위',
+      DEL_YN : 'N',
+      USER_ID : '관리자',
+      REGIST_DT : '2022.01.19',
+      UPD_DT : '2022.01.19',
+    },{
+      CD_GRP_NO: 'G',
+      CD_NM : '서비스 유형',
+      DEL_YN : 'N',
+      USER_ID : '관리자',
+      REGIST_DT : '2022.01.19',
+      UPD_DT : '2022.01.19',
+    },{
+      CD_GRP_NO: 'H',
+      CD_NM : '처리 상태',
+      DEL_YN : 'N',
+      USER_ID : '관리자',
+      REGIST_DT : '2022.01.19',
+      UPD_DT : '2022.01.19',
+    },{
+      CD_GRP_NO: 'I',
+      CD_NM : '운영 기관',
+      DEL_YN : 'N',
+      USER_ID : '관리자',
+      REGIST_DT : '2022.01.19',
+      UPD_DT : '2022.01.19',
+    },{
+      CD_GRP_NO: 'J',
+      CD_NM : '서비스 영역',
+      DEL_YN : 'N',
+      USER_ID : '관리자',
+      REGIST_DT : '2022.01.19',
+      UPD_DT : '2022.01.19',
+    },{
+      CD_GRP_NO: 'K',
+      CD_NM : '우선순위',
+      DEL_YN : 'N',
+      USER_ID : '관리자',
+      REGIST_DT : '2022.01.20',
+      UPD_DT : '2022.01.20',
+    },{
+      CD_GRP_NO: 'L',
+      CD_NM : '서비스 유형',
+      DEL_YN : 'N',
+      USER_ID : '관리자',
+      REGIST_DT : '2022.01.20',
+      UPD_DT : '2022.01.20',
+    },{
+      CD_GRP_NO: 'M',
+      CD_NM : '처리 상태',
+      DEL_YN : 'N',
+      USER_ID : '관리자',
+      REGIST_DT : '2022.01.20',
+      UPD_DT : '2022.01.20',
+    },{
+      CD_GRP_NO: 'N',
+      CD_NM : '운영 기관',
+      DEL_YN : 'N',
+      USER_ID : '관리자',
+      REGIST_DT : '2022.01.20',
+      UPD_DT : '2022.01.20',
+    },{
+      CD_GRP_NO: 'O',
+      CD_NM : '서비스 영역',
+      DEL_YN : 'N',
+      USER_ID : '관리자',
+      REGIST_DT : '2022.01.20',
+      UPD_DT : '2022.01.20',
+    }]
 
-
-  // const testResult = (e) => {
-  //     alert("후에에엥");
-  //     e.preventDefault();
-  // }
   function testResult() {
     alert("이벤트!");
   };
 
-function testResult2() {
-  alert("이벤트삭제!");
-};
+  function testResult2() {
+    alert("이벤트삭제!");
+  };
 
   
+
   return (
-        <div className="m-3">
-            <AdminHeaderComponent/>
+        <div className="container">
+            <AdminHeaderComponent title="서비스 코드 관리" info="헬프 데스크 서비스 운영에 필요한 항목들을 분류하고 관리합니다."/>
               <div className="AdminMainComponent">
-                <div className="d-flex justify-content-end mr-3">
-                  <AdminButtonComponent btnName="추가" onEventHandler={() => testResult} />
-                  <AdminButtonComponent btnName="삭제" onEventHandler={testResult} />
-                  </div>
-                  <div>
-                  <GraphComponent tableClassName="asdarbenrfbv" tableData={testData}  />
+                <div className="d-flex justify-content-end">
+                  <AdminButtonComponent className="btn btn-xs btn-outline-dark rounded-1 ms-2 lift ml-3 mb-3" btnName="삭제" onEventHandler={testResult} />
+                  <ButtonComponent btnClassName="btn btn-xs btn-outline-dark rounded-1 ms-2 lift ml-3 mb-3" btnName="추가" url="/codeEdit" />
+                </div>
+                <div>
+                  <TableCodeGroup tableClassName="asdarbenrfbv" tableData={testData}  />
                 </div>
               </div> 
         </div>

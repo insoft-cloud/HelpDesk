@@ -1,16 +1,35 @@
-import axios from "axios";
-import { procPostAxios } from "axios/Axios";
-import { response, Router } from "express";
-import React, { useEffect } from "react";
+import { format } from "path/posix";
 import { useState } from "react";
 import Pagination from "./Pagination";
+import ValidationTest from "./ValidationTest";
 
-function GraphComponent({tableClassName, tableData, arr} : any) {
+
+function TableCodeGroup({tableClassName, tableData, arr} : any) {
 
     const limit = 10; // 표시될 컨텐츠 수
-    const [posts, setPosts] = useState([]);
+    // const [posts, setPosts] = useState([]);
     const [page, setPage] = useState(1);
     const offset = (page - 1) * limit;
+
+    const [check, setChecked] = useState(1);
+
+    // function test(index){
+    //     delete(index);
+    // }
+
+    function delData(table_data){
+        alert(table_data.CD_NM+table_data.CD_GRP_NO+","+table_data.USER_ID+","+table_data.REGIST_DT);
+    } 
+
+    // const idValid = /^[a-zA-Z0-9]{3,8}$/;
+    // const myId = 'asdf123';
+    // const myId2 = '20201202test';
+    // const myId3 = 'AAAAAA';    
+
+   
+    
+    
+    
 
     return (
         <div>
@@ -26,8 +45,8 @@ function GraphComponent({tableClassName, tableData, arr} : any) {
                 </thead>
                 <tbody>
                     {tableData.slice(offset,offset+limit).map((table_data : any, index : number) => (
-                        <tr key={index}>
-                            <td scope="row">{index}</td>
+                        <tr>
+                            <td scope="row"><input type="checkbox" onChange={(event) => {delData(table_data)} }/></td>
                             <td>{table_data.CD_GRP_NO}</td>
                             <td>{table_data.CD_NM}</td>
                             <td>{table_data.USER_ID}</td>
@@ -40,14 +59,19 @@ function GraphComponent({tableClassName, tableData, arr} : any) {
             {/* 페이징처리 */}
             <div className="justify-content-center">
                <Pagination total={tableData.length} limit={limit} page={page} setPage={setPage} />
-            </div>            
+            </div> 
+            
+            <div>
+                <ValidationTest />
+            </div>
+           
         </div>
     );
 }
 
-GraphComponent.defaultProps={
+TableCodeGroup.defaultProps={
     tableClassName: 'table'
 }
 
-export default GraphComponent;
+export default TableCodeGroup;
 

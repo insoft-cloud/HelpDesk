@@ -2,11 +2,10 @@ import React from "react";
 
 
 
-function AdminButtonComponent( {btnName}: any,
-    onEventHandler) {
+function AdminButtonComponent( {btnName,className,onEventHandler}: any,) {
 
     return(
-        <button className="btn btn-xs btn-outline-dark rounded-1 ms-2 lift ml-3 " 
+        <button className={className} 
         onClick= { onEventHandler } >
             {btnName}
         </button>

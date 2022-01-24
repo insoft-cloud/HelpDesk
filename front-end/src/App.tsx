@@ -11,6 +11,8 @@ import {useTokenState} from "./utils/TokenContext";
 import PrivateRoute from "./component/route/PrivateRoute";
 import SignUpComponent from "./domain/sign/SignUpComponent";
 import MyWorkComponent from 'domain/service/dashboard/MyWorkComponent';
+import AdminCodeEditComponent from 'component/admin/AdminCodeEdit';
+import { table } from 'console';
 
 function App() {
 
@@ -28,6 +30,7 @@ function App() {
                     <Route path={ContextPath("/dashBoard")} element={<PrivateRoute component={DashBoardComponent} status={state}/>}/>
                     <Route path={ContextPath("/dashBoard/myWork")} element={<PrivateRoute component={MyWorkComponent} status={state}/>}/>
                     <Route path={ContextPath("/admin")} element={<PrivateRoute component={AdminMainComponent} status={state}/>}/>
+                    <Route path={ContextPath("/codeEdit")} element={<PrivateRoute component={AdminCodeEditComponent } status={state}/>}/>
             </Routes>
             {
                 state.page === "LOGIN" ? null : <FooterComponent/>
