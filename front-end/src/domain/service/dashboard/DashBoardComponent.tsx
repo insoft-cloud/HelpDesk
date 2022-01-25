@@ -1,8 +1,11 @@
 import { ButtonComponent } from 'component/button/ButtonComponent'
 import ListComponent from 'component/list/ListComponent'
 import ListHearderComponent from 'component/list/ListHearderComponent'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import moment from 'moment'
+import axios, { AxiosRequestHeaders } from 'axios'
+import { useTokenDispatch } from 'utils/TokenContext'
+import { procPostAxiosHeader } from 'axios/Axios'
 
 /**
  * @Project     : HelpDesk
@@ -13,53 +16,37 @@ import moment from 'moment'
  */
 
 function DashBoardComponent() {    
+    
+    let [refreshToken, setRefreshToken] = useState(sessionStorage.getItem("refreshToken"));
+    let [refreshTokenExpired, setRefreshTokenExpired]  = useState(sessionStorage.getItem("refreshTokenExpired"));
+    
+
+    useState(() => {
+        if(refreshToken !== null && refreshToken !== undefined){
+            if(Number(refreshTokenExpired) > new Date().getTime())
+            {
+                let header : AxiosRequestHeaders;
+                header = {
+                    'Content-Type' : "application/json",
+                    'REFRESH-TOKEN' : refreshToken
+                };
+            }
+        }
+    });
+
+    axios.get('/service/req-attachs/{reqId}')
+    .then(function(response){
+        console.log(response)
+        
+    }).catch(function(error){
+
+    }).then(function(){
+
+    });
 
     const nowTime = moment().format('YYYY-MM-DD HH:mm');
 
-    const testData : any[] = [
-    //     {
-    //     SVC_RQST_NO : 1,
-    //     SYS_CD : 'A1',
-    //     TY_CD : '장애',
-    //     PRIORT_CD : '낮음',
-    //     TTL : '제목 : 더미1번 신규',
-    //     REGIST_DT : '2020-10-10',
-    //     UPD_DT : '2020-10-12',
-    //     GOAL_DT : '2020-10-13',
-    //     SST : "신규"
-    //  },
-    //  {
-    //     SYS_CD : 'A2',
-    //     SVC_RQST_NO : 2,
-    //     TY_CD : '기능개선',
-    //     PRIORT_CD : '보통',
-    //     TTL : '제목 : 더미2',
-    //     REGIST_DT : '2020-10-11',
-    //     UPD_DT : '2020-10-13',
-    //     GOAL_DT : '2020-10-14',
-    //     SST : "진행"
-    //  },
-    //  {
-    //     SVC_RQST_NO : 3,
-    //     TY_CD : '유형코드(기능개선/장애)',
-    //     PRIORT_CD : '우선순위코드(낮음/보통/높음/긴급)',
-    //     TTL : '제목',
-    //     REGIST_DT : '2020-10-12',
-    //     UPD_DT : '2020-10-14',
-    //     GOAL_DT : '2020-10-15',
-    //     SST : "완료"
-    //  },
-    //  {
-    //     SVC_RQST_NO : 4,
-    //     TY_CD : '유형코드(기능개선/장애)',
-    //     PRIORT_CD : '우선순위코드(낮음/보통/높음/긴급)',
-    //     TTL : '제목',
-    //     REGIST_DT : '2020-10-13',
-    //     UPD_DT : '2020-10-15',
-    //     GOAL_DT : '2020-10-16',
-    //     SST : "보류"
-    //  }
-    ]
+    const testData : any[] = []
 
     return (
         <section className='pt-4 pt-md-11'>

@@ -3,12 +3,12 @@ import logo from "assets/img/ect-logo-big.svg";
 import './HeaderComponent.css'
 import { ButtonComponent } from "component/button/ButtonComponent";
 import { Link } from "react-router-dom";
-import {ContextPath} from "../../utils/ContextPath";
+import {API_DOMAIN_PATH, ContextPath} from "../../utils/ContextPath";
 
 /**
  * @Project     : HelpDesk
  * @FileName    : HeaderComponent.tsx
- * @Date        : 2021-01-17
+ * @Date        : 2021-01-25
  * @author      : 김지인
  * @description : 화면 상단에 고정되는 헤더 컴포넌트
  */
@@ -36,81 +36,17 @@ function HeaderComponent(){
                         <i className="fe fe-x"></i>
                     </button>
                     <ul className="navbar-nav ms-auto">
-                        <li className="nav-item dropdown">
-                            <a className="nav-link dropdown-toggle" id="navbarLandings" data-bs-toggle="dropdown"
-                               href="{() => false}" aria-expanded="false">
-                                대시보드
-                            </a>
-                            <div className="dropdown-menu dropdown-menu-xl p-0" aria-labelledby="navbarLandings">
-                                <div className="row gx-0">                                    
-                                    <div className="col-12 col-lg-6">
-                                        <div className="dropdown-body">
-                                            <div className="row gx-0">
-                                                <div className="col-6">
-
-                                                    <h6 className="dropdown-header">
-                                                        대시보드
-                                                    </h6>
-                                                    <ButtonComponent btnClassName="dropdown-item" 
-                                                        btnName="서비스 요청 현황" url="/dashBoard"/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        <li className="nav-item">
+                            <ButtonComponent btnClassName="nav-link" 
+                            url={API_DOMAIN_PATH.serviceAll} btnName="전체 서비스" />
                         </li>
-                        <li className="nav-item dropdown">
-                            <a className="nav-link dropdown-toggle" id="navbarPages" data-bs-toggle="dropdown" href="{() => false}"
-                                aria-expanded="false">
-                                서비스
-                            </a>
-                            <div className="dropdown-menu dropdown-menu-lg" aria-labelledby="navbarPages">
-                                <div className="row gx-0">
-                                    <div className="col-6">
-                                        <div className="row gx-0">
-                                            <div className="col-12 col-lg-6">
-
-                                                <h6 className="dropdown-header">
-                                                    서비스
-                                                </h6>
-
-                                                <a className="dropdown-item" href="{() => false}">
-                                                    서비스 요청 목록
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        <li className="nav-item">
+                            <ButtonComponent btnClassName="nav-link" 
+                            url={API_DOMAIN_PATH.myWork} btnName="요청 현황" />
                         </li>
-                        <li className="nav-item dropdown">
-                            <a className="nav-link dropdown-toggle" id="navbarAccount" data-bs-toggle="dropdown"
-                               href="{() => false}" aria-expanded="false">
-                                포럼
-                            </a>
-                            <div className="dropdown-menu dropdown-menu-lg" aria-labelledby="navbarPages">
-                                <div className="row gx-0">
-                                    <div className="col-6">
-                                        <div className="row gx-0">
-                                            <div className="col-12 col-lg-6">
-
-                                                <h6 className="dropdown-header">
-                                                    포럼
-                                                </h6>
-
-                                                <a className="dropdown-item" href="{() => false}">
-                                                    공지사항
-                                                </a>
-                                                <a className="dropdown-item" href="{() => false}">
-                                                    게시판
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>    
-                            
+                        <li className="nav-item">
+                            <ButtonComponent btnClassName="nav-link" 
+                            url={API_DOMAIN_PATH.notice} btnName="공지사항" />
                         </li>
                         <li className="nav-item">
                             <Link className="nav-link" id="navbarDocumentation" to={ContextPath("/signin")} aria-expanded="false">
@@ -137,9 +73,6 @@ function HeaderComponent(){
                                                 </a>
                                                 <a className="dropdown-item" href="{() => false}">
                                                     알림 내역
-                                                </a>
-                                                <a className="dropdown-item" href="{() => false}">
-                                                    활동 이력
                                                 </a>
                                             </div>
                                         </div>

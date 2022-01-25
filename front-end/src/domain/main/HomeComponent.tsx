@@ -5,12 +5,13 @@ import 'assets/css/libs.bundle.css';
 import AOS from 'aos';
 import { ButtonComponent } from 'component/button/ButtonComponent';
 import {useTokenDispatch} from "../../utils/TokenContext";
+import { API_DOMAIN_PATH } from 'utils/ContextPath';
 
 
 /**
  * @Project     : HelpDesk
  * @FileName    : ListComponent.tsx
- * @Date        : 2021-01-18
+ * @Date        : 2021-01-25
  * @author      : 김지인
  * @description : 메인화면 컴포넌트
  */
@@ -52,10 +53,10 @@ function HomeComponent() {
                     <ButtonComponent btnName='신규 서비스 요청 작성' url="/" btnClassName="btn btn-primary shadow lift" />
                 </p>
                 <p>
-                    <ButtonComponent btnName='서비스 요청 진행사항 확인' url="/" btnClassName="btn btn-primary-soft lift" />
+                    <ButtonComponent btnName='서비스 요청 진행사항 확인' url={API_DOMAIN_PATH.myWork} btnClassName="btn btn-primary-soft lift" />
                 </p>
                 <p>
-                    <ButtonComponent btnName='서비스관리' url="/dashBoard" btnClassName="btn btn-dark-soft lift" />
+                    <ButtonComponent btnName='서비스관리' url="/" btnClassName="btn btn-dark-soft lift" />
                 </p>
             </div>
         </div>
