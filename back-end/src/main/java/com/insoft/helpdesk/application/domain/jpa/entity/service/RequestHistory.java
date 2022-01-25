@@ -71,7 +71,6 @@ public class RequestHistory {
 
     @JoinColumn(name = "SVC_RQST_NO")
     @Comment("서비스 요청번호")
-    @Size(max = 36)
     @OneToOne
     private Request svcReqNo;
 }

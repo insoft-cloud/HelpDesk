@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -56,11 +57,28 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-//                .antMatchers("/*").permitAll()
-//                .anyRequest().permitAll()
-                .antMatchers("/signin", "/signup", "/test", "/refresh-token").permitAll()
+                .antMatchers("/api/v1/sign/**").permitAll()
+                .antMatchers("/swagger-ui/**").permitAll()
+                .antMatchers("/swagger-resources/**").permitAll()
                 .anyRequest().hasAuthority("USER")
                 .and()
                 .addFilterBefore(new JwtAuthFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
     }
+
+    @Override
+    public void configure(WebSecurity web)
+    {
+        web
+                .ignoring()
+                .antMatchers( "/v3/api-docs")
+                .antMatchers( "/configuration/ui")
+                .antMatchers("/swagger-resources")
+                .antMatchers( "/configuration/security")
+                .antMatchers( "/swagger-ui.html")
+                .antMatchers( "/webjars/**")
+                .antMatchers( "/swagger/**");
+
+    }
+
+
 }

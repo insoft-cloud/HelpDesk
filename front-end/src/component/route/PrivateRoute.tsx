@@ -1,10 +1,9 @@
 import {Navigate, useNavigate} from 'react-router-dom'
 import React from "react";
 import {TokenContext, useTokenDispatch} from "../../utils/TokenContext";
-import {ContextPath} from "../../utils/ContextPath";
+import {API_SIGN_PATH, ContextPath} from "../../utils/ContextPath";
 import {AxiosRequestHeaders} from "axios";
 import {procPostAxiosHeader} from "../../axios/Axios";
-import HomeComponent from "../../domain/main/HomeComponent";
 import SignInComponent from "../../domain/sign/SignInComponent";
 
 
@@ -30,8 +29,9 @@ const PrivateRoute: React.FC<Props> = ({ component: RouteComponent ,status  }) =
                     'Content-Type' : "application/json",
                     'REFRESH-TOKEN' : refreshToken
                 }
-                procPostAxiosHeader("/refresh-token",header,null, callback, errorCallback);
+                procPostAxiosHeader(API_SIGN_PATH+"/refresh-token",header,null, callback, errorCallback);
             }
+
             return null;
         }else {
             return <SignInComponent prePath={window.location.pathname} />
@@ -50,7 +50,7 @@ const PrivateRoute: React.FC<Props> = ({ component: RouteComponent ,status  }) =
 
     function errorCallback(error){
         alert(error);
-        return <Navigate to={ContextPath("/login")} />
+        return <Navigate to={ContextPath("/signin")} />
     }
 }
 

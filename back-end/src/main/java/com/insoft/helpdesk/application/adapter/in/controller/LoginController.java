@@ -7,6 +7,7 @@ import com.insoft.helpdesk.application.domain.common.JwtTokenProvider;
 import com.insoft.helpdesk.application.domain.common.ResponseMessage;
 import com.insoft.helpdesk.application.domain.entity.login.HelpDeskToken;
 import com.insoft.helpdesk.application.domain.jpa.entity.Member;
+import com.insoft.helpdesk.util.HelpdeskSignRestController;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
-@RestController
+@HelpdeskSignRestController
 public class LoginController extends Content {
 
     private final PasswordEncoder passwordEncoder;
@@ -77,21 +78,6 @@ public class LoginController extends Content {
         member.setPassword(passwordEncoder.encode(member.getPassword()));
         loginInPort.SignUp(member);
         return true;
-//        SignVO signVO = new SignVO();
-//        int result = customUserDetailService.signInUser(user);
-//        if (result == 1) {
-//            signVO.setResult("success");
-//            signVO.setMessage("SignUp complete");
-//            return signVO;
-//        } else if (result == -1) {
-//            signVO.setResult("fail");
-//            signVO.setMessage("There is the same name, please change your name.");
-//            return signVO;
-//        } else {
-//            signVO.setResult("fail");
-//            signVO.setMessage("Ask system admin");
-//            return signVO;
-//        }
     }
 
     @PostMapping(value = "/test")

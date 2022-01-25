@@ -1,6 +1,6 @@
 import React, {ChangeEvent, CSSProperties, useEffect, useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
-import {ContextPath} from "../../utils/ContextPath";
+import {API_SIGN_PATH, ContextPath} from "../../utils/ContextPath";
 import {useTokenDispatch} from "../../utils/TokenContext";
 import LoginModel, {SignUp} from "../../interface/Login/LoginModel";
 import {procPostAxios} from "../../axios/Axios";
@@ -109,7 +109,7 @@ function SignUpComponent() {
             joinConfirmYN : "t"
         }
 
-        procPostAxios("/signup","","application/json", model, ok, error);
+        procPostAxios(API_SIGN_PATH+"/signup","","application/json", model, ok, error);
     }
 
     function ok(data : any) : void {

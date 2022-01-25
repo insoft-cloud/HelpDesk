@@ -3,6 +3,7 @@ package com.insoft.helpdesk.application.adapter.in.controller;
 
 import com.insoft.helpdesk.application.biz.member.port.in.MemberInPort;
 import com.insoft.helpdesk.application.domain.common.ResponseMessage;
+import com.insoft.helpdesk.util.HelpdeskRestController;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -12,8 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "Member", description = "멤버 API")
-@RequestMapping(value = "/v1/member")
-@RestController
+@HelpdeskRestController
 @RequiredArgsConstructor
 public class MemberController {
 

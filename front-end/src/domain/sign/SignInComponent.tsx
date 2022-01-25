@@ -4,7 +4,7 @@ import {procPostAxios, procPostAxiosHeader} from "../../axios/Axios";
 import {useTokenDispatch} from "../../utils/TokenContext";
 import {Link, useNavigate} from "react-router-dom";
 import {AxiosRequestHeaders} from "axios";
-import {ContextPath} from "../../utils/ContextPath";
+import {API_SIGN_PATH, ContextPath} from "../../utils/ContextPath";
 
 export default function SignInComponent({prePath : path}) {
 
@@ -30,7 +30,7 @@ export default function SignInComponent({prePath : path}) {
                     'Content-Type' : "application/json",
                     'REFRESH-TOKEN' : refreshToken
                 }
-                procPostAxiosHeader("/refresh-token",header,null, ok, error);
+                procPostAxiosHeader(API_SIGN_PATH+"/refresh-token",header,null, ok, error);
             }
         }
     });
@@ -87,7 +87,8 @@ export default function SignInComponent({prePath : path}) {
 
     function login(){
         let loginModel : LoginModel = new LoginModel(email, password);
-        procPostAxios("/signin","","application/json", loginModel, ok, error);
+        console.log(API_SIGN_PATH);
+        procPostAxios(API_SIGN_PATH+"/signin","","application/json", loginModel, ok, error);
     }
 
     function ok(data : any){

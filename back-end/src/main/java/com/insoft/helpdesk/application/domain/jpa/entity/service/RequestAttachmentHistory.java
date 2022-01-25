@@ -34,7 +34,6 @@ public class RequestAttachmentHistory {
 
     @JoinColumn(name = "SVC_RQST_HIST_NO", nullable = false)
     @Comment("서비스 요청 이력번호")
-    @Size(max = 36)
     @OneToOne
     private RequestHistory svcReqHistNo;
 
@@ -69,7 +68,6 @@ public class RequestAttachmentHistory {
 
     @JoinColumn(name = "SVC_RQST_NO")
     @Comment("서비스 요청번호")
-    @Size(max = 36)
     @OneToOne
     private Request svcReqNo;
 
