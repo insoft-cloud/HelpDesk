@@ -12,6 +12,7 @@ import React from 'react'
 function ListComponent( {listName, listData } : any) {
 
   const ListCount = React.useState(listData.length);   
+
     
 return(
   <ul className='list-group-horizontal mb-0'>{listName} {ListCount}
@@ -26,9 +27,10 @@ return(
         ? <div> 등록일 : {list_data.REGIST_DT}</div>
         : (listName === "진행"
         ? <div> 목표일 :  {list_data.UPD_DT} </div> 
-
-        : <div> 완료일 :  {list_data.GOAL_DT} </div>
-          ) 
+        :  ( listName === "완료/보류" || "완료" || "보류"
+        ? <div> 완료일 :  {list_data.GOAL_DT} </div>
+        : null
+        ))
         }
       </div>
       </li>
@@ -37,6 +39,32 @@ return(
   )
 }      
 export default ListComponent
+  
+// return(
+//   <ul className='list-group-horizontal mb-0'>{listName} {ListCount}
+//    {listData.map((list_data : ListModel, index : number) => (
+//     <li className='list-group-item' key={index}>
+//       <div>
+//        {list_data.PRIORT_CD}/{list_data.TY_CD} {list_data.SYS_CD}
+//       </div>
+//       <div>
+//         {
+//             listName === "신규 요청"
+//         ? <div> 등록일 : {list_data.REGIST_DT}</div>
+//         : (listName === "진행"
+//         ? <div> 목표일 :  {list_data.UPD_DT} </div> 
+//         :  ( listName === "완료/보류" || "완료" || "보류"
+//         ? <div> 완료일 :  {list_data.GOAL_DT} </div>
+//         : null
+//         ))
+//         }
+//       </div>
+//       </li>
+//    ))}    
+//   </ul>
+//   )
+// }      
+// export default ListComponent
 
 
 //  테이블 정의서

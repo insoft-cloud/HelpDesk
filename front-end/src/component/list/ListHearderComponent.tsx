@@ -1,5 +1,14 @@
 import React from 'react';
 
+/**
+ * @Project     : HelpDesk
+ * @FileName    : ListComponent.tsx
+ * @Date        : 2021-01-24
+ * @author      : 김지인
+ * @description : 대시보드 리스트 상단에 출력되는 리스트 카운터
+ */
+
+
 function ListHearderComponent({ listName, listData } : any) {
 
     const ListCount = React.useState(listData.length);

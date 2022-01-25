@@ -2,6 +2,7 @@ import { ButtonComponent } from 'component/button/ButtonComponent'
 import ListComponent from 'component/list/ListComponent'
 import ListHearderComponent from 'component/list/ListHearderComponent'
 import React from 'react'
+import moment from 'moment'
 
 /**
  * @Project     : HelpDesk
@@ -13,48 +14,51 @@ import React from 'react'
 
 function DashBoardComponent() {    
 
-    const testData : any[] = [{
-        SVC_RQST_NO : 1,
-        SYS_CD : 'A1',
-        TY_CD : '장애',
-        PRIORT_CD : '낮음',
-        TTL : '제목 : 더미1번 신규',
-        REGIST_DT : '2020-10-10',
-        UPD_DT : '2020-10-12',
-        GOAL_DT : '2020-10-13',
-        SST : "신규"
-     },
-     {
-        SYS_CD : 'A2',
-        SVC_RQST_NO : 2,
-        TY_CD : '기능개선',
-        PRIORT_CD : '보통',
-        TTL : '제목 : 더미2',
-        REGIST_DT : '2020-10-11',
-        UPD_DT : '2020-10-13',
-        GOAL_DT : '2020-10-14',
-        SST : "진행"
-     },
-     {
-        SVC_RQST_NO : 3,
-        TY_CD : '유형코드(기능개선/장애)',
-        PRIORT_CD : '우선순위코드(낮음/보통/높음/긴급)',
-        TTL : '제목',
-        REGIST_DT : '2020-10-12',
-        UPD_DT : '2020-10-14',
-        GOAL_DT : '2020-10-15',
-        SST : "완료"
-     },
-     {
-        SVC_RQST_NO : 4,
-        TY_CD : '유형코드(기능개선/장애)',
-        PRIORT_CD : '우선순위코드(낮음/보통/높음/긴급)',
-        TTL : '제목',
-        REGIST_DT : '2020-10-13',
-        UPD_DT : '2020-10-15',
-        GOAL_DT : '2020-10-16',
-        SST : "보류"
-     }
+    const nowTime = moment().format('YYYY-MM-DD HH:mm');
+
+    const testData : any[] = [
+    //     {
+    //     SVC_RQST_NO : 1,
+    //     SYS_CD : 'A1',
+    //     TY_CD : '장애',
+    //     PRIORT_CD : '낮음',
+    //     TTL : '제목 : 더미1번 신규',
+    //     REGIST_DT : '2020-10-10',
+    //     UPD_DT : '2020-10-12',
+    //     GOAL_DT : '2020-10-13',
+    //     SST : "신규"
+    //  },
+    //  {
+    //     SYS_CD : 'A2',
+    //     SVC_RQST_NO : 2,
+    //     TY_CD : '기능개선',
+    //     PRIORT_CD : '보통',
+    //     TTL : '제목 : 더미2',
+    //     REGIST_DT : '2020-10-11',
+    //     UPD_DT : '2020-10-13',
+    //     GOAL_DT : '2020-10-14',
+    //     SST : "진행"
+    //  },
+    //  {
+    //     SVC_RQST_NO : 3,
+    //     TY_CD : '유형코드(기능개선/장애)',
+    //     PRIORT_CD : '우선순위코드(낮음/보통/높음/긴급)',
+    //     TTL : '제목',
+    //     REGIST_DT : '2020-10-12',
+    //     UPD_DT : '2020-10-14',
+    //     GOAL_DT : '2020-10-15',
+    //     SST : "완료"
+    //  },
+    //  {
+    //     SVC_RQST_NO : 4,
+    //     TY_CD : '유형코드(기능개선/장애)',
+    //     PRIORT_CD : '우선순위코드(낮음/보통/높음/긴급)',
+    //     TTL : '제목',
+    //     REGIST_DT : '2020-10-13',
+    //     UPD_DT : '2020-10-15',
+    //     GOAL_DT : '2020-10-16',
+    //     SST : "보류"
+    //  }
     ]
 
     return (
@@ -78,13 +82,16 @@ function DashBoardComponent() {
                             <ButtonComponent url="/dashBoard/myWork" btnName='내 업무' btnClassName='list-link' />
                         </li>
                         <li className='list-group-item'>
-                            <a href="{() => false}" className='list-link'>내 요청</a>
+                            <ButtonComponent url="/dashBoard/myRequest" btnName='내 요청' btnClassName='list-link' />
                         </li>
                     </ul>
                 </div>
                 <div>
                     <div>
                         <h3>Today 헬프데스크 현황</h3>
+                        <div>
+                            {nowTime} 업데이트
+                        </div>
                         <div className="row align-items-center">
                         <ListHearderComponent listName="신청" listData={testData}/>                        
                         <ListHearderComponent listName="진행" listData={testData}/>

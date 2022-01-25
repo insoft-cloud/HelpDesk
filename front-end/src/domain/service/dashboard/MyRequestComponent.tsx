@@ -1,62 +1,21 @@
-import { ButtonComponent } from 'component/button/ButtonComponent'
-import ListComponent from 'component/list/ListComponent'
-import ListHearderComponent from 'component/list/ListHearderComponent'
-import moment from 'moment';
-import React from 'react'
+import { ButtonComponent } from "component/button/ButtonComponent";
+import ListComponent from "component/list/ListComponent";
+import ListHearderComponent from "component/list/ListHearderComponent";
+import moment from "moment"
+
 
 /**
  * @Project     : HelpDesk
  * @FileName    : DashBoardComponent.tsx
- * @Date        : 2021-01-21
+ * @Date        : 2021-01-25
  * @author      : 김지인
- * @description : 서비스 요청 현황 > 내 업무 화면 컴포넌트
+ * @description : 서비스 요청 현황 > 내 요청 화면 컴포넌트
  */
 
-function MyWorkComponent() {    
+ function MyRequestComponent() {    
+    const testData : any[] = []
 
     const nowTime = moment().format('YYYY-MM-DD HH:mm');
-
-    const testData : any[] = [{
-        SYS_CD : 'S-10',
-        TY_CD : '기능개선',
-        PRIORT_CD : '낮음',
-        TTL : '제목',
-        REGIST_DT : '2020-10-10',
-        UPD_DT : '2020-10-12',
-        GOAL_DT : '2020-10-15',
-        SST : "신규"
-     },
-     {
-        SVC_RQST_NO : '서비스요청번호',
-        TY_CD : '유형코드(기능개선/장애)',
-        PRIORT_CD : '우선순위코드(낮음/보통/높음/긴급)',
-        TTL : '제목',
-        REGIST_DT : '2020-10-10',
-        UPD_DT : '2020-10-13',
-        GOAL_DT : '2020-10-16',
-        SST : "진행"
-     },
-     {
-        SVC_RQST_NO : '서비스요청번호',
-        TY_CD : '유형코드(기능개선/장애)',
-        PRIORT_CD : '우선순위코드(낮음/보통/높음/긴급)',
-        TTL : '제목',
-        REGIST_DT : '2020-10-10',
-        UPD_DT : '2020-10-13',
-        GOAL_DT : '2020-10-16',
-        SST : "완료"
-     },
-     {
-        SVC_RQST_NO : '서비스요청번호',
-        TY_CD : '유형코드(기능개선/장애)',
-        PRIORT_CD : '우선순위코드(낮음/보통/높음/긴급)',
-        TTL : '제목',
-        REGIST_DT : '2020-10-10',
-        UPD_DT : '2020-10-13',
-        GOAL_DT : '2020-10-16',
-        SST : "보류"
-     }
-    ]
 
     return (
         <section className='pt-4 pt-md-11'>
@@ -66,7 +25,7 @@ function MyWorkComponent() {
             <div>
                 <h1>서비스 요청 현황</h1>
                 <hr></hr>
-                <p>지난 30일간 서비스 요청하신 진행사항 요약입니다.</p>
+                <p>지난 30일간 서비스 요청건의 진행사항 요약입니다.</p>
             </div>
 
             <div>
@@ -84,11 +43,12 @@ function MyWorkComponent() {
                     </ul>
                 </div>
                 <div className='p-2'>
-                    <h3>나의 업무 현황</h3>
+                    <h3>나의 서비스 요청</h3>
                     <div>
                         {nowTime} 업데이트
                     </div>
                     <div className="row align-items-center">
+                        <ListHearderComponent listName="진행" listData={testData}/>
                         <ListHearderComponent listName="진행" listData={testData}/>
                         <ListHearderComponent listName="완료" listData={testData}/>
                         <ListHearderComponent listName="보류" listData={testData}/>
@@ -112,4 +72,4 @@ function MyWorkComponent() {
         </section>
     )
 }
-export default MyWorkComponent
+export default MyRequestComponent
