@@ -13,7 +13,7 @@ public interface RequestAttachmentRepo extends JpaRepository<RequestAttachment, 
     List<RequestAttachment> findAllByReqId(String reqId);
 
     @Query("SELECT COUNT(distinct req) FROM RequestAttachment req LEFT JOIN req.svcReqNo svcrq WHERE svcrq.reqId = :reqId")
-    long countReqId(String reqId);
+    long countReqId(@Param("reqId") String reqId);
 
 
 }
