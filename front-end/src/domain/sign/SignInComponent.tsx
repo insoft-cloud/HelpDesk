@@ -1,12 +1,13 @@
 import React, {ChangeEvent, useEffect, useState} from "react";
 import LoginModel from "../../interface/Login/LoginModel";
 import {procPostAxios, procPostAxiosHeader} from "../../axios/Axios";
-import {useTokenDispatch} from "../../utils/TokenContext";
+import {useTokenDispatch, useTokenState} from "../../utils/TokenContext";
 import {Link, useNavigate} from "react-router-dom";
 import {AxiosRequestHeaders} from "axios";
 import {API_SIGN_PATH, ContextPath} from "../../utils/ContextPath";
+import PrivateRoute from "component/route/PrivateRoute";
 
-export default function SignInComponent({prePath : path}) {
+export default function SignInComponent({prePath : path, to : RouteComponent}) {
 
     let [email, setEmail] = useState("");
     let [password, setPassword] = useState("");
@@ -97,9 +98,10 @@ export default function SignInComponent({prePath : path}) {
         sessionStorage.setItem("refreshToken", data['refreshToken']);
         sessionStorage.setItem("refreshTokenExpired", data['refreshTokenExpired']);
         if(path.toString().toLowerCase().indexOf("sign") > 0){
-            navigate(ContextPath("/"));
+            navigate(ContextPath("/")); //로그인 메뉴 클릭
         }else {
-            navigate(-1);
+            // navigate(-1);
+            return RouteComponent //다른 메뉴 클릭
         }
 
     }

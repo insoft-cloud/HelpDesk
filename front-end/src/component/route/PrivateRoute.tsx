@@ -34,7 +34,7 @@ const PrivateRoute: React.FC<Props> = ({ component: RouteComponent ,status  }) =
 
             return null;
         }else {
-            return <SignInComponent prePath={window.location.pathname} />
+            return <SignInComponent prePath={window.location.pathname} to={RouteComponent} />
         }
 
     }
