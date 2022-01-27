@@ -24,7 +24,7 @@ function App() {
             }
             <Routes>
                 <Route path={ContextPath(API_DOMAIN_PATH.main)} element={<HomeComponent/>}/>
-                    <Route path={ContextPath("/signin")} element={<SignInComponent prePath={window.location.pathname} to={null} />}/>
+                    <Route path={ContextPath("/signin")} element={<SignInComponent prePath={window.location.pathname} />}/>
                     <Route path={ContextPath("/signup")} element={<SignUpComponent/>}/>
                     <Route path={ContextPath(API_DOMAIN_PATH.serviceAll)} element={<PrivateRoute component={ServiceAllComponent} status={state}/>}/>
                     <Route path={ContextPath(API_DOMAIN_PATH.myWork)} element={<PrivateRoute component={MyWorkComponent} status={state}/>}/>

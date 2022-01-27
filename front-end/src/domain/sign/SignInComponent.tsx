@@ -5,9 +5,8 @@ import {useTokenDispatch, useTokenState} from "../../utils/TokenContext";
 import {Link, useNavigate} from "react-router-dom";
 import {AxiosRequestHeaders} from "axios";
 import {API_SIGN_PATH, ContextPath} from "../../utils/ContextPath";
-import PrivateRoute from "component/route/PrivateRoute";
 
-export default function SignInComponent({prePath : path, to : RouteComponent}) {
+export default function SignInComponent({prePath : path}) {
 
     let [email, setEmail] = useState("");
     let [password, setPassword] = useState("");
@@ -35,8 +34,6 @@ export default function SignInComponent({prePath : path, to : RouteComponent}) {
             }
         }
     });
-
-
 
     return(
         <section className="section-border border-primary">
@@ -99,9 +96,10 @@ export default function SignInComponent({prePath : path, to : RouteComponent}) {
         sessionStorage.setItem("refreshTokenExpired", data['refreshTokenExpired']);
         if(path.toString().toLowerCase().indexOf("sign") > 0){
             navigate(ContextPath("/")); //로그인 메뉴 클릭
+            // navigate(ContextPath(API_DOMAIN_PATH.main));
         }else {
             // navigate(-1);
-            return RouteComponent //다른 메뉴 클릭
+            navigate(ContextPath(path));
         }
 
     }
