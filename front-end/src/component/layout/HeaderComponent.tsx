@@ -1,9 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import logo from "assets/img/ect-logo-big.svg";
 import './HeaderComponent.css'
 import { ButtonComponent } from "component/button/ButtonComponent";
 import { Link } from "react-router-dom";
 import {API_DOMAIN_PATH, ContextPath} from "../../utils/ContextPath";
+import { useTokenDispatch, useTokenState } from "utils/TokenContext";
+import { AxiosRequestHeaders } from "axios";
+import { procGetAxiosHeader } from "axios/Axios";
 
 /**
  * @Project     : HelpDesk
@@ -17,6 +20,16 @@ function HeaderComponent(){
     useEffect(()=> {
         import('assets/js/theme');
     }, []);
+
+    let logCheck :string = '';
+    let dispatch = useTokenDispatch()
+    const state = useTokenState();   
+    if(state.token!==undefined){
+        logCheck = '로그아웃';
+    }else{
+        logCheck = '로그인';
+    }
+
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-white border-bottom">
             <div className="container-fluid">
@@ -49,8 +62,8 @@ function HeaderComponent(){
                             url={API_DOMAIN_PATH.notice} btnName="공지사항" />
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link" id="navbarDocumentation" to={ContextPath("/signin")} aria-expanded="false">
-                                로그인
+                            <Link className="nav-link" id="navbarDocumentation" to={((logCheck=='로그인')?ContextPath("/signin"):ContextPath("/"))} aria-expanded="false">
+                                {logCheck}
                             </Link>
                         </li>
                         <li className="nav-item dropdown">
