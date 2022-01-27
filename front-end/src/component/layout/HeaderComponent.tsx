@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import logo from "assets/img/ect-logo-big.svg";
 import './HeaderComponent.css'
 import { ButtonComponent } from "component/button/ButtonComponent";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {API_DOMAIN_PATH, ContextPath} from "../../utils/ContextPath";
 import { useTokenDispatch, useTokenState } from "utils/TokenContext";
 import { AxiosRequestHeaders } from "axios";
@@ -17,18 +17,27 @@ import { procGetAxiosHeader } from "axios/Axios";
  */
 
 function HeaderComponent(){
-    useEffect(()=> {
-        import('assets/js/theme');
-    }, []);
-
+    const navigate = useNavigate();
+    const state = useTokenState();
     let logCheck :string = '';
     let dispatch = useTokenDispatch()
-    const state = useTokenState();   
-    if(state.token!==undefined){
-        logCheck = '로그아웃';
-    }else{
+
+    useEffect(()=> {
+        import('assets/js/theme');
+    }, []);  
+
+    if(state.token==undefined){
         logCheck = '로그인';
+    }else{
+        logCheck = '로그아웃';
     }
+    
+  function logout(data : any){
+    dispatch({ type: 'SET_TOKEN', token: data['accessToken'],
+    tokenExpired: data['tokenExpired'] });
+    sessionStorage.removeItem("refreshToken");
+    navigate(ContextPath(API_DOMAIN_PATH.main));
+  }
 
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-white border-bottom">
@@ -62,9 +71,10 @@ function HeaderComponent(){
                             url={API_DOMAIN_PATH.notice} btnName="공지사항" />
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link" id="navbarDocumentation" to={((logCheck=='로그인')?ContextPath("/signin"):ContextPath("/"))} aria-expanded="false">
-                                {logCheck}
-                            </Link>
+                            {(state.token==undefined)?<Link className="nav-link" id="navbarDocumentation" to={ContextPath("/signin")} aria-expanded="false">{logCheck}</Link>
+                            : <a className="nav-link" onClick={logout}>{logCheck}</a>}
+
+                            
                         </li>
                         <li className="nav-item dropdown">
                             <a className="nav-link dropdown-toggle" id="navbarDocumentation" data-bs-toggle="dropdown"
