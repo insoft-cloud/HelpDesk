@@ -9,15 +9,19 @@ function TableCodeGroup({tableClassName, tableData, arr} : any) {
     // const [posts, setPosts] = useState([]);
     const [page, setPage] = useState(1);
     const offset = (page - 1) * limit;
-
+    const [tab,setTab] = useState(tableData);
     const [check, setChecked] = useState(1);
 
     // function test(index){
     //     delete(index);
     // }
 
-    function delData(table_data){
-        alert(table_data.CD_NM+table_data.CD_GRP_NO+","+table_data.USER_ID+","+table_data.REGIST_DT);
+    function delData(index){
+        // alert(table_data.CD_NM+table_data.CD_GRP_NO+","+table_data.USER_ID+","+table_data.REGIST_DT);
+        // let arr : any[] = tableData.splice(index,.1)
+        setTab(tab.splice(index,1))
+        
+        // tab(tableData.splice(index,1)) // 이것만 남아..
     } 
 
     // const idValid = /^[a-zA-Z0-9]{3,8}$/;
@@ -43,9 +47,9 @@ function TableCodeGroup({tableClassName, tableData, arr} : any) {
                     </tr>
                 </thead>
                 <tbody>
-                    {tableData.slice(offset,offset+limit).map((table_data : any, index : number) => (
-                        <tr>
-                            <td scope="row"><input type="checkbox" onChange={(event) => {delData(table_data)} }/></td>
+                    {tab.slice(offset,offset+limit).map((table_data : any, index : number) => (
+                        <tr key={index}>
+                            <td scope="row"><input type="checkbox" onChange={(event) => {tableData.splice(event.target.tabIndex,1); console.log()}}/></td>
                             <td>{table_data.CD_GRP_NO}</td>
                             <td>{table_data.CD_NM}</td>
                             <td>{table_data.USER_ID}</td>

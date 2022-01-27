@@ -2,7 +2,7 @@ import React from "react";
 
 
 
-function AdminButtonComponent( {btnName,className,onEventHandler}: any,) {
+function AdminButtonComponent( {btnName,className,onEventHandler}: any) {
 
     return(
         <button className={className} 

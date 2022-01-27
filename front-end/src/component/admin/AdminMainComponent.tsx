@@ -1,11 +1,24 @@
 import AdminHeaderComponent from 'component/admin/AdminHeaderComponent';
 import AdminButtonComponent from 'component/admin/AdminButtonComponent';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ButtonComponent } from 'component/button/ButtonComponent';
 import TableCodeGroup from './TableCodeGroup';
+import AOS from 'aos';
+import { API_ADMIN_PATH, API_SIGN_PATH, API_USER_PATH, ContextPath } from 'utils/ContextPath';
+import { useTokenDispatch } from 'utils/TokenContext';
 
 
 function AdminMainComponent() {
+
+  //header나옴..
+  let dispatch = useTokenDispatch()
+
+  useState( () => {AOS.init(); AOS.refresh();});
+
+  useEffect(() => {
+      dispatch({ type: 'SET_PAGE', page: "HOME"})
+  }, []);
+
     
   //등록 순서대로 정렬된다 , 최근순?? 등록일순?? 업데이트순??
   //SELECT * FROM public.tb_help_cd_grp_test order by regist_dt desc
@@ -41,7 +54,7 @@ function AdminMainComponent() {
     },{
       CD_GRP_NO: 'E',
       CD_NM : '서비스 영역',
-      DEL_YN : 'N',
+      DEL_YN : 'N',    
       USER_ID : '관리자',
       REGIST_DT : '2022.01.18',
       UPD_DT : '2022.01.18',
@@ -109,13 +122,14 @@ function AdminMainComponent() {
       REGIST_DT : '2022.01.20',
       UPD_DT : '2022.01.20',
     },{
-      CD_GRP_NO: 'O',
+      CD_GRP_NO: 'E',
       CD_NM : '서비스 영역',
       DEL_YN : 'N',
       USER_ID : '관리자',
       REGIST_DT : '2022.01.20',
       UPD_DT : '2022.01.20',
-    }]
+    }
+  ]
 
   function testResult() {
     alert("이벤트!");
@@ -133,7 +147,8 @@ function AdminMainComponent() {
               <div className="AdminMainComponent">
                 <div className="d-flex justify-content-end">
                   <AdminButtonComponent className="btn btn-xs btn-outline-dark rounded-1 ms-2 lift ml-3 mb-3" btnName="삭제" onEventHandler={testResult} />
-                  <ButtonComponent btnClassName="btn btn-xs btn-outline-dark rounded-1 ms-2 lift ml-3 mb-3" btnName="추가" url="/codeEdit" />
+                  <ButtonComponent btnClassName="btn btn-xs btn-outline-dark rounded-1 ms-2 lift ml-3 mb-3" btnName="추가" url={ContextPath.call('codeEdit',API_ADMIN_PATH.edit)} />
+                  
                 </div>
                 <div>
                   <TableCodeGroup tableClassName="asdarbenrfbv" tableData={testData}  />
