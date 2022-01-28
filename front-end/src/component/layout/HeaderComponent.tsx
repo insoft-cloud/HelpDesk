@@ -18,7 +18,6 @@ import { procGetAxiosHeader } from "axios/Axios";
 
 function HeaderComponent(){
     const navigate = useNavigate();
-    const state = useTokenState();
     let logCheck :string = '';
     let dispatch = useTokenDispatch()
 
@@ -26,18 +25,12 @@ function HeaderComponent(){
         import('assets/js/theme');
     }, []);  
 
-    if(state.token==undefined){
+    let refreshToken = sessionStorage.getItem("refreshToken");
+    if(refreshToken==null){
         logCheck = '로그인';
     }else{
         logCheck = '로그아웃';
     }
-    
-  function logout(data : any){
-    dispatch({ type: 'SET_TOKEN', token: data['accessToken'],
-    tokenExpired: data['tokenExpired'] });
-    sessionStorage.removeItem("refreshToken");
-    navigate(ContextPath(API_DOMAIN_PATH.main));
-  }
 
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-white border-bottom">
@@ -71,7 +64,7 @@ function HeaderComponent(){
                             url={API_DOMAIN_PATH.notice} btnName="공지사항" />
                         </li>
                         <li className="nav-item">
-                            {(state.token==undefined)?<Link className="nav-link" id="navbarDocumentation" to={ContextPath("/signin")} aria-expanded="false">{logCheck}</Link>
+                            {(refreshToken==null)?<Link className="nav-link" id="navbarDocumentation" to={ContextPath("/signin")} aria-expanded="false">{logCheck}</Link>
                             : <a className="nav-link" onClick={logout}>{logCheck}</a>}
 
                             
@@ -112,6 +105,16 @@ function HeaderComponent(){
 
 
     );
+
+    function logout(data : any){
+        dispatch({ type: 'SET_TOKEN', token: data['accessToken'],
+        tokenExpired: data['tokenExpired'] });
+        
+        sessionStorage.removeItem("refreshToken");
+        sessionStorage.removeItem("refreshToken");
+        sessionStorage.removeItem("refreshTokenExpired");
+        navigate(ContextPath(API_DOMAIN_PATH.main));
+    }
 };
 export default HeaderComponent
 
