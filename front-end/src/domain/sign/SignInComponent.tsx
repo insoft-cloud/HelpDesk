@@ -95,10 +95,8 @@ export default function SignInComponent({prePath : path}) {
         sessionStorage.setItem("refreshToken", data['refreshToken']);
         sessionStorage.setItem("refreshTokenExpired", data['refreshTokenExpired']);
         if(path.toString().toLowerCase().indexOf("sign") > 0){
-            navigate(ContextPath("/")); //로그인 메뉴 클릭
-            // navigate(ContextPath(API_DOMAIN_PATH.main));
+            navigate(ContextPath("/"));
         }else {
-            // navigate(-1);
             navigate(ContextPath(path));
         }
 
