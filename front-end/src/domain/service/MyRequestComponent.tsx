@@ -1,4 +1,5 @@
 import { ButtonComponent } from "component/button/ButtonComponent";
+import MyRequestTableComponent from "component/table/MyRequestTableComponent";
 import moment from "moment"
 import { API_DOMAIN_PATH } from "utils/ContextPath";
 
@@ -40,6 +41,11 @@ import { API_DOMAIN_PATH } from "utils/ContextPath";
                 <div>
                     <div>
                         {nowTime} 업데이트
+                    </div>
+                    <div>
+                        <div>
+                            <MyRequestTableComponent />
+                        </div>
                     </div>
                 </div>
             </div>

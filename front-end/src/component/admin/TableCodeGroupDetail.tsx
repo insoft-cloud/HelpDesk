@@ -1,6 +1,6 @@
 import { Input } from "choices.js/public/types/src/scripts/components";
+import Pagination from "component/list/Pagination";
 import { useState } from "react";
-import Pagination from "./Pagination";
 
 function TableCodeGroupDetail({tableClassName, tableData, arr} : any) {
 

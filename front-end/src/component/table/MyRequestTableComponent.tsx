@@ -1,10 +1,11 @@
 import axios from "axios";
 import Pagination from "component/list/Pagination";
-import { ServiceTableModel } from "interface/TableInterface";
+import { MyWorkTableModel } from "interface/TableInterface";
 import { useEffect, useState } from "react";
 import { useTokenState } from "utils/TokenContext";
 
-function ServiceTableComponent( tableClassName : any) {
+
+function MyRequestTableComponent( tableClassName : any) {
 
     const limit = 10; // 표시될 컨텐츠 수
     const [page, setPage] = useState(1);
@@ -13,7 +14,7 @@ function ServiceTableComponent( tableClassName : any) {
     const [tableData, setTableData] = useState([]);
 
     const state = useTokenState();   
-
+    
     useEffect(() => {
 
         axios.get("/user/service/req-attachs/test", {
@@ -29,7 +30,7 @@ function ServiceTableComponent( tableClassName : any) {
                 console.log(error)
     
             });
-        }, [])                                                                          
+        }, [])
 
 
         return (
@@ -42,22 +43,24 @@ function ServiceTableComponent( tableClassName : any) {
                         <thead className="table-secondary border-dark">
                         <tr>
                             <th scope="col">번호</th>
-                            <th scope="col">시스템</th>
+                            <th scope="col">유형</th>
                             <th scope="col">제목</th>
                             <th scope="col">요청일</th>
-                            <th scope="col">요청자</th>
                             <th scope="col">담당자</th>
+                            <th scope="col">목표일</th>
                             <th scope="col">상태</th>
+                            <th scope="col">평가</th>
                         </tr>
                         </thead>
                         <tbody>
-                        { tableData.slice(offset,offset+limit).map((table_data : ServiceTableModel, index : number ) => (
+                        { tableData.slice(offset,offset+limit).map((table_data : MyWorkTableModel, index : number ) => (
                             <tr key={index}>
                                 <th scope="row">{index}</th>
-                                <td>{table_data.svcReqNo.sysCd}</td>
+                                <td>{table_data.svcReqNo.tyCd}</td>
                                 <td>{table_data.svcReqNo.ttl}</td>
                                 <td>{table_data.registDt?.slice(5,10)}</td>                                
-                                <td>{table_data.svcReqNo.reqId}</td> 
+                                <td></td> 
+                                <td></td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -75,8 +78,8 @@ function ServiceTableComponent( tableClassName : any) {
         );
 }
 
-ServiceTableComponent.defaultProps={
-    tableClassName: 'table'
+MyRequestTableComponent.defaultProps={
+    tableClassName: 'myReqtable'
 }
 
-export default ServiceTableComponent
+export default MyRequestTableComponent

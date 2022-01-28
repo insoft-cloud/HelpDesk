@@ -1,6 +1,6 @@
 
+import Pagination from "component/list/Pagination";
 import { useState } from "react";
-import Pagination from "./Pagination";
 
 
 function TableCodeGroup({tableClassName, tableData, arr} : any) {

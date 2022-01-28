@@ -1,9 +1,7 @@
-import axios, { AxiosRequestHeaders } from 'axios';
-import { procGetAxiosHeader } from 'axios/Axios';
 import ServiceTableComponent from 'component/table/ServiceTableComponent';
 import moment from 'moment';
-import { useContext, useEffect, useState } from 'react';
-import { useTokenDispatch, useTokenState } from 'utils/TokenContext';
+import { useEffect } from 'react';
+import { useTokenDispatch } from 'utils/TokenContext';
 
 /**
  * @Project     : HelpDesk
@@ -17,29 +15,11 @@ import { useTokenDispatch, useTokenState } from 'utils/TokenContext';
 function ServiceAllComponent() {
 
     let dispatch = useTokenDispatch()
-    let header : AxiosRequestHeaders
-    const state = useTokenState();   
+    const nowTime = moment().format('YYYY년 MM월 DD일 HH:mm');
 
     useEffect(() => {
         dispatch({ type: 'SET_PAGE', page: "ServiceAll"})
     }, []);
-    
-    useState(() => {
-        
-        header = {
-            'Content-Type' : "application/json",
-            'X-AUTH-TOKEN' : state.token + ""
-        };    
-        procGetAxiosHeader("/user/service/req-attachs/test", header, callback);
-    })
-
-    function callback(data : any){
-        console.log(data);
-    }
-
-    const nowTime = moment().format('YYYY년 MM월 DD일 HH:mm');
-
-    const testData = [{}]
     
     return (
         <section className='pt-4 pt-md-11'>
@@ -58,14 +38,14 @@ function ServiceAllComponent() {
                 </div>
                 <hr></hr>
                 <div>
-                    <input placeholder='키워드 혹은 일련번호를 입력해주세요'></input>
+                    검색 <input placeholder='키워드 혹은 일련번호를 입력해주세요'></input>
                 </div>
                 <div>    
                     <div>
                         <h4>진행 사항</h4>
                     </div>
                     <div>
-                        <ServiceTableComponent tableData={testData}/>
+                      <ServiceTableComponent /> 
                     </div>
                 </div>
             </div>
@@ -73,5 +53,7 @@ function ServiceAllComponent() {
           </div>
         </section>
     )
+
+    
 }
 export default ServiceAllComponent
