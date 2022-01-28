@@ -19,6 +19,10 @@ function ServiceAllComponent() {
     let dispatch = useTokenDispatch()
     let header : AxiosRequestHeaders
     const state = useTokenState();   
+
+    useEffect(() => {
+        dispatch({ type: 'SET_PAGE', page: "ServiceAll"})
+    }, []);
     
     useState(() => {
         
