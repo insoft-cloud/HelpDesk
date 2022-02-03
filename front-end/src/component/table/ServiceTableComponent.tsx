@@ -6,9 +6,9 @@ import { useTokenState } from "utils/TokenContext";
 
 function ServiceTableComponent( tableClassName : any) {
 
-    const limit = 10; // 표시될 컨텐츠 수
+    const [limit] = useState(10); // 표시될 컨텐츠 수
     const [page, setPage] = useState(1);
-    const offset = (page - 1) * limit;
+    const [offset] = useState(+limit * (page - 1));
 
     const [tableData, setTableData] = useState([]);
 
@@ -51,7 +51,7 @@ function ServiceTableComponent( tableClassName : any) {
                         </tr>
                         </thead>
                         <tbody>
-                        { tableData.slice(offset,offset+limit).map((table_data : ServiceTableModel, index : number ) => (
+                        { tableData.slice(offset,(offset+limit)).map((table_data : ServiceTableModel, index : number ) => (
                             <tr key={index}>
                                 <th scope="row">{index}</th>
                                 <td>{table_data.svcReqNo.sysCd}</td>
