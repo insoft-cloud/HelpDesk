@@ -1,6 +1,6 @@
 import ServiceTableComponent from 'component/table/ServiceTableComponent';
 import moment from 'moment';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useTokenDispatch } from 'utils/TokenContext';
 
 /**
@@ -14,13 +14,18 @@ import { useTokenDispatch } from 'utils/TokenContext';
  
 function ServiceAllComponent() {
 
-    let dispatch = useTokenDispatch()
     const nowTime = moment().format('YYYY년 MM월 DD일 HH:mm');
+
+    let dispatch = useTokenDispatch()
 
     useEffect(() => {
         dispatch({ type: 'SET_PAGE', page: "ServiceAll"})
     }, []);
     
+    
+        
+
+
     return (
         <section className='pt-4 pt-md-11'>
           <div className="container">
@@ -38,7 +43,7 @@ function ServiceAllComponent() {
                 </div>
                 <hr></hr>
                 <div>
-                    검색 <input placeholder='키워드 혹은 일련번호를 입력해주세요'></input>
+                    검색
                 </div>
                 <div>    
                     <div>
