@@ -40,7 +40,7 @@ public class Detail {
     @Size(max = 512)
     private String cdExplnt;
 
-    @Column(name = "CD_GRP_NO", length = 16, nullable = false, updatable = false)
+    @Column(name = "CD_GRP_NO", length = 16, nullable = false)
     @Comment("코드 그룹 번호")
     @Size(max = 16)
     private String cdGroupNo;
