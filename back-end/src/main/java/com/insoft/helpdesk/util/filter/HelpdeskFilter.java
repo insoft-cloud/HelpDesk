@@ -33,7 +33,11 @@ public class HelpdeskFilter implements Filter  {
         String token = httpServletRequest.getHeader("X-AUTH-TOKEN");
         HelpDeskLog helpDeskLog = new HelpDeskLog();
         if(token != null && !token.isEmpty()){
-            helpDeskLog.setUser(jwtTokenProvider.getUserPk(token));
+            try{
+                helpDeskLog.setUser(jwtTokenProvider.getUserPk(token));
+            }catch (Exception e){
+
+            }
         }
         helpDeskLog.setBody(getServletInputStream(servletWrapper.getInputStream()));
         helpDeskLog.setMethod(httpServletRequest.getMethod());
