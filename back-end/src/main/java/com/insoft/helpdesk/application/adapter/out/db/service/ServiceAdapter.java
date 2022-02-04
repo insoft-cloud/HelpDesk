@@ -1,10 +1,9 @@
 package com.insoft.helpdesk.application.adapter.out.db.service;
 
-import com.insoft.helpdesk.application.biz.service.port.out.RequestAttachmentOutPort;
+import com.insoft.helpdesk.application.biz.service.port.out.RequestOutPort;
 import com.insoft.helpdesk.application.domain.jpa.entity.service.Request;
-import com.insoft.helpdesk.application.domain.jpa.entity.service.RequestAttachment;
-import com.insoft.helpdesk.application.domain.jpa.repo.service.RequestAttachmentRepo;
 import com.insoft.helpdesk.application.domain.jpa.repo.service.RequestRepo;
+import org.springframework.data.domain.Pageable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,53 +12,52 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
-public class ServiceAdapter implements RequestAttachmentOutPort {
-
-    final RequestAttachmentRepo requestAttachmentRepo;
+public class ServiceAdapter implements RequestOutPort {
 
     final RequestRepo requestRepo;
 
     @Override
-    public List<RequestAttachment> getRequestAttachment() {
-        return requestAttachmentRepo.findAll();
-    }
-
-    @Override
-    public List<RequestAttachment> getRequestAttachment(String reqId) {
-        return requestAttachmentRepo.findAllByReqId(reqId);
-    }
-
-    @Override
-    public Optional<RequestAttachment> getRequestAttachmentId(String id) {
-        return requestAttachmentRepo.findById(id);
-    }
-
-    @Override
-    public long countRequestAttachments() {
-        return requestAttachmentRepo.count();
-    }
-
-    @Override
-    public long countRequestAttachments(String reqId) {
-        return requestAttachmentRepo.countReqId(reqId);
-    }
-
-    @Override
-    public void createRequestAttachment(RequestAttachment requestAttachment) {
-        requestAttachmentRepo.save(requestAttachment);
-    }
-
-    @Override
-    public void updateRequestAttachment(RequestAttachment requestAttachment) {
-        requestAttachmentRepo.save(requestAttachment);
-    }
-
-    @Override
-    public void deleteRequestAttachment(RequestAttachment requestAttachment) {
-        requestAttachmentRepo.delete(requestAttachment);
-    }
-
-    public List<Request> getRequest() {
+    public List<Request> getRequests() {
         return requestRepo.findAll();
+    }
+
+    @Override
+    public Long getRequestsCount() {
+        return requestRepo.count();
+    }
+
+    @Override
+    public List<Request> getRequests(String userId) {
+        return requestRepo.findAllByReqId(userId);
+    }
+
+    @Override
+    public List<Request> getRequests(String userId, Pageable pageable) {
+        return requestRepo.findAllByReqId(userId, pageable);
+    }
+
+    @Override
+    public Long getRequestsCount(String userId) {
+        return requestRepo.countAllByReqId(userId);
+    }
+
+    @Override
+    public Optional<Request> getRequest(String id) {
+        return requestRepo.findById(id);
+    }
+
+    @Override
+    public void createRequest(Request request) {
+        requestRepo.save(request);
+    }
+
+    @Override
+    public void updateRequest(Request request) {
+        requestRepo.save(request);
+    }
+
+    @Override
+    public void deleteRequest(Request request) {
+        requestRepo.delete(request);
     }
 }

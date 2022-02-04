@@ -1,58 +1,64 @@
 package com.insoft.helpdesk.application.biz.service.service;
 
-import com.insoft.helpdesk.application.biz.service.port.in.RequestAttachmentInPort;
-import com.insoft.helpdesk.application.biz.service.port.out.RequestAttachmentOutPort;
+import com.insoft.helpdesk.application.biz.service.port.in.RequestInPort;
+import com.insoft.helpdesk.application.biz.service.port.out.RequestOutPort;
 import com.insoft.helpdesk.application.domain.jpa.entity.service.Request;
-import com.insoft.helpdesk.application.domain.jpa.entity.service.RequestAttachment;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class RequestService implements RequestAttachmentInPort {
+public class RequestService implements RequestInPort {
 
-    final RequestAttachmentOutPort requestAttachmentOutPort;
+    final RequestOutPort requestOutPort;
 
     @Override
-    public List<RequestAttachment> getRequestAttachments() {
-        return requestAttachmentOutPort.getRequestAttachment();
+    public List<Request> getRequests() {
+        return requestOutPort.getRequests();
     }
 
     @Override
-    public Optional<RequestAttachment> getRequestAttachmentId(String id) {
-        return requestAttachmentOutPort.getRequestAttachmentId(id);
+    public Long getRequestsCount() {
+        return requestOutPort.getRequestsCount();
     }
 
     @Override
-    public List<RequestAttachment> getRequestAttachmentsReqId(String reqId) {
-        return requestAttachmentOutPort.getRequestAttachment(reqId);
+    public List<Request> getRequests(String userId) {
+        return requestOutPort.getRequests(userId);
     }
 
     @Override
-    public long countRequestAttachments() {
-        return requestAttachmentOutPort.countRequestAttachments();
+    public List<Request> getRequests(String userId, Pageable pageable) {
+        return requestOutPort.getRequests(userId, pageable);
     }
 
     @Override
-    public void createRequestAttachment(RequestAttachment requestAttachment) {
-        requestAttachmentOutPort.createRequestAttachment(requestAttachment);
+    public Long getRequestsCount(String userId) {
+        return requestOutPort.getRequestsCount(userId);
     }
 
     @Override
-    public void updateRequestAttachment(RequestAttachment requestAttachment) {
-        requestAttachmentOutPort.updateRequestAttachment(requestAttachment);
+    public Optional<Request> getRequest(String id) {
+        return requestOutPort.getRequest(id);
     }
 
     @Override
-    public void deleteRequestAttachment(RequestAttachment requestAttachment) {
-        requestAttachmentOutPort.deleteRequestAttachment(requestAttachment);
+    public void createRequest(Request request) {
+        requestOutPort.createRequest(request);
     }
 
     @Override
-    public List<Request> getRequest() {
-        return requestAttachmentOutPort.getRequest();
+    public void updateRequest(Request request) {
+        requestOutPort.updateRequest(request);
+    }
+
+    @Override
+    public void deleteRequest(Request request) {
+        requestOutPort.deleteRequest(request);
     }
 }
