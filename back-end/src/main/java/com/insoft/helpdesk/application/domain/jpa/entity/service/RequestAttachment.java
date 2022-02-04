@@ -1,6 +1,7 @@
 package com.insoft.helpdesk.application.domain.jpa.entity.service;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -35,10 +36,11 @@ public class RequestAttachment {
     @Size(max = 36)
     private String id;
 
-    @JoinColumn(name = "SVC_RQST_NO")
+    @JsonBackReference
+    @JoinColumn(name = "SVC_RQST_NO", referencedColumnName = "SVC_RQST_NO")
     @Comment("서비스 요청번호")
     @Schema(description = "서비스 요청번호")
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Request svcReqNo;
 
     @Column(name = "FILE_NM", nullable = false)
@@ -69,6 +71,7 @@ public class RequestAttachment {
     @Schema(description = "등록일시")
     @CreationTimestamp
     private LocalDateTime registDt;
+
 
     @Column(name = "UPD_DT", length = 8)
     @Comment("수정일시")

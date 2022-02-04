@@ -3,8 +3,9 @@ package com.insoft.helpdesk.application.adapter.in.controller;
 
 import com.insoft.helpdesk.application.biz.service.port.in.RequestAttachmentInPort;
 
+import com.insoft.helpdesk.application.domain.jpa.entity.service.Request;
 import com.insoft.helpdesk.application.domain.jpa.entity.service.RequestAttachment;
-import com.insoft.helpdesk.util.HelpdeskRestController;
+import com.insoft.helpdesk.util.annotation.HelpdeskRestController;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -33,7 +34,7 @@ public class ServiceController {
     @GetMapping("/service/req-attach/{id}")
     public ResponseEntity getRequestAttachment(@PathVariable String id){
         Optional<RequestAttachment> requestAttachmentOptional = requestAttachmentInPort.getRequestAttachmentId(id);
-        RequestAttachment requestAttachment = requestAttachmentOptional.orElseThrow(() -> new NoSuchElementException());
+        RequestAttachment requestAttachment = requestAttachmentOptional.orElseThrow(NoSuchElementException::new);
         return ResponseEntity.ok(requestAttachment);
     }
 
@@ -51,5 +52,20 @@ public class ServiceController {
     public ResponseEntity getRequestAttachmentReqId(@PathVariable String reqId){
         List<RequestAttachment> requestAttachments = requestAttachmentInPort.getRequestAttachmentsReqId(reqId);
         return ResponseEntity.ok(requestAttachments);
+    }
+
+
+    @Tag(name = "Service")
+    @Operation(summary  = "해당 유저의 리퀘스트 조회", description  = "해당 유저의 리퀘스트 조회",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "ok", content = @Content(schema = @Schema(implementation = RequestAttachment.class)))
+            })
+    @ApiResponses(
+            @io.swagger.annotations.ApiResponse(response = Request.class, message = "ok", code = 200)
+    )
+    @GetMapping("/service/requests")
+    public ResponseEntity getRequests(){
+        List<Request> requests = requestAttachmentInPort.getRequest();
+        return ResponseEntity.ok(requests);
     }
 }

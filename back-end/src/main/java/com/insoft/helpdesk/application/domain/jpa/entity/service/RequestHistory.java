@@ -1,6 +1,7 @@
 package com.insoft.helpdesk.application.domain.jpa.entity.service;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,6 +23,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
+
 public class RequestHistory {
 
     @Id
@@ -69,8 +71,9 @@ public class RequestHistory {
     @UpdateTimestamp
     private LocalDateTime updateDt;
 
-    @JoinColumn(name = "SVC_RQST_NO")
+    @JsonBackReference
+    @JoinColumn(name = "SVC_RQST_NO", referencedColumnName = "SVC_RQST_NO")
     @Comment("서비스 요청번호")
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Request svcReqNo;
 }

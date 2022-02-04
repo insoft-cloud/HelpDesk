@@ -1,8 +1,10 @@
 package com.insoft.helpdesk.application.adapter.out.db.service;
 
 import com.insoft.helpdesk.application.biz.service.port.out.RequestAttachmentOutPort;
+import com.insoft.helpdesk.application.domain.jpa.entity.service.Request;
 import com.insoft.helpdesk.application.domain.jpa.entity.service.RequestAttachment;
 import com.insoft.helpdesk.application.domain.jpa.repo.service.RequestAttachmentRepo;
+import com.insoft.helpdesk.application.domain.jpa.repo.service.RequestRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,8 @@ import java.util.Optional;
 public class ServiceAdapter implements RequestAttachmentOutPort {
 
     final RequestAttachmentRepo requestAttachmentRepo;
+
+    final RequestRepo requestRepo;
 
     @Override
     public List<RequestAttachment> getRequestAttachment() {
@@ -53,5 +57,9 @@ public class ServiceAdapter implements RequestAttachmentOutPort {
     @Override
     public void deleteRequestAttachment(RequestAttachment requestAttachment) {
         requestAttachmentRepo.delete(requestAttachment);
+    }
+
+    public List<Request> getRequest() {
+        return requestRepo.findAll();
     }
 }

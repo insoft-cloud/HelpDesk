@@ -1,10 +1,12 @@
 package com.insoft.helpdesk.application.domain.jpa.entity.service;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.util.List;
 import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
@@ -80,5 +82,19 @@ public class Request {
     @Comment("목표일시")
     private LocalDateTime goalDt;
 
+    @JsonManagedReference
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "SVC_RQST_NO", referencedColumnName = "SVC_RQST_NO")
+    private List<RequestAttachment> requestAttachments;
+
+    @JsonManagedReference
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "SVC_RQST_NO", referencedColumnName = "SVC_RQST_NO")
+    private List<RequestAttachmentHistory> requestAttachmentHistories;
+
+    @JsonManagedReference
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "SVC_RQST_NO", referencedColumnName = "SVC_RQST_NO")
+    private List<RequestHistory> requestHistories;
 
 }

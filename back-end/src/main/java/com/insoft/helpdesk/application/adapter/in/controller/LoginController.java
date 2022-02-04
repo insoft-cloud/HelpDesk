@@ -1,18 +1,15 @@
 package com.insoft.helpdesk.application.adapter.in.controller;
 
 import com.insoft.helpdesk.application.biz.member.port.in.LoginInPort;
-import com.insoft.helpdesk.application.biz.member.service.MemberService;
 import com.insoft.helpdesk.application.domain.common.Content;
 import com.insoft.helpdesk.application.domain.common.JwtTokenProvider;
-import com.insoft.helpdesk.application.domain.common.ResponseMessage;
 import com.insoft.helpdesk.application.domain.entity.login.HelpDeskToken;
 import com.insoft.helpdesk.application.domain.jpa.entity.Member;
-import com.insoft.helpdesk.util.HelpdeskSignRestController;
+import com.insoft.helpdesk.util.annotation.HelpdeskSignRestController;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;

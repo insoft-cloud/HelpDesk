@@ -2,6 +2,7 @@ package com.insoft.helpdesk.application.biz.service.service;
 
 import com.insoft.helpdesk.application.biz.service.port.in.RequestAttachmentInPort;
 import com.insoft.helpdesk.application.biz.service.port.out.RequestAttachmentOutPort;
+import com.insoft.helpdesk.application.domain.jpa.entity.service.Request;
 import com.insoft.helpdesk.application.domain.jpa.entity.service.RequestAttachment;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -48,5 +49,10 @@ public class RequestService implements RequestAttachmentInPort {
     @Override
     public void deleteRequestAttachment(RequestAttachment requestAttachment) {
         requestAttachmentOutPort.deleteRequestAttachment(requestAttachment);
+    }
+
+    @Override
+    public List<Request> getRequest() {
+        return requestAttachmentOutPort.getRequest();
     }
 }

@@ -3,13 +3,11 @@ package com.insoft.helpdesk.application.adapter.in.controller;
 
 import com.insoft.helpdesk.application.biz.code.port.in.CodeGroupInPort;
 import com.insoft.helpdesk.application.domain.common.ResponseMessage;
-import com.insoft.helpdesk.util.HelpdeskRestController;
+import com.insoft.helpdesk.util.annotation.HelpdeskRestController;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "CodeGroup", description = "코드 그룹 API")
 @HelpdeskRestController
