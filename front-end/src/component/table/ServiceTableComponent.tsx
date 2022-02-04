@@ -11,6 +11,7 @@ function ServiceTableComponent( tableClassName : any) {
     const [offset] = useState(+limit * (page - 1));
 
     const [tableData, setTableData] = useState([]);
+    const [search, setSearch] = useState("")
 
     const state = useTokenState();   
 
@@ -24,16 +25,24 @@ function ServiceTableComponent( tableClassName : any) {
         })
             .then(function (response){
                 setTableData(response.data)
+                console.log(response.data)
             })
             .catch(function (error:any){
                 console.log(error)
     
             });
-        }, [])                                                                          
+        }, [state.token])     
 
+        
 
         return (
             <div className="card-body">
+            <div>
+                <div style={{ margin: '0 auto', marginTop: '10%' }}>
+                    <label>검색:</label>
+                    <input placeholder="제목 검색" type="text" onChange={event => setSearch(event.target.value)} />
+                </div>
+            </div>
             <div>
                 목록({tableData.length})
             </div>
@@ -51,7 +60,13 @@ function ServiceTableComponent( tableClassName : any) {
                         </tr>
                         </thead>
                         <tbody>
-                        { tableData.slice(offset,(offset+limit)).map((table_data : ServiceTableModel, index : number ) => (
+                        { tableData.filter((table_data : ServiceTableModel, index : number) => {
+                if (search === '') {
+                return table_data;
+                } else if (table_data.svcReqNo.ttl.includes(search)) {
+                return table_data;
+                }
+            }).map((table_data : ServiceTableModel, index : number ) => (
                             <tr key={index}>
                                 <th scope="row">{index}</th>
                                 <td>{table_data.svcReqNo.sysCd}</td>
@@ -61,7 +76,7 @@ function ServiceTableComponent( tableClassName : any) {
                                 <td></td>
                                 <td></td>
                             </tr>
-                        ))}
+                        )).slice(offset,offset+limit)}
                         </tbody>
                     </table>
 

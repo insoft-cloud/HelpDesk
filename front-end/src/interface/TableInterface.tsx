@@ -11,14 +11,13 @@ export type ServiceTableModel = {
     svcReqNo : {
         priortCd : string | undefined, //우선순위
         sysCd : string | undefined, //시스템명(ex 중소벤처)
-        ttl : string | undefined,
+        ttl : string | "",
         tyCd : string | undefined, //유형
-        updateDt? : "2022-01-24T14:49:09.447047"
+        updateDt? : undefined,
         reqId? : string, //요청자
     }
     //조인해야하는 항목
     userId? : string | undefined, //담당자
-    SST? : string | undefined //상태
 
 }
 
@@ -35,12 +34,11 @@ export type MyWorkTableModel = {
         sysCd : string | undefined, //시스템명(ex 중소벤처)
         ttl : string | undefined,
         tyCd : string | undefined, //유형
-        updateDt? : "2022-01-24T14:49:09.447047"
+        updateDt? : string,
         reqId? : string, //요청자
     }
     //조인해야하는 항목
     userId? : string | undefined, //담당자
-    SST? : string | undefined //상태
 
 }
 
