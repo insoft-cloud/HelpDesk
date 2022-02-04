@@ -17,15 +17,17 @@ function ServiceTableComponent( tableClassName : any) {
 
     useEffect(() => {
 
-        axios.get("/user/service/req-attachs/test", {
+        axios.get("/user/service/requests/test", {
             headers: {
                 'Content-Type' : "application/json",
                 'X-AUTH-TOKEN' : state.token + ""
             }
         })
-            .then(function (response){
-                setTableData(response.data)
-                console.log(response.data)
+            .then(({data}) => {
+                setTableData(data.requestList)
+                console.log(data)                
+                console.log(data.requestList)
+
             })
             .catch(function (error:any){
                 console.log(error)
@@ -40,7 +42,9 @@ function ServiceTableComponent( tableClassName : any) {
             <div>
                 <div style={{ margin: '0 auto', marginTop: '10%' }}>
                     <label>검색:</label>
+                    
                     <input placeholder="제목 검색" type="text" onChange={event => setSearch(event.target.value)} />
+                
                 </div>
             </div>
             <div>
@@ -60,19 +64,21 @@ function ServiceTableComponent( tableClassName : any) {
                         </tr>
                         </thead>
                         <tbody>
-                        { tableData.filter((table_data : ServiceTableModel, index : number) => {
+                        { tableData
+                        .filter((searchR : ServiceTableModel, index : number) => {
                 if (search === '') {
-                return table_data;
-                } else if (table_data.svcReqNo.ttl.includes(search)) {
-                return table_data;
+                return searchR;
+                } else if (searchR.ttl?.includes(search)) {
+                return searchR;
                 }
-            }).map((table_data : ServiceTableModel, index : number ) => (
+            })
+            .map((table_data : ServiceTableModel, index : number ) => (
                             <tr key={index}>
                                 <th scope="row">{index}</th>
-                                <td>{table_data.svcReqNo.sysCd}</td>
-                                <td>{table_data.svcReqNo.ttl}</td>
+                                <td>{table_data.sysCd}</td>
+                                <td>{table_data.ttl}</td>
                                 <td>{table_data.registDt?.slice(5,10)}</td>                                
-                                <td>{table_data.svcReqNo.reqId}</td> 
+                                <td>{table_data.reqId}</td> 
                                 <td></td>
                                 <td></td>
                             </tr>
