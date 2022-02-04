@@ -32,7 +32,7 @@ public class Group {
     private String name;
 
 
-    @Column(name = "DEL_YN", length = 1)
+    @Column(name = "DEL_YN", length = 1, nullable = false)
     @Comment("삭제여부(Y,N)")
     @Size(max = 1)
     private String delYn;

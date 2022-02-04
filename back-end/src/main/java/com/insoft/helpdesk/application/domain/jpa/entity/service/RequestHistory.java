@@ -47,10 +47,10 @@ public class RequestHistory {
     @Column(name = "PRCS_STTS_CD", length = 16)
     @Comment("처리상태코드")
     @Size(max = 16)
-    private Long fileSize;
+    private String prcssttsCp;
 
     @Column(name = "INPUT_MSG", columnDefinition = "text", nullable = false)
-    @Comment("입력 메시지지")
+    @Comment("입력 메시지")
    private String inputMsg;
 
     @Column(name = "DEL_YN", length = 1)
