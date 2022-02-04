@@ -97,4 +97,7 @@ public class Request {
     @JoinColumn(name = "SVC_RQST_NO", referencedColumnName = "SVC_RQST_NO")
     private List<RequestHistory> requestHistories;
 
+    @Transient
+    long count;
+
 }

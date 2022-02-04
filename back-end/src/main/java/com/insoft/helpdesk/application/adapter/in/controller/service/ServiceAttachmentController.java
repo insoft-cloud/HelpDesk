@@ -1,8 +1,7 @@
-package com.insoft.helpdesk.application.adapter.in.controller;
+package com.insoft.helpdesk.application.adapter.in.controller.service;
 
 
 import com.insoft.helpdesk.application.biz.service.port.in.RequestAttachmentInPort;
-
 import com.insoft.helpdesk.application.domain.jpa.entity.service.Request;
 import com.insoft.helpdesk.application.domain.jpa.entity.service.RequestAttachment;
 import com.insoft.helpdesk.util.annotation.HelpdeskRestController;
@@ -24,10 +23,8 @@ import java.util.Optional;
 @Tag(name = "Service", description = "서비스 API")
 @HelpdeskRestController
 @RequiredArgsConstructor
-public class ServiceController {
-
+public class ServiceAttachmentController {
     final RequestAttachmentInPort requestAttachmentInPort;
-
 
     @Tag(name = "Service")
     @Operation(summary  = "요청첨부 조회", description  = "요청첨부 정보 조회")
@@ -37,7 +34,6 @@ public class ServiceController {
         RequestAttachment requestAttachment = requestAttachmentOptional.orElseThrow(NoSuchElementException::new);
         return ResponseEntity.ok(requestAttachment);
     }
-
 
 
     @Tag(name = "Service")
@@ -65,7 +61,7 @@ public class ServiceController {
     )
     @GetMapping("/service/requests")
     public ResponseEntity getRequests(){
-        List<Request> requests = requestAttachmentInPort.getRequest();
-        return ResponseEntity.ok(requests);
+
+        return ResponseEntity.ok(null);
     }
 }
