@@ -1,13 +1,15 @@
 package com.insoft.helpdesk.application.biz.service.port.out;
 
 import com.insoft.helpdesk.application.domain.jpa.entity.service.RequestAttachment;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface RequestAttachmentOutPort {
-    List<RequestAttachment> getRequestAttachment();
-    List<RequestAttachment> getRequestAttachment(String reqId);
+    Page<RequestAttachment> getRequestAttachment(Pageable pageable);
+    Page<RequestAttachment> getRequestAttachment(String reqId, Pageable pageable);
     Optional<RequestAttachment> getRequestAttachmentId(String id);
     long countRequestAttachments();
     long countRequestAttachments(String reqId);

@@ -23,7 +23,7 @@ import java.util.Optional;
 @Tag(name = "Service", description = "서비스 API")
 @HelpdeskRestController
 @RequiredArgsConstructor
-public class ServiceAttachmentController {
+public class RequestAttachmentController {
     final RequestAttachmentInPort requestAttachmentInPort;
 
     @Tag(name = "Service")

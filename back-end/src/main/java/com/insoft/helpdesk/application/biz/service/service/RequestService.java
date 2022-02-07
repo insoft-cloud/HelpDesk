@@ -4,6 +4,7 @@ import com.insoft.helpdesk.application.biz.service.port.in.RequestInPort;
 import com.insoft.helpdesk.application.biz.service.port.out.RequestOutPort;
 import com.insoft.helpdesk.application.domain.jpa.entity.service.Request;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +19,8 @@ public class RequestService implements RequestInPort {
     final RequestOutPort requestOutPort;
 
     @Override
-    public List<Request> getRequests() {
-        return requestOutPort.getRequests();
+    public Page<Request> getRequests(Pageable pageable) {
+        return requestOutPort.getRequests(pageable);
     }
 
     @Override
@@ -28,12 +29,7 @@ public class RequestService implements RequestInPort {
     }
 
     @Override
-    public List<Request> getRequests(String userId) {
-        return requestOutPort.getRequests(userId);
-    }
-
-    @Override
-    public List<Request> getRequests(String userId, Pageable pageable) {
+    public Page<Request> getRequests(String userId, Pageable pageable) {
         return requestOutPort.getRequests(userId, pageable);
     }
 

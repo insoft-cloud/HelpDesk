@@ -6,8 +6,10 @@ export const API_SIGN_PATH = "/sign";
 export const API_USER_PATH = "/user";
 
 export const API_ADMIN_PATH = {
-    main : "/admin",
-    edit : "/codeEdit",
+    codeGroup : "/codeGroup",
+    codeDetail : "/codeDetail",
+    managerList : "/managerList",
+    managerRegist: "/managerRegist"
 }
 
 

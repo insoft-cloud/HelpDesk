@@ -1,33 +1,31 @@
 package com.insoft.helpdesk.application.adapter.out.db.service;
 
 import com.insoft.helpdesk.application.biz.service.port.out.RequestAttachmentOutPort;
-import com.insoft.helpdesk.application.biz.service.port.out.RequestOutPort;
-import com.insoft.helpdesk.application.domain.jpa.entity.service.Request;
 import com.insoft.helpdesk.application.domain.jpa.entity.service.RequestAttachment;
 import com.insoft.helpdesk.application.domain.jpa.repo.service.RequestAttachmentRepo;
-import com.insoft.helpdesk.application.domain.jpa.repo.service.RequestRepo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.awt.print.Pageable;
 import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
-public class ServiceAttachmentAdapter implements RequestAttachmentOutPort {
+public class RequestAttachmentAdapter implements RequestAttachmentOutPort {
 
     final RequestAttachmentRepo requestAttachmentRepo;
 
 
     @Override
-    public List<RequestAttachment> getRequestAttachment() {
-        return requestAttachmentRepo.findAll();
+    public Page<RequestAttachment> getRequestAttachment(Pageable pageable) {
+        return requestAttachmentRepo.findAll(pageable);
     }
 
     @Override
-    public List<RequestAttachment> getRequestAttachment(String reqId) {
-        return requestAttachmentRepo.findAllByReqId(reqId);
+    public Page<RequestAttachment> getRequestAttachment(String svcReqNo, Pageable pageable) {
+        return requestAttachmentRepo.findAllBySvcReqNo(svcReqNo, pageable);
     }
 
     @Override
@@ -41,8 +39,8 @@ public class ServiceAttachmentAdapter implements RequestAttachmentOutPort {
     }
 
     @Override
-    public long countRequestAttachments(String reqId) {
-        return requestAttachmentRepo.countReqId(reqId);
+    public long countRequestAttachments(String svcReqNo) {
+        return requestAttachmentRepo.countAllBySvcReqNo(svcReqNo);
     }
 
     @Override

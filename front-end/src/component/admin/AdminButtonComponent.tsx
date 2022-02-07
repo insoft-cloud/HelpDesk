@@ -1,6 +1,3 @@
-import React from "react";
-
-
 
 function AdminButtonComponent( {btnName,className,onEventHandler}: any) {
 
