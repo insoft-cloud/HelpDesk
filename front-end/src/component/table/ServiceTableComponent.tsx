@@ -26,23 +26,23 @@ function ServiceTableComponent( tableClassName : any) {
     useEffect(() => {
         console.log(state.user);
         //todo : 전체조회로 변경 필요
-        axios.get("/user/service/requests/test", {
+        axios.get("/user/service/requests/"+state.user+"?day=all", {
             headers: {
                 'Content-Type' : "application/json",
                 'X-AUTH-TOKEN' : state.token + ""
             }
         })
             .then(({data}) => {
-                setTableData(data.requestList)
+                setTableData(data.content)
                 console.log(data)                
-                console.log(data.requestList)
+                console.log(data.content)
 
             })
             .catch(function (error:any){
                 console.log(error)
     
             });
-        }, [state.token])     
+        }, [])     
 
         
 
@@ -57,7 +57,7 @@ function ServiceTableComponent( tableClassName : any) {
                 </div>
             </div>
             <div>
-                목록({tableData.length})
+                목록()
             </div>
                 <div className='table-responsive'>
                     <table className="table table-sm table-responsive table-bordered border-dark text-center" >

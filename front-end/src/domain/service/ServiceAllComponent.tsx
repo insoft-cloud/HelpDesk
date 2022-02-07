@@ -1,7 +1,8 @@
-import ServiceTableComponent from 'component/table/ServiceTableComponent';
+import axios from 'axios';
+import TableComponent from 'component/table/TableComponent';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
-import { useTokenDispatch } from 'utils/TokenContext';
+import { useTokenDispatch, useTokenState } from 'utils/TokenContext';
 
 /**
  * @Project     : HelpDesk
@@ -17,11 +18,38 @@ function ServiceAllComponent() {
     const nowTime = moment().format('YYYY년 MM월 DD일 HH:mm');
 
     let dispatch = useTokenDispatch()
+    const state = useTokenState();   
+
+    const [tableData, setTableData] = useState([]);
 
     useEffect(() => {
         dispatch({ type: 'SET_PAGE', page: "ServiceAll"})
+ 
+        //todo:전체조회로 변경 필요
+        axios.get("/user/service/requests/"+state.user+"?day=all", {
+            headers: {
+                'Content-Type' : "application/json",
+                'X-AUTH-TOKEN' : state.token + ""
+            }
+        })
+            .then(({data}) => {
+                setTableData(data.content)
+                console.log(data)                
+                console.log(data.content)
+
+            })
+            .catch(function (error:any){
+                console.log(error)
+    
+            }); 
     }, []);
     
+    const column = [
+        { heading : '번호', value : 'index'},
+        { heading : '시스템'},
+        { heading : '제목', value : 'ttl'}
+    ]
+
     
     
     return (
@@ -48,7 +76,7 @@ function ServiceAllComponent() {
                         <h4>진행 사항</h4>
                     </div>
                     <div>
-                      <ServiceTableComponent /> 
+                      <TableComponent data={tableData} column={column}/>
                     </div>
                     <div>
                     </div>

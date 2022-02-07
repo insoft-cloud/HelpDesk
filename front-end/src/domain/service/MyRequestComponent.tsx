@@ -44,7 +44,6 @@ import { API_DOMAIN_PATH } from "utils/ContextPath";
                     </div>
                     <div>
                         <div>
-                            <MyRequestTableComponent />
                         </div>
                     </div>
                 </div>
