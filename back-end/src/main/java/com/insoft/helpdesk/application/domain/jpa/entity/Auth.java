@@ -30,7 +30,7 @@ public class Auth {
     @Size(max = 36)
     private String id;
 
-    @Column(name = "AUTH_NM", length = 256, nullable = false)
+    @Column(name = "AUTH_NM", length = 255, nullable = false)
     @Comment("권한명")
     @Size(max = 255)
     private String name;
