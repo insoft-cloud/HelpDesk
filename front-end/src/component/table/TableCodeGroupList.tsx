@@ -1,9 +1,6 @@
-
-import axios from "axios";
 import { procGetAxios } from "axios/Axios";
 import Pagination from "component/list/Pagination";
-import { title } from "process";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useTokenState } from "utils/TokenContext";
 
 

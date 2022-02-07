@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import TableCodeGroupDetail from "component/table/TableCodeGroupDetail";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { API_ADMIN_PATH, ContextPath } from "utils/ContextPath";
 import { useTokenDispatch } from "utils/TokenContext";
 import AdminButtonComponent from "./AdminButtonComponent";
 import AdminHeaderComponent from "./AdminHeaderComponent";
-import TableCodeGroupDetail from "./TableCodeGroupDetail";
 
 function AdminCodeGroupDetail() {
     let dispatch = useTokenDispatch();

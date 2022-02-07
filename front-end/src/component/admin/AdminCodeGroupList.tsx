@@ -2,9 +2,9 @@ import AdminHeaderComponent from 'component/admin/AdminHeaderComponent';
 import AdminButtonComponent from 'component/admin/AdminButtonComponent';
 import { useEffect} from 'react';
 import { ButtonComponent } from 'component/button/ButtonComponent';
-import TableCodeGroup from './TableCodeGroup';
 import { API_ADMIN_PATH, ContextPath } from 'utils/ContextPath';
 import { useTokenDispatch} from 'utils/TokenContext';
+import TableCodeGroup from 'component/table/TableCodeGroupList';
 
 
 function AdminCodeGroupList() {

@@ -1,4 +1,3 @@
-import { Input } from "choices.js/public/types/src/scripts/components";
 import Pagination from "component/list/Pagination";
 import { useState } from "react";
 import "./TableCodeGroupDetail.css"

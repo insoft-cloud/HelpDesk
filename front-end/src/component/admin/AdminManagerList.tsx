@@ -2,9 +2,9 @@ import { ButtonComponent } from "component/button/ButtonComponent";
 import { API_ADMIN_PATH, ContextPath } from "utils/ContextPath";
 import AdminButtonComponent from "./AdminButtonComponent";
 import AdminHeaderComponent from "./AdminHeaderComponent";
-import TableManagerList from "./TableManagerList";
 import { useState } from "react";
 import Modal from "./Modal";
+import TableManagerList from "component/table/TableManagerList";
 
 function AdminManagerList(){
 
