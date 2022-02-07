@@ -1,12 +1,11 @@
 import { ButtonComponent } from "component/button/ButtonComponent";
 import { API_ADMIN_PATH, ContextPath } from "utils/ContextPath";
-import AdminButtonComponent from "./AdminButtonComponent";
-import AdminHeaderComponent from "./AdminHeaderComponent";
 import { useState } from "react";
-import Modal from "./Modal";
 import TableManagerList from "component/table/TableManagerList";
+import AdminHeaderComponent from "component/layout/AdminHeaderComponent";
+import AdminButtonComponent from "component/button/AdminButtonComponent";
 
-function AdminManagerList(){
+function AdminManagerListComponent(){
 
     const testData : any[] = [
         {//TB_HELP_MBR
@@ -34,9 +33,9 @@ function AdminManagerList(){
     setIsModalOpen(!isModalOpen);
    }
 
-   const closeModal = () => {
-       setIsModalOpen(!isModalOpen);
-   }
+//    const closeModal = () => {
+//        setIsModalOpen(!isModalOpen);
+//    }
 
     return(
         <div className="container">
@@ -54,7 +53,7 @@ function AdminManagerList(){
                 <Modal open={openModal} close={closeModal} header="Modal heading" children="팝업창입니다 쉽게만들수있어요" />
             </React.Fragment> */}
             <button onClick={openModal}>Modal Open</button>
-            <Modal isOpen={isModalOpen} close={closeModal} />
+            {/* <Modal isOpen={isModalOpen} close={closeModal} /> */}
         </div>
     )
 }
@@ -63,4 +62,4 @@ function testResult() {
     alert("이벤트!");
   };
 
-export default AdminManagerList;
+export default AdminManagerListComponent;

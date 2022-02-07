@@ -1,20 +1,27 @@
-import AdminHeaderComponent from 'component/admin/AdminHeaderComponent';
-import AdminButtonComponent from 'component/admin/AdminButtonComponent';
-import { useEffect} from 'react';
+import AdminHeaderComponent from 'component/layout/AdminHeaderComponent';
+import AdminButtonComponent from 'component/button/AdminButtonComponent';
+import { useEffect, useState} from 'react';
 import { ButtonComponent } from 'component/button/ButtonComponent';
 import { API_ADMIN_PATH, ContextPath } from 'utils/ContextPath';
-import { useTokenDispatch} from 'utils/TokenContext';
+import { useTokenDispatch, useTokenState} from 'utils/TokenContext';
 import TableCodeGroup from 'component/table/TableCodeGroupList';
+import { procGetAxios } from 'axios/Axios';
 
 
-function AdminCodeGroupList() {
+function AdminCodeGroupComponent() {
 
   let dispatch = useTokenDispatch();
+  const state = useTokenState();
+  const [tableData,setTableData] = useState([]);
 
     useEffect(() => {
       dispatch({ type: 'SET_PAGE', page: "codeList"})
-    }, []);
+      procGetAxios("/user/service/requests/test", state.token,"application/json",show);
+    }, [state.token]);
 
+    function show(data) {
+      setTableData(data.content)
+  }
 
   return (
         <div className="container">
@@ -22,10 +29,10 @@ function AdminCodeGroupList() {
               <div className="AdminCodeGroupList">
                 <div className="d-flex justify-content-end">
                   <AdminButtonComponent className="btn btn-xs btn-outline-dark rounded-1 ms-2 lift ml-3 mb-3" btnName="삭제" onEventHandler={testResult} />
-                  <ButtonComponent btnClassName="btn btn-xs btn-outline-dark rounded-1 ms-2 lift ml-3 mb-3" btnName="추가" url={ContextPath.call('codeEdit',API_ADMIN_PATH.codeDetail)} />
+                  <ButtonComponent btnClassName="btn btn-xs btn-outline-dark rounded-1 ms-2 lift ml-3 mb-3" btnName="추가" url={ContextPath(API_ADMIN_PATH.codeDetail)} />
                 </div>
                 <div>
-                  <TableCodeGroup />
+                  <TableCodeGroup tableData={tableData}/>
                 </div>
               </div> 
         </div>
@@ -38,7 +45,7 @@ function AdminCodeGroupList() {
 
 }
 
-export default AdminCodeGroupList;
+export default AdminCodeGroupComponent;
 
 
 

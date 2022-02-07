@@ -10,9 +10,9 @@ import SignUpComponent from "./domain/sign/SignUpComponent";
 import MyWorkComponent from 'domain/service/MyWorkComponent';
 import MyRequestComponent from 'domain/service/MyRequestComponent';
 import ServiceAllComponent from 'domain/service/ServiceAllComponent';
-import AdminManagerList from 'component/admin/AdminManagerList';
-import AdminCodeGroupList from 'component/admin/AdminCodeGroupList';
-import AdminCodeGroupDetail from 'component/admin/AdminCodeGroupDetail';
+import AdminCodeGroupComponent from 'domain/admin/AdminCodeGroupComponent';
+import AdminCodeDetailComponent from 'domain/admin/AdminCodeDetailComponent';
+import AdminManagerListComponent from 'domain/admin/AdminManagerListComponent';
 
 function App() {
 
@@ -30,9 +30,9 @@ function App() {
                     <Route path={ContextPath(API_DOMAIN_PATH.serviceAll)} element={<PrivateRoute component={ServiceAllComponent} status={state}/>}/>
                     <Route path={ContextPath(API_DOMAIN_PATH.myWork)} element={<PrivateRoute component={MyWorkComponent} status={state}/>}/>
                     <Route path={ContextPath(API_DOMAIN_PATH.myRequest)} element={<PrivateRoute component={MyRequestComponent} status={state}/>}/>
-                    <Route path={ContextPath(API_ADMIN_PATH.codeGroup)} element={<PrivateRoute component={AdminCodeGroupList } status={state}/>}/>
-                    <Route path={ContextPath(API_ADMIN_PATH.codeDetail)} element={<PrivateRoute component={AdminCodeGroupDetail } status={state}/>}/>
-                    <Route path={ContextPath(API_ADMIN_PATH.managerList)} element={<PrivateRoute component={AdminManagerList } status={state}/>}/>
+                    <Route path={ContextPath(API_ADMIN_PATH.codeGroup)} element={<PrivateRoute component={AdminCodeGroupComponent } status={state}/>}/>
+                    <Route path={ContextPath(API_ADMIN_PATH.codeDetail)} element={<PrivateRoute component={AdminCodeDetailComponent } status={state}/>}/>
+                    <Route path={ContextPath(API_ADMIN_PATH.managerList)} element={<PrivateRoute component={AdminManagerListComponent } status={state}/>}/>
             </Routes>
             {
                 state.page === "LOGIN" ? null : <FooterComponent/>
