@@ -106,10 +106,6 @@ function HeaderComponent(){
     );
 
     function logout(data : any){
-        dispatch({ type: 'SET_TOKEN', token: data['accessToken'],
-        tokenExpired: data['tokenExpired'] });
-        
-        sessionStorage.removeItem("refreshToken");
         sessionStorage.removeItem("refreshToken");
         sessionStorage.removeItem("refreshTokenExpired");
         navigate(ContextPath(API_DOMAIN_PATH.main));
