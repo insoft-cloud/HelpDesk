@@ -46,11 +46,10 @@ function ServiceAllComponent() {
     
     const column = [
         { heading : '번호', value : 'index'},
-        { heading : '시스템'},
+        { heading : '시스템', value : 'sysCd'},
         { heading : '제목', value : 'ttl'}
     ]
-
-    
+   
     
     return (
         <section className='pt-4 pt-md-11'>

@@ -16,11 +16,11 @@ const TableComponent = ({column, data} : any) => {
             <table>
                 <thead>
                 <tr>
-                   {column.map((item, index)=><TableHeadItem item={item} />)}
+                   {column.map((item, index)=><TableHeadItem item={item} key={index} />)}
                 </tr>
                 </thead>
                 <tbody>
-                    {data.map((item, index)=><TableRow item={item} column={column}/>)}
+                    {data.map((item, index)=><TableRow item={item} column={column} key={index} />)}
                 </tbody>
             </table>                
         </div>
@@ -31,8 +31,8 @@ const TableComponent = ({column, data} : any) => {
 const TableHeadItem = ({item}) => <th>{item.heading}</th>
 const TableRow = ({ item, column }) => (
 <tr>
-    {column.map((columnItem : any) =>{
-        return <td>{item[`${columnItem.value}`]}</td>
+    {column.map((columnItem, index : any) =>{
+        return <td key={index}>{item[`${columnItem.value}`]}</td>
     } )}
 </tr>
 )
