@@ -1,60 +1,59 @@
-package com.insoft.helpdesk.application.biz.service.service;
+package com.insoft.helpdesk.application.adapter.out.db.service;
 
-import com.insoft.helpdesk.application.biz.service.port.in.RequestInPort;
 import com.insoft.helpdesk.application.biz.service.port.out.RequestOutPort;
 import com.insoft.helpdesk.application.domain.jpa.entity.service.Request;
-import lombok.RequiredArgsConstructor;
+import com.insoft.helpdesk.application.domain.jpa.repo.service.RequestRepo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 
 import java.util.List;
 import java.util.Optional;
 
-@Service
 @RequiredArgsConstructor
-public class RequestService implements RequestInPort {
+@Service
+public class RequestAdapter implements RequestOutPort {
 
-    final RequestOutPort requestOutPort;
+    final RequestRepo requestRepo;
 
     @Override
     public Page<Request> getRequests(Pageable pageable) {
-        return requestOutPort.getRequests(pageable);
+        return requestRepo.findAll(pageable);
     }
 
     @Override
     public Long getRequestsCount() {
-        return requestOutPort.getRequestsCount();
+        return requestRepo.count();
     }
 
     @Override
     public Page<Request> getRequests(String userId, Pageable pageable) {
-        return requestOutPort.getRequests(userId, pageable);
+        return requestRepo.findAllByReqId(userId, pageable);
     }
 
     @Override
     public Long getRequestsCount(String userId) {
-        return requestOutPort.getRequestsCount(userId);
+        return requestRepo.countAllByReqId(userId);
     }
 
     @Override
     public Optional<Request> getRequest(String id) {
-        return requestOutPort.getRequest(id);
+        return requestRepo.findById(id);
     }
 
     @Override
     public void createRequest(Request request) {
-        requestOutPort.createRequest(request);
+        requestRepo.save(request);
     }
 
     @Override
     public void updateRequest(Request request) {
-        requestOutPort.updateRequest(request);
+        requestRepo.save(request);
     }
 
     @Override
     public void deleteRequest(Request request) {
-        requestOutPort.deleteRequest(request);
+        requestRepo.delete(request);
     }
 }

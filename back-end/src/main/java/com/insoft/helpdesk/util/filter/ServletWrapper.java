@@ -165,11 +165,14 @@ public class ServletWrapper extends HttpServletRequestWrapper {
             parseParameters();
         }
         ArrayList<String> values = this.parameters.get(name);
-        String[] arr = values.toArray(new String[values.size()]);
-        if (arr == null) {
-            return null;
+        if(values != null){
+            String[] arr = values.toArray(new String[values.size()]);
+            if (arr == null) {
+                return null;
+            }
+            return arr;
         }
-        return arr;
+        return null;
     }
 
     private void parseParameters() {

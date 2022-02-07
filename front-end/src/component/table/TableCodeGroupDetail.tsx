@@ -1,6 +1,6 @@
-import { Input } from "choices.js/public/types/src/scripts/components";
 import Pagination from "component/list/Pagination";
 import { useState } from "react";
+import "./TableCodeGroupDetail.css"
 
 function TableCodeGroupDetail({tableClassName, tableData, arr} : any) {
 
@@ -34,17 +34,22 @@ function TableCodeGroupDetail({tableClassName, tableData, arr} : any) {
      let cell5 = row?.insertCell(4);
      let cell6 = row?.insertCell(5);
      let inputCD_NO = document.createElement('input');
+     inputCD_NO.setAttribute("class","form-control");
     let inputCD_NM = document.createElement('input');
+    inputCD_NM.setAttribute("class","form-control");
     let inputCD_EXPLNT = document.createElement('input');
+    inputCD_EXPLNT.setAttribute("class","form-control");
     let inputUSER_ID = document.createElement('input');
+    inputUSER_ID.setAttribute("class","form-control");
     let inputREGIST_DT = document.createElement('input');
+    inputREGIST_DT.setAttribute("class","form-control");
+    // let cancel = document.createTextNode("삭제");
      cell1?.appendChild(inputCD_NO);
      cell2?.appendChild(inputCD_NM);
      cell3?.appendChild(inputCD_EXPLNT);
      cell4?.appendChild(inputUSER_ID);
      cell5?.appendChild(inputREGIST_DT);
-    //  cell6?.innerHTML('삭제');
-
+     
     }
 
     
@@ -52,14 +57,14 @@ function TableCodeGroupDetail({tableClassName, tableData, arr} : any) {
     return (
         <div>
             <table id="tab" className="table table-sm table-responsive table-bordered border-dark text-center" >
-                <thead className="table-secondary border-dark">
+                <thead className="border-dark">
                     <tr>
-                        <th scope="col" className="col-md-2">코드</th>
-                        <th scope="col" className="col-md-2">명칭</th>
-                        <th scope="col" className="col-md-3">설명</th>
-                        <th scope="col" className="col-md-2">등록자</th>
-                        <th scope="col" className="col-md-2">등록일</th>
-                        <th scope="col" className="col-md-1">삭제</th>
+                        <th scope="col" className="col-md-2 bg-gray">코드</th>
+                        <th scope="col" className="col-md-2 bg-gray">명칭</th>
+                        <th scope="col" className="col-md-3 bg-gray">설명</th>
+                        <th scope="col" className="col-md-2 bg-gray">등록자</th>
+                        <th scope="col" className="col-md-2 bg-gray">등록일</th>
+                        <th scope="col" className="col-md-1 bg-gray">삭제</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -72,10 +77,10 @@ function TableCodeGroupDetail({tableClassName, tableData, arr} : any) {
                             <td>{table_data.CD_EXPLNT}</td>
                             <td>{table_data.USER_ID}</td>
                             <td>{table_data.REGIST_DT}</td>
-                            <td>삭제</td> 
+                            <td onClick={del}>삭제</td> 
                         </tr>
                     ))}
-                    <tr><td colSpan={6}><input type="button" value="dd" onClick={add}/></td></tr>
+                    <tr><td colSpan={6} className="bg-lightgray" onClick={add}>+</td></tr>
                 </tbody>
             </table>                           
 

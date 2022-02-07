@@ -35,9 +35,9 @@ public class Member implements UserDetails {
     @Size(max = 32)
     private String userId;
 
-    @Column(name = "PSWD", length = 32, nullable = false)
+    @Column(name = "PSWD", length = 100, nullable = false)
     @Comment("비밀번호")
-    @Size(max = 32)
+    @Size(max = 100)
     private String password;
 
     @Column(name = "LOGIN_RETRY_CNT", length =  4)

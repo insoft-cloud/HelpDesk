@@ -15,6 +15,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.transaction.Transactional;
@@ -55,14 +57,14 @@ class CoverageTest {
 
     @Test
     void 리퀘스트어태치먼트_GET_리퀘스트_ID_테스트(){
-        List<RequestAttachment> requestAttachments = requestAttachmentRepo.findAllByReqId("test");
+        Page<Request> requests = requestRepo.findAllByReqId("test", PageRequest.of(0, 10));
         System.out.println("실행");
-        requestAttachments.stream().forEach(System.out::println);
+        requests.stream().forEach(System.out::println);
     }
 
     @Test
     void 리퀘스트어태치먼트_GET_리퀘스트_ID_COUNT_테스트(){
-        long count = requestAttachmentRepo.countReqId("test");
+        long count = requestAttachmentRepo.countAllBySvcReqNo("test");
         System.out.println(count);
     }
 

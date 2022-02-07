@@ -3,7 +3,7 @@ import Pagination from "component/list/Pagination";
 import { useState } from "react";
 
 
-function TableCodeGroup({tableClassName, tableData, arr} : any) {
+function TableManagerList({tableClassName, tableData, arr} : any) {
 
     const limit = 10; // 표시될 컨텐츠 수
     // const [posts, setPosts] = useState([]);
@@ -12,27 +12,9 @@ function TableCodeGroup({tableClassName, tableData, arr} : any) {
     const [tab,setTab] = useState(tableData);
     const [check, setChecked] = useState(1);
 
-    // function test(index){
-    //     delete(index);
-    // }
-
     function delData(index){
-        // alert(table_data.CD_NM+table_data.CD_GRP_NO+","+table_data.USER_ID+","+table_data.REGIST_DT);
-        // let arr : any[] = tableData.splice(index,.1)
         setTab(tab.splice(index,1))
-        
-        // tab(tableData.splice(index,1)) // 이것만 남아..
     } 
-
-    // const idValid = /^[a-zA-Z0-9]{3,8}$/;
-    // const myId = 'asdf123';
-    // const myId2 = '20201202test';
-    // const myId3 = 'AAAAAA';    
-
-   
-    
-    
-    
 
     return (
         <div>
@@ -40,9 +22,11 @@ function TableCodeGroup({tableClassName, tableData, arr} : any) {
                 <thead className="table-secondary border-dark">
                     <tr>
                         <th scope="col" className="col-md-1">#</th>
-                        <th scope="col" className="col-md-2">코드</th>
-                        <th scope="col">항목</th>
-                        <th scope="col" className="col-md-2">등록자</th>
+                        <th scope="col" className="col-md-2">ID</th>
+                        <th scope="col">이름</th>
+                        <th scope="col" className="col-md-2">담당업무</th>
+                        <th scope="col" className="col-md-2">소속기관</th>
+                        <th scope="col" className="col-md-2">소속부서</th>
                         <th scope="col" className="col-md-2">등록일</th>
                     </tr>
                 </thead>
@@ -50,9 +34,11 @@ function TableCodeGroup({tableClassName, tableData, arr} : any) {
                     {tab.slice(offset,offset+limit).map((table_data : any, index : number) => (
                         <tr key={index}>
                             <td scope="row"><input type="checkbox" onChange={(event) => {tableData.splice(event.target.tabIndex,1); console.log()}}/></td>
-                            <td>{table_data.CD_GRP_NO}</td>
-                            <td>{table_data.CD_NM}</td>
                             <td>{table_data.USER_ID}</td>
+                            <td>{table_data.NM}</td>
+                            <td>{table_data.JOB_CD}</td>
+                            <td>{table_data.PSITN_INSTT_CD}</td>
+                            <td>{table_data.PSITN_DEPT_NM}</td>
                             <td>{table_data.REGIST_DT}</td>
                         </tr>
                     ))}
@@ -69,9 +55,12 @@ function TableCodeGroup({tableClassName, tableData, arr} : any) {
     );
 }
 
-TableCodeGroup.defaultProps={
+TableManagerList.defaultProps={
     tableClassName: 'table'
 }
 
-export default TableCodeGroup;
+export default TableManagerList;
 
+
+
+    
