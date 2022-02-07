@@ -1,7 +1,6 @@
 package com.insoft.helpdesk.application.adapter.in.controller.service;
 
 import com.insoft.helpdesk.application.biz.service.port.in.RequestInPort;
-import com.insoft.helpdesk.application.domain.entity.response.service.RequestResponse;
 import com.insoft.helpdesk.application.domain.jpa.entity.service.Request;
 import com.insoft.helpdesk.util.annotation.HelpdeskRestController;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "Request", description = "서비스 요청 API")
 @HelpdeskRestController
 @RequiredArgsConstructor
-public class ServiceController {
+public class RequestController {
 
     final RequestInPort requestInPort;
 
@@ -26,10 +25,7 @@ public class ServiceController {
     @Operation(summary  = "요청 조회", description  = "요청 정보 조회")
     @GetMapping("/service/requests/{userId}")
     public ResponseEntity getRequests(@PathVariable String userId, Pageable pageable){
-        return ResponseEntity.ok(RequestResponse.builder()
-                .requestList(requestInPort.getRequests(userId, pageable))
-                .count(requestInPort.getRequestsCount(userId))
-                .build());
+        return ResponseEntity.ok(requestInPort.getRequests(userId, pageable));
     }
 
     @Tag(name = "Request")
