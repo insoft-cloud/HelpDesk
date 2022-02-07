@@ -1,7 +1,7 @@
 import HomeComponent from 'domain/main/HomeComponent';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import HeaderComponent from "./component/layout/HeaderComponent";
-import {API_ADMIN_PATH, API_DOMAIN_PATH, ContextPath} from "./utils/ContextPath";
+import {API_ADMIN_PATH, API_DOMAIN_PATH, API_LOGIN, API_SIGN_PATH, ContextPath} from "./utils/ContextPath";
 import SignInComponent from "./domain/sign/SignInComponent";
 import FooterComponent from "./component/layout/FooterComponent";
 import {useTokenState} from "./utils/TokenContext";
@@ -25,8 +25,8 @@ function App() {
             }
             <Routes>
                 <Route path={ContextPath(API_DOMAIN_PATH.main)} element={<HomeComponent/>}/>
-                    <Route path={ContextPath("/signin")} element={<SignInComponent prePath={window.location.pathname} />}/>
-                    <Route path={ContextPath("/signup")} element={<SignUpComponent/>}/>
+                    <Route path={ContextPath(API_LOGIN.singIn)} element={<SignInComponent prePath={window.location.pathname} />}/>
+                    <Route path={ContextPath(API_LOGIN.singUp)} element={<SignUpComponent/>}/>
                     <Route path={ContextPath(API_DOMAIN_PATH.serviceAll)} element={<PrivateRoute component={ServiceAllComponent} status={state}/>}/>
                     <Route path={ContextPath(API_DOMAIN_PATH.myWork)} element={<PrivateRoute component={MyWorkComponent} status={state}/>}/>
                     <Route path={ContextPath(API_DOMAIN_PATH.myRequest)} element={<PrivateRoute component={MyRequestComponent} status={state}/>}/>

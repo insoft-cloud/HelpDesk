@@ -5,6 +5,11 @@ export const ContextPath = (url : string) => {
 export const API_SIGN_PATH = "/sign";
 export const API_USER_PATH = "/user";
 
+export const API_LOGIN = {
+    singIn : "/signIn",
+    singUp : "/singUp"
+}
+
 export const API_ADMIN_PATH = {
     codeGroup : "/codeGroup",
     codeDetail : "/codeDetail",

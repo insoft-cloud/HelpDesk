@@ -23,16 +23,14 @@ function ServiceAllComponent() {
     }, []);
     
     
-        
-
-
+    
     return (
         <section className='pt-4 pt-md-11'>
           <div className="container">
            <div className="row align-items-center">
             
             <div>
-                <h1>서비스 요청 현황</h1>
+                <h1>서비스 요청 목록</h1>
                 <hr></hr>
                 <p>나의 업무 및 요청의 진행 현황을 확인할 수 있습니다.</p>
             </div>
@@ -51,6 +49,8 @@ function ServiceAllComponent() {
                     </div>
                     <div>
                       <ServiceTableComponent /> 
+                    </div>
+                    <div>
                     </div>
                 </div>
             </div>

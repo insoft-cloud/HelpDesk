@@ -1,10 +1,10 @@
 import React, {ChangeEvent, useEffect, useState} from "react";
 import LoginModel from "../../interface/Login/LoginModel";
 import {procPostAxios, procPostAxiosHeader} from "../../axios/Axios";
-import {useTokenDispatch, useTokenState} from "../../utils/TokenContext";
+import {useTokenDispatch} from "../../utils/TokenContext";
 import {Link, useNavigate} from "react-router-dom";
 import {AxiosRequestHeaders} from "axios";
-import {API_SIGN_PATH, ContextPath} from "../../utils/ContextPath";
+import {API_LOGIN, API_SIGN_PATH, ContextPath} from "../../utils/ContextPath";
 
 export default function SignInComponent({prePath : path}) {
 
@@ -12,9 +12,9 @@ export default function SignInComponent({prePath : path}) {
     let [password, setPassword] = useState("");
     let dispatch = useTokenDispatch();
     const navigate = useNavigate();
-    let [refreshToken, setRefreshToken] = useState(sessionStorage.getItem("refreshToken"));
-    let [refreshTokenExpired, setRefreshTokenExpired]  = useState(sessionStorage.getItem("refreshTokenExpired"));
-    const [prePath] = useState(path);
+    let [refreshToken ] = useState(sessionStorage.getItem("refreshToken"));
+    let [refreshTokenExpired ]  = useState(sessionStorage.getItem("refreshTokenExpired"));
+//   const [prePath] = useState(path);
 
     useEffect(() => {
 
@@ -63,7 +63,7 @@ export default function SignInComponent({prePath : path}) {
                                 Sign in
                             </button>
                         <p className="mb-0 fs-sm text-center text-muted">
-                            회원가입을 아직 하지 않으셨나요? <Link to={ContextPath("/signup")}>회원가입</Link>.
+                            회원가입을 아직 하지 않으셨나요? <Link to={ContextPath(API_LOGIN.singUp)}>회원가입</Link>.
                         </p>
 
                     </div>
