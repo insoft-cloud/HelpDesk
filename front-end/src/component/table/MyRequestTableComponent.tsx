@@ -22,8 +22,6 @@ function MyRequestTableComponent( tableClassName : any) {
 
     const [tableData, setTableData] = useState([]);
 
-    
-
     const state = useTokenState();   
     
     useEffect(() => {

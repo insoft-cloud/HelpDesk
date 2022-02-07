@@ -3,10 +3,8 @@ import logo from "assets/img/ect-logo-big.svg";
 import './HeaderComponent.css'
 import { ButtonComponent } from "component/button/ButtonComponent";
 import { Link, useNavigate } from "react-router-dom";
-import {API_DOMAIN_PATH, ContextPath} from "../../utils/ContextPath";
-import { useTokenDispatch, useTokenState } from "utils/TokenContext";
-import { AxiosRequestHeaders } from "axios";
-import { procGetAxiosHeader } from "axios/Axios";
+import {API_DOMAIN_PATH, API_LOGIN, ContextPath} from "../../utils/ContextPath";
+import { useTokenDispatch } from "utils/TokenContext";
 
 /**
  * @Project     : HelpDesk
@@ -64,8 +62,9 @@ function HeaderComponent(){
                             url={API_DOMAIN_PATH.notice} btnName="공지사항" />
                         </li>
                         <li className="nav-item">
-                            {(refreshToken==null)?<Link className="nav-link" id="navbarDocumentation" to={ContextPath("/signin")} aria-expanded="false">{logCheck}</Link>
-                            : <a className="nav-link" onClick={logout}>{logCheck}</a>}
+                            {(refreshToken==null)
+                            ?<Link className="nav-link" id="navbarDocumentation" to={ContextPath(API_LOGIN.singIn)} aria-expanded="false">{logCheck}</Link>
+                            : <Link className="nav-link" onClick={logout} to={ContextPath(API_DOMAIN_PATH.main)}>{logCheck}</Link>}
 
                             
                         </li>

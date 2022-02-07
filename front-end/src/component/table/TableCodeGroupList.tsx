@@ -1,34 +1,19 @@
-import { procGetAxios } from "axios/Axios";
 import Pagination from "component/list/Pagination";
 import { useState } from "react";
-import { useTokenState } from "utils/TokenContext";
 
 
-function TableCodeGroup() {
-
-
-    const state = useTokenState();
-    const [tableData, setTableData] = useState([]);
-
-    //api 사용
-    procGetAxios("/user/service/requests/test", state.token,"application/json",show);
+function TableCodeGroup({tableData}) {
 
     const limit = 5; // 표시될 컨텐츠 수
-    // const [posts, setPosts] = useState([]);
-    const [page, setPage] = useState(2);
+    const [page, setPage] = useState(1);
     const offset = (page - 1) * limit;
-    const [check, setChecked] = useState(1);
-    const [testdata, setTestData] = useState([]);
+    
+    // function remove(select_data) {
+    //     let chkNum = select_data
+    // }
 
-    function chk(select_data) {
-        setTestData(testdata.concat(select_data));
-    }
-    function remove(select_data) {
-        let chkNum = select_data
-    }
-
-    function show(data) {
-        setTableData(data.requestList)
+    function chk(index){
+        console.log(index);
     }
 
     return (
@@ -46,7 +31,7 @@ function TableCodeGroup() {
                 <tbody>
                     {tableData.map((table_data: any, index: number) => (
                         <tr key={index}>
-                            <td scope="row"><input type="checkbox" onChange={(event) => { (event.target.checked == true) ? chk(tableData[index]) : chk(null) }} /></td>
+                            <td scope="row"><input type="checkbox" onChange={(event) => { (event.target.checked === true) ? chk(index) : chk(null) }} /></td>
                             <td>{table_data.ttl}</td>
                             <td>{table_data.reqId}</td>
                             <td>{table_data.tyCd}</td>

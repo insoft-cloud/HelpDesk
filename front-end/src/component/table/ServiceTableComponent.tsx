@@ -4,6 +4,14 @@ import { ServiceTableModel } from "interface/TableInterface";
 import { useEffect, useState } from "react";
 import { useTokenState } from "utils/TokenContext";
 
+/**
+ * @Project     : HelpDesk
+ * @FileName    : ServiceTableComponent.tsx
+ * @Date        : 2021-02-05
+ * @author      : 김지인
+ * @description : 전체 서비스 화면에 출력되는 table 컴포넌트 (전체서비스 요청내역 조회)
+ */
+
 function ServiceTableComponent( tableClassName : any) {
 
     const [limit] = useState(10); // 표시될 컨텐츠 수
@@ -17,6 +25,7 @@ function ServiceTableComponent( tableClassName : any) {
 
     useEffect(() => {
 
+        //todo : 전체조회로 변경 필요
         axios.get("/user/service/requests/test", {
             headers: {
                 'Content-Type' : "application/json",
@@ -64,7 +73,7 @@ function ServiceTableComponent( tableClassName : any) {
                         </tr>
                         </thead>
                         <tbody>
-                        { tableData
+                        { tableData?tableData
                         .filter((searchR : ServiceTableModel, index : number) => {
                 if (search === '') {
                 return searchR;
@@ -82,7 +91,7 @@ function ServiceTableComponent( tableClassName : any) {
                                 <td></td>
                                 <td></td>
                             </tr>
-                        )).slice(offset,offset+limit)}
+                        )).slice(offset,offset+limit) : ''}
                         </tbody>
                     </table>
 

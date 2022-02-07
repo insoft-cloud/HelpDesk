@@ -1,11 +1,10 @@
 import React, {ChangeEvent, CSSProperties, useEffect, useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
-import {API_SIGN_PATH, ContextPath} from "../../utils/ContextPath";
+import {API_LOGIN, API_SIGN_PATH, ContextPath} from "../../utils/ContextPath";
 import {useTokenDispatch} from "../../utils/TokenContext";
-import LoginModel, {SignUp} from "../../interface/Login/LoginModel";
+import {SignUp} from "../../interface/Login/LoginModel";
 import {procPostAxios} from "../../axios/Axios";
 import BackgroundImage from "assets/img/covers/cover-15.jpg";
-import SignInComponent from "./SignInComponent";
 
 function SignUpComponent() {
 
@@ -61,7 +60,7 @@ function SignUpComponent() {
                             </button>
 
                         <p className="mb-0 fs-sm text-muted">
-                            Already have an account? <Link to={ContextPath("/signin")} state={
+                            Already have an account? <Link to={ContextPath(API_LOGIN.singIn)} state={
                             {prePath : window.location.pathname}
                         }>Log in</Link>.
                         </p>
@@ -114,7 +113,7 @@ function SignUpComponent() {
 
     function ok(data : any) : void {
         alert("회원가입 완료");
-        navigate(ContextPath("/signin"));
+        navigate(ContextPath(API_LOGIN.singIn));
     }
 
     function error(error : any) : void{

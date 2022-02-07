@@ -1,10 +1,4 @@
-import React from 'react';
 import ReactDOM from 'react-dom';
-import {
-    BrowserRouter,
-    Routes,
-    Route
-} from "react-router-dom";
 import 'assets/css/theme.bundle.css';
 import "./assets/css/mapbox-gl.css";
 import 'component/layout/HeaderComponent.css';

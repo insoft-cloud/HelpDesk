@@ -70,10 +70,10 @@ function TableCodeGroupDetail({tableClassName, tableData, arr} : any) {
                 <tbody>
                      {/* update가 안됨, 이미 table이 생성돼서? */}
                     {/* {arrtest.slice(offset,offset+limit).map((table_data : any, index : number) => ( */}
-                        {arrtest.map((table_data : any, index : number) => (
+                        {tableData.map((table_data : any, index : number) => (
                         <tr key={index}>
                             <td scope="row">{table_data.CD_NO}</td>
-                            <td>{table_data.CD_NM}</td>
+                            <td>{table_data.ttl}</td>
                             <td>{table_data.CD_EXPLNT}</td>
                             <td>{table_data.USER_ID}</td>
                             <td>{table_data.REGIST_DT}</td>
