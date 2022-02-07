@@ -42,7 +42,7 @@ const PrivateRoute: React.FC<Props> = ({ component: RouteComponent ,status  }) =
 
     function callback(data : any){
         dispatch({ type: 'SET_TOKEN', token: data['accessToken'],
-            tokenExpired: data['tokenExpired'] });
+            tokenExpired: data['tokenExpired'], user: data['userName'] });
         sessionStorage.setItem("refreshToken", data['refreshToken']);
         sessionStorage.setItem("refreshTokenExpired", data['refreshTokenExpired']);
         return <Navigate to={window.location.pathname} />

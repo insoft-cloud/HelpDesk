@@ -4,10 +4,11 @@ export type TokenContext = {
     token : string | undefined;
     tokenExpired : number;
     page : string;
+    user : string | undefined;
 };
 
 type Action =
-    | { type: 'SET_TOKEN'; token: string, tokenExpired : number }
+    | { type: 'SET_TOKEN'; token: string, tokenExpired : number , user: string}
     | { type: 'SET_PAGE'; page: string}
 
 
@@ -22,7 +23,8 @@ function reducer(state: TokenContext, action: Action): TokenContext {
             return {
                 ...state,
                 token: action.token,
-                tokenExpired: action.tokenExpired
+                tokenExpired: action.tokenExpired,
+                user: action.user
             };
         case 'SET_PAGE':
             return {
@@ -38,7 +40,8 @@ export function TokenProvider({ children }: { children: React.ReactNode }) {
     const [state, dispatch] = useReducer(reducer, {
         token: undefined,
         tokenExpired: 0,
-        page: "HOME"
+        page: "HOME",
+        user: undefined,
     });
 
     return (

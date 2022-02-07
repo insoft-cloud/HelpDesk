@@ -2,12 +2,14 @@ package com.insoft.helpdesk.application.adapter.out.db.service;
 
 import com.insoft.helpdesk.application.biz.service.port.out.RequestOutPort;
 import com.insoft.helpdesk.application.domain.jpa.entity.service.Request;
+import com.insoft.helpdesk.application.domain.jpa.entity.service.RequestAttachment;
 import com.insoft.helpdesk.application.domain.jpa.repo.service.RequestRepo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,6 +37,11 @@ public class RequestAdapter implements RequestOutPort {
     @Override
     public Long getRequestsCount(String userId) {
         return requestRepo.countAllByReqId(userId);
+    }
+
+    @Override
+    public Page<Request> getRequestsDate(String userId, LocalDateTime start, LocalDateTime end, Pageable pageable) {
+        return requestRepo.findAllByReqIdAndRegistDtBetween(userId, start, end, pageable);
     }
 
     @Override

@@ -17,14 +17,9 @@ public class RequestAttachmentService implements RequestAttachmentInPort {
 
     final RequestAttachmentOutPort requestAttachmentOutPort;
 
-//    @Override
-//    public Page<RequestAttachment> getRequestAttachments(Pageable pageable) {
-//        return requestAttachmentOutPort.getRequestAttachment(pageable);
-//    }
-
     @Override
-    public List<RequestAttachment> getRequestAttachments() {
-        return null;
+    public Page<RequestAttachment> getRequestAttachments(Pageable pageable) {
+        return requestAttachmentOutPort.getRequestAttachment(pageable);
     }
 
     @Override
@@ -33,18 +28,18 @@ public class RequestAttachmentService implements RequestAttachmentInPort {
     }
 
     @Override
-    public List<RequestAttachment> getRequestAttachmentsReqId(String reqId) {
-        return null;
+    public Page<RequestAttachment> getRequestAttachmentsSvcReqNo(String svcReqNo, Pageable pageable) {
+        return requestAttachmentOutPort.getRequestAttachmentsSvcReqNo(svcReqNo, pageable);
     }
-
-//    @Override
-//    public Page<RequestAttachment> getRequestAttachmentsReqId(String reqId,Pageable pageable) {
-//        return requestAttachmentOutPort.getRequestAttachment(reqId,pageable);
-//    }
 
     @Override
     public long countRequestAttachments() {
         return requestAttachmentOutPort.countRequestAttachments();
+    }
+
+    @Override
+    public long countRequestAttachments(String reqId) {
+        return requestAttachmentOutPort.countRequestAttachments(reqId);
     }
 
     @Override

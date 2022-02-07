@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface RequestAttachmentOutPort {
     Page<RequestAttachment> getRequestAttachment(Pageable pageable);
-    Page<RequestAttachment> getRequestAttachment(String reqId, Pageable pageable);
+    Page<RequestAttachment> getRequestAttachmentsSvcReqNo(String SvcReqNo, Pageable pageable);
     Optional<RequestAttachment> getRequestAttachmentId(String id);
     long countRequestAttachments();
     long countRequestAttachments(String reqId);

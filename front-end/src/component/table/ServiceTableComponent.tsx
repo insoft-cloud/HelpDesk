@@ -24,7 +24,7 @@ function ServiceTableComponent( tableClassName : any) {
     const state = useTokenState();   
 
     useEffect(() => {
-
+        console.log(state.user);
         //todo : 전체조회로 변경 필요
         axios.get("/user/service/requests/test", {
             headers: {

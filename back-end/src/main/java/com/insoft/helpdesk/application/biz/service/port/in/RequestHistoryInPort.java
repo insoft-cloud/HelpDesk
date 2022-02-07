@@ -13,7 +13,7 @@ public interface RequestHistoryInPort {
     Page<RequestHistory> getRequestHistories(String userId, Pageable pageable);
     Long getRequestsCount(String userId);
     Optional<RequestHistory> getRequestHistory(String id);
-    void createRequest(RequestHistory requestHistory);
-    void updateRequest(RequestHistory requestHistory);
-    void deleteRequest(RequestHistory requestHistory);
+    void createRequestHistory(RequestHistory requestHistory);
+    void updateRequestHistory(RequestHistory requestHistory);
+    void deleteRequestHistory(RequestHistory requestHistory);
 }

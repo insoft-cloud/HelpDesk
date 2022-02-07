@@ -7,12 +7,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Comment;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
@@ -23,7 +22,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-
+@DynamicUpdate
 public class RequestHistory {
 
     @Id
@@ -76,4 +75,15 @@ public class RequestHistory {
     @Comment("서비스 요청번호")
     @ManyToOne(fetch = FetchType.LAZY)
     private Request svcReqNo;
+
+    public RequestHistory updateRequestHistory(RequestHistory requestHistory){
+        this.delYn = requestHistory.delYn == null ? this.delYn : requestHistory.delYn;
+        this.userId = requestHistory.userId == null ? this.userId : requestHistory.userId;
+        this.userNm = requestHistory.userNm == null ? this.userNm : requestHistory.userNm;
+        this.prcssttsCp = requestHistory.prcssttsCp == null ? this.prcssttsCp : requestHistory.prcssttsCp;
+        this.inputMsg = requestHistory.inputMsg == null ? this.inputMsg : requestHistory.inputMsg;
+        this.sttsCd = requestHistory.sttsCd == null ? this.sttsCd : requestHistory.sttsCd;
+        this.svcReqNo = requestHistory.svcReqNo == null ? this.svcReqNo : requestHistory.svcReqNo;;
+        return this;
+    }
 }

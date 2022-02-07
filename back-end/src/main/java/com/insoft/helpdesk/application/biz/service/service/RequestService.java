@@ -9,7 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
-import java.util.List;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -36,6 +36,11 @@ public class RequestService implements RequestInPort {
     @Override
     public Long getRequestsCount(String userId) {
         return requestOutPort.getRequestsCount(userId);
+    }
+
+    @Override
+    public Page<Request> getRequestsDate(String userId,LocalDateTime start, LocalDateTime end, Pageable pageable) {
+        return requestOutPort.getRequestsDate(userId, start, end, pageable);
     }
 
     @Override
