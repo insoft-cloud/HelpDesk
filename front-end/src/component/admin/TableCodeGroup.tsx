@@ -1,38 +1,38 @@
 
+import axios from "axios";
+import { procGetAxios } from "axios/Axios";
 import Pagination from "component/list/Pagination";
-import { useState } from "react";
+import { title } from "process";
+import { useEffect, useState } from "react";
+import { useTokenState } from "utils/TokenContext";
 
 
-function TableCodeGroup({tableClassName, tableData, arr} : any) {
+function TableCodeGroup() {
 
-    const limit = 10; // 표시될 컨텐츠 수
+
+    const state = useTokenState();
+    const [tableData, setTableData] = useState([]);
+
+    //api 사용
+    procGetAxios("/user/service/requests/test", state.token,"application/json",show);
+
+    const limit = 5; // 표시될 컨텐츠 수
     // const [posts, setPosts] = useState([]);
-    const [page, setPage] = useState(1);
+    const [page, setPage] = useState(2);
     const offset = (page - 1) * limit;
-    const [tab,setTab] = useState(tableData);
     const [check, setChecked] = useState(1);
+    const [testdata, setTestData] = useState([]);
 
-    // function test(index){
-    //     delete(index);
-    // }
+    function chk(select_data) {
+        setTestData(testdata.concat(select_data));
+    }
+    function remove(select_data) {
+        let chkNum = select_data
+    }
 
-    function delData(index){
-        // alert(table_data.CD_NM+table_data.CD_GRP_NO+","+table_data.USER_ID+","+table_data.REGIST_DT);
-        // let arr : any[] = tableData.splice(index,.1)
-        setTab(tab.splice(index,1))
-        
-        // tab(tableData.splice(index,1)) // 이것만 남아..
-    } 
-
-    // const idValid = /^[a-zA-Z0-9]{3,8}$/;
-    // const myId = 'asdf123';
-    // const myId2 = '20201202test';
-    // const myId3 = 'AAAAAA';    
-
-   
-    
-    
-    
+    function show(data) {
+        setTableData(data.requestList)
+    }
 
     return (
         <div>
@@ -47,29 +47,29 @@ function TableCodeGroup({tableClassName, tableData, arr} : any) {
                     </tr>
                 </thead>
                 <tbody>
-                    {tab.slice(offset,offset+limit).map((table_data : any, index : number) => (
+                    {tableData.map((table_data: any, index: number) => (
                         <tr key={index}>
-                            <td scope="row"><input type="checkbox" onChange={(event) => {tableData.splice(event.target.tabIndex,1); console.log()}}/></td>
-                            <td>{table_data.CD_GRP_NO}</td>
-                            <td>{table_data.CD_NM}</td>
-                            <td>{table_data.USER_ID}</td>
-                            <td>{table_data.REGIST_DT}</td>
+                            <td scope="row"><input type="checkbox" onChange={(event) => { (event.target.checked == true) ? chk(tableData[index]) : chk(null) }} /></td>
+                            <td>{table_data.ttl}</td>
+                            <td>{table_data.reqId}</td>
+                            <td>{table_data.tyCd}</td>
+                            <td>{table_data.sysCd}</td>
                         </tr>
-                    ))}
+                    )).slice(offset, offset + limit)}
                 </tbody>
-            </table>                           
+            </table>
 
             {/* 페이징처리 */}
             <div className="justify-content-center">
-               <Pagination total={tableData.length} limit={limit} page={page} setPage={setPage} />
-            </div> 
-            
-           
+                <Pagination total={tableData.length} limit={limit} page={page} setPage={setPage} />
+            </div>
+
+
         </div>
     );
 }
 
-TableCodeGroup.defaultProps={
+TableCodeGroup.defaultProps = {
     tableClassName: 'table'
 }
 
