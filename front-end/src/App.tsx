@@ -12,6 +12,7 @@ import MyWorkComponent from 'domain/service/MyWorkComponent';
 import AdminCodeEditComponent from 'component/admin/AdminCodeEdit';
 import MyRequestComponent from 'domain/service/MyRequestComponent';
 import ServiceAllComponent from 'domain/service/ServiceAllComponent';
+import AdminManagerList from 'component/admin/AdminManagerList';
 
 function App() {
 
@@ -29,8 +30,9 @@ function App() {
                     <Route path={ContextPath(API_DOMAIN_PATH.serviceAll)} element={<PrivateRoute component={ServiceAllComponent} status={state}/>}/>
                     <Route path={ContextPath(API_DOMAIN_PATH.myWork)} element={<PrivateRoute component={MyWorkComponent} status={state}/>}/>
                     <Route path={ContextPath(API_DOMAIN_PATH.myRequest)} element={<PrivateRoute component={MyRequestComponent} status={state}/>}/>
-                    <Route path={ContextPath(API_ADMIN_PATH.main)} element={<PrivateRoute component={AdminMainComponent} status={state}/>}/>
-                    <Route path={ContextPath(API_ADMIN_PATH.edit)} element={<PrivateRoute component={AdminCodeEditComponent } status={state}/>}/>
+                    <Route path={ContextPath(API_ADMIN_PATH.codeGroup)} element={<PrivateRoute component={AdminMainComponent} status={state}/>}/>
+                    <Route path={ContextPath(API_ADMIN_PATH.codeDetail)} element={<PrivateRoute component={AdminCodeEditComponent } status={state}/>}/>
+                    <Route path={ContextPath(API_ADMIN_PATH.managerList)} element={<PrivateRoute component={AdminManagerList } status={state}/>}/>
             </Routes>
             {
                 state.page === "LOGIN" ? null : <FooterComponent/>

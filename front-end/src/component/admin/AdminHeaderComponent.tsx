@@ -6,7 +6,7 @@ function AdminHeaderComponent({title,info}){
     }, []);
     return (
         <div>
-            <h2>{title}</h2>
+            <h2 className="mt-3">{title}</h2>
             <hr className="bg-dark border border-dark" />
             <p>{info}</p>
         </div>

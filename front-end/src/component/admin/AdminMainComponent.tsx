@@ -147,11 +147,11 @@ function AdminMainComponent() {
               <div className="AdminMainComponent">
                 <div className="d-flex justify-content-end">
                   <AdminButtonComponent className="btn btn-xs btn-outline-dark rounded-1 ms-2 lift ml-3 mb-3" btnName="삭제" onEventHandler={testResult} />
-                  <ButtonComponent btnClassName="btn btn-xs btn-outline-dark rounded-1 ms-2 lift ml-3 mb-3" btnName="추가" url={ContextPath.call('codeEdit',API_ADMIN_PATH.edit)} />
+                  <ButtonComponent btnClassName="btn btn-xs btn-outline-dark rounded-1 ms-2 lift ml-3 mb-3" btnName="추가" url={ContextPath.call('codeEdit',API_ADMIN_PATH.codeDetail)} />
                   
                 </div>
                 <div>
-                  <TableCodeGroup tableClassName="asdarbenrfbv" tableData={testData}  />
+                  <TableCodeGroup  />
                 </div>
               </div> 
         </div>
