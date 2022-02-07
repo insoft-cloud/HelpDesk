@@ -28,7 +28,7 @@ public class RequestHistoryAdapter implements RequestHistoryOutPort {
 
     @Override
     public Page<RequestHistory> getRequestHistories(String userId, Pageable pageable) {
-        return requestHistoryRepo.findAllByUserId(userId,pageable);
+        return requestHistoryRepo.findAllByUserId(userId , pageable);
     }
 
     @Override

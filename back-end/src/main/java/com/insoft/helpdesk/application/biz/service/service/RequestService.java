@@ -14,7 +14,8 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class RequestService implements RequestInPort {
+public class
+RequestService implements RequestInPort {
 
     final RequestOutPort requestOutPort;
 
