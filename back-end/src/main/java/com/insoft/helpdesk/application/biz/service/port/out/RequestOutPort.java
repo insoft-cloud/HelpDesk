@@ -5,7 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 
-import java.util.List;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 public interface RequestOutPort {
@@ -13,6 +13,7 @@ public interface RequestOutPort {
     Long getRequestsCount();
     Page<Request> getRequests(String userId, Pageable pageable);
     Long getRequestsCount(String userId);
+    Page<Request> getRequestsDate(String userId, LocalDateTime start,LocalDateTime end, Pageable pageable);
     Optional<Request> getRequest(String id);
     void createRequest(Request request);
     void updateRequest(Request request);

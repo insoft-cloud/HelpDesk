@@ -14,7 +14,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class RequestHistoryService implements RequestHistoryInPort {
 
-    final RequestHistoryOutPort requestHistoryOutPort;
+    RequestHistoryOutPort requestHistoryOutPort;
 
     @Override
     public Page<RequestHistory> getRequestHistories(Pageable pageable) {
@@ -28,7 +28,7 @@ public class RequestHistoryService implements RequestHistoryInPort {
 
     @Override
     public Page<RequestHistory> getRequestHistories(String userId, Pageable pageable) {
-        return requestHistoryOutPort.getRequestHistories(userId, pageable);
+        return requestHistoryOutPort.getRequestHistories(userId,pageable);
     }
 
     @Override
@@ -42,17 +42,17 @@ public class RequestHistoryService implements RequestHistoryInPort {
     }
 
     @Override
-    public void createRequest(RequestHistory requestHistory) {
-        requestHistoryOutPort.createRequest(requestHistory);
+    public void createRequestHistory(RequestHistory requestHistory) {
+        requestHistoryOutPort.createRequestHistory(requestHistory);
     }
 
     @Override
-    public void updateRequest(RequestHistory requestHistory) {
-        requestHistoryOutPort.updateRequest(requestHistory);
+    public void updateRequestHistory(RequestHistory requestHistory) {
+        requestHistoryOutPort.updateRequestHistory(requestHistory);
     }
 
     @Override
-    public void deleteRequest(RequestHistory requestHistory) {
-        requestHistoryOutPort.deleteRequest(requestHistory);
+    public void deleteRequestHistory(RequestHistory requestHistory) {
+        requestHistoryOutPort.deleteRequestHistory(requestHistory);
     }
 }

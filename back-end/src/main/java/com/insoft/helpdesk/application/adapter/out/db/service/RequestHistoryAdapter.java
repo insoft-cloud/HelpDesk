@@ -28,7 +28,7 @@ public class RequestHistoryAdapter implements RequestHistoryOutPort {
 
     @Override
     public Page<RequestHistory> getRequestHistories(String userId, Pageable pageable) {
-        return requestHistoryRepo.findAllByUserId(userId , pageable);
+        return requestHistoryRepo.findAllByUserId(userId,pageable);
     }
 
     @Override
@@ -42,17 +42,17 @@ public class RequestHistoryAdapter implements RequestHistoryOutPort {
     }
 
     @Override
-    public void createRequest(RequestHistory requestHistory) {
+    public void createRequestHistory(RequestHistory requestHistory) {
 
     }
 
     @Override
-    public void updateRequest(RequestHistory requestHistory) {
+    public void updateRequestHistory(RequestHistory requestHistory) {
 
     }
 
     @Override
-    public void deleteRequest(RequestHistory requestHistory) {
+    public void deleteRequestHistory(RequestHistory requestHistory) {
 
     }
 }

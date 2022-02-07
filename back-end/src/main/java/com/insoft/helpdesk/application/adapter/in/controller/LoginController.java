@@ -45,7 +45,7 @@ public class LoginController extends Content {
             long refreshTokenExpiredTime = jwtTokenProvider.getRefreshTokenExpiredTime(refreshToken);
             redisTemplate.opsForValue()
                     .set(refreshToken, result.getUserId(),  tokenExpiredTime - new Timestamp(System.currentTimeMillis()).getTime(), TimeUnit.MILLISECONDS);
-            return ResponseEntity.ok(HelpDeskToken.builder().accessToken(token).refreshToken(refreshToken).refreshTokenExpired(refreshTokenExpiredTime).tokenExpired(tokenExpiredTime).build());
+            return ResponseEntity.ok(HelpDeskToken.builder().accessToken(token).userName(jwtTokenProvider.getUserPk(token)).refreshToken(refreshToken).refreshTokenExpired(refreshTokenExpiredTime).tokenExpired(tokenExpiredTime).build());
         }
 
     }
@@ -66,7 +66,7 @@ public class LoginController extends Content {
             long refreshTokenExpiredTime = jwtTokenProvider.getRefreshTokenExpiredTime(newRefreshToken);
             redisTemplate.opsForValue()
                     .set(newRefreshToken, result.getUserId(), jwtTokenProvider.getRefreshTokenExpiredTime(refreshToken) - new Timestamp(System.currentTimeMillis()).getTime(), TimeUnit.MILLISECONDS);
-            return ResponseEntity.ok(HelpDeskToken.builder().accessToken(token).refreshToken(newRefreshToken).refreshTokenExpired(refreshTokenExpiredTime).tokenExpired(tokenExpiredTime).build());
+            return ResponseEntity.ok(HelpDeskToken.builder().accessToken(token).userName(jwtTokenProvider.getUserPk(token)).refreshToken(newRefreshToken).refreshTokenExpired(refreshTokenExpiredTime).tokenExpired(tokenExpiredTime).build());
         }
     }
 

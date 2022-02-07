@@ -8,12 +8,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Comment;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
@@ -25,6 +24,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@DynamicUpdate
 public class RequestAttachment {
 
     @Id
@@ -79,6 +79,13 @@ public class RequestAttachment {
     @UpdateTimestamp
     private LocalDateTime updateDt;
 
-
-
+    public RequestAttachment getRequestAttachment(RequestAttachment requestAttachment){
+        this.svcReqNo = requestAttachment.svcReqNo == null ? this.svcReqNo : requestAttachment.svcReqNo;
+        this.fileNm = requestAttachment.fileNm == null ? this.fileNm : requestAttachment.fileNm;
+        this.filePath = requestAttachment.filePath == null ? this.filePath : requestAttachment.filePath;
+        this.fileSize = requestAttachment.fileSize == null ? this.fileSize : requestAttachment.fileSize;
+        this.fileExt = requestAttachment.fileExt == null ? this.fileExt : requestAttachment.fileExt;
+        return this;
+    }
 }
+

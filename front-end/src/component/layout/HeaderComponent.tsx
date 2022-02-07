@@ -107,7 +107,7 @@ function HeaderComponent(){
 
     function logout(data : any){
         dispatch({ type: 'SET_TOKEN', token: data['accessToken'],
-        tokenExpired: data['tokenExpired'] });
+        tokenExpired: data['tokenExpired'], user: data['userName'] });
         
         sessionStorage.removeItem("refreshToken");
         sessionStorage.removeItem("refreshToken");

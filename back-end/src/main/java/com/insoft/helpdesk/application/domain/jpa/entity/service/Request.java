@@ -7,12 +7,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.util.List;
-import org.hibernate.annotations.Comment;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.UpdateTimestamp;
+
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
@@ -23,6 +24,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@DynamicUpdate
 public class Request {
 
     @Id
@@ -65,8 +67,7 @@ public class Request {
     @Column(name = "DEL_YN", length = 1, nullable = false)
     @Comment("삭제여부")
     @Size(max = 1)
-    @Builder.Default
-    private String delYn = "N";
+    private String delYn;
 
     @Column(name = "REGIST_DT", nullable = false)
     @Comment("등록일시")
@@ -97,7 +98,19 @@ public class Request {
     @JoinColumn(name = "SVC_RQST_NO", referencedColumnName = "SVC_RQST_NO")
     private List<RequestHistory> requestHistories;
 
-    @Transient
-    long count;
 
+    public Request updateRequest(Request request){
+        System.out.println(request);
+        this.reqId = request.reqId == null ? this.reqId : request.reqId;
+        this.tyCd = request.tyCd == null ? this.tyCd : request.tyCd;
+        this.priortCd = request.priortCd == null ? this.priortCd : request.priortCd;
+        this.ttl = request.ttl == null ? this.ttl : request.ttl;
+        this.cnts = request.cnts == null ? this.cnts : request.cnts;
+        this.delYn = request.delYn == null ? this.delYn : request.delYn;
+        this.goalDt = request.goalDt == null ? this.goalDt : request.goalDt;
+        this.requestAttachments = request.requestAttachments == null ? this.requestAttachments : request.requestAttachments;
+        this.requestAttachmentHistories = request.requestAttachmentHistories == null ? this.requestAttachmentHistories : request.requestAttachmentHistories;
+        this.requestHistories = request.requestHistories == null ? this.requestHistories : request.requestHistories;
+        return this;
+    }
 }

@@ -91,7 +91,7 @@ export default function SignInComponent({prePath : path}) {
 
     function ok(data : any){
         dispatch({ type: 'SET_TOKEN', token: data['accessToken'],
-            tokenExpired: data['tokenExpired'] });
+            tokenExpired: data['tokenExpired'], user: data['userName'] });
         sessionStorage.setItem("refreshToken", data['refreshToken']);
         sessionStorage.setItem("refreshTokenExpired", data['refreshTokenExpired']);
         if(path.toString().toLowerCase().indexOf("sign") > 0){

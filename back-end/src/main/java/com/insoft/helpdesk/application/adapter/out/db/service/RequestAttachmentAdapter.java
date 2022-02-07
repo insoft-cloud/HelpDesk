@@ -24,7 +24,7 @@ public class RequestAttachmentAdapter implements RequestAttachmentOutPort {
     }
 
     @Override
-    public Page<RequestAttachment> getRequestAttachment(String svcReqNo, Pageable pageable) {
+    public Page<RequestAttachment> getRequestAttachmentsSvcReqNo(String svcReqNo, Pageable pageable) {
         return requestAttachmentRepo.findAllBySvcReqNo(svcReqNo, pageable);
     }
 

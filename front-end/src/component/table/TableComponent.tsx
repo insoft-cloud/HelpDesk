@@ -1,6 +1,6 @@
 import React from "react";
 
-function TableComponent({tableClassName, tableData} : any) {
+function TableComponent({tableClassName, tableData, data} : any) {
         return (
             <div className="card-body">
                 <div className='table-responsive'>
@@ -13,16 +13,7 @@ function TableComponent({tableClassName, tableData} : any) {
                             <th scope="col">Handle</th>
                         </tr>
                         </thead>
-                        <tbody>
-                        {tableData.map((table_data : any, index : number) => (
-                            <tr key={index}>
-                                <th scope="row">{index}</th>
-                                <td>{table_data.firstname}</td>
-                                <td>{table_data.lastname}</td>
-                                <td>{table_data.testValue}</td>
-                            </tr>
-                        ))}
-                        </tbody>
+                        {data}
                     </table>
                 </div>
             </div>
