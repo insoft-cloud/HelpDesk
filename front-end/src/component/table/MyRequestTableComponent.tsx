@@ -5,6 +5,15 @@ import { useEffect, useState } from "react";
 import { useTokenState } from "utils/TokenContext";
 
 
+/**
+ * @Project     : HelpDesk
+ * @FileName    : MyRequestTableComponent.tsx
+ * @Date        : 2021-02-05
+ * @author      : 김지인
+ * @description : 요청현황 > 내요청 화면에 나오는 table 컴포넌트 (id에 따른 요청내역 조회)
+ */
+
+
 function MyRequestTableComponent( tableClassName : any) {
 
     const limit = 10; // 표시될 컨텐츠 수
@@ -13,24 +22,30 @@ function MyRequestTableComponent( tableClassName : any) {
 
     const [tableData, setTableData] = useState([]);
 
+    
+
     const state = useTokenState();   
     
     useEffect(() => {
 
-        axios.get("/user/service/req-attachs/test", {
+        //todo : {userId}로 하면 데이터가 없음
+        axios.get("/user/service/requests/test", {           
             headers: {
                 'Content-Type' : "application/json",
                 'X-AUTH-TOKEN' : state.token + ""
             }
         })
-            .then(function (response){
-                setTableData(response.data)
+            .then(({data}) => {
+                setTableData(data.requestList)
+                console.log(data)                
+                console.log(data.requestList)
+
             })
             .catch(function (error:any){
                 console.log(error)
     
             });
-        }, [])
+        }, [state.token])
 
 
         return (
@@ -56,12 +71,12 @@ function MyRequestTableComponent( tableClassName : any) {
                         { tableData.slice(offset,offset+limit).map((table_data : MyWorkTableModel, index : number ) => (
                             <tr key={index}>
                                 <th scope="row">{index}</th>
-                                <td>{table_data.svcReqNo.tyCd}</td>
-                                <td>{table_data.svcReqNo.ttl}</td>
+                                <td>{table_data.tyCd}</td>
+                                <td>{table_data.ttl}</td>
                                 <td>{table_data.registDt?.slice(5,10)}</td>                                
-                                <td></td> 
-                                <td></td>
-                                <td></td>
+                                <td>{table_data.requestHistories.userId}</td> 
+                                <td>{table_data.goalDt?.slice(5,10)}</td>
+                                <td>{table_data.requestHistories.sttsCd}</td>
                                 <td></td>
                             </tr>
                         ))}
