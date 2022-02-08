@@ -2,7 +2,7 @@ import Pagination from "component/list/Pagination";
 import { useState } from "react";
 
 
-function TableCodeGroup({tableData}) {
+function TableCodeGroup({tableData, column}) {
 
     const limit = 5; // 표시될 컨텐츠 수
     const [page, setPage] = useState(1);
@@ -20,12 +20,9 @@ function TableCodeGroup({tableData}) {
         <div>
             <table className="table table-sm table-responsive table-bordered border-dark text-center" >
                 <thead className="table-secondary border-dark">
-                    <tr>
-                        <th scope="col" className="col-md-1">#</th>
-                        <th scope="col" className="col-md-2">코드</th>
-                        <th scope="col">항목</th>
-                        <th scope="col" className="col-md-2">등록자</th>
-                        <th scope="col" className="col-md-2">등록일</th>
+                    <tr>{column.map((data,index) =>{
+                        <TableHeader data={data} key={index} />
+                    })}
                     </tr>
                 </thead>
                 <tbody>
@@ -51,9 +48,7 @@ function TableCodeGroup({tableData}) {
     );
 }
 
-TableCodeGroup.defaultProps = {
-    tableClassName: 'table'
-}
+const TableHeader = ({data}) => <th>{data.header}</th>
 
 export default TableCodeGroup;
 
