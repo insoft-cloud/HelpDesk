@@ -13,6 +13,12 @@ function ListComponent( {listName, listData } : any) {
 
     
 return(
+  <>
+  <div className='col-3 col-md-2 col-lg-3 order-md-1'>
+      <div className='lead text-center text-md-start mb-6 mb-lg-8'>
+          {listName}
+      </div>
+  </div>
   <ul className='list-group-horizontal mb-0'>
    {listData.map((list_data : ListModel, index : number) => (
     <li className='list-group-item' key={index}>
@@ -25,6 +31,7 @@ return(
       </li>
    ))}    
   </ul>
+  </>
   )
 }      
 export default ListComponent

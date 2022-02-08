@@ -18,7 +18,7 @@ function ServiceAllComponent() {
     const nowTime = moment().format('YYYY년 MM월 DD일 HH:mm');
 
     let dispatch = useTokenDispatch()
-    const state = useTokenState();   
+    const state = useTokenState();
 
     const [tableData, setTableData] = useState([]);
 
@@ -34,6 +34,7 @@ function ServiceAllComponent() {
         })
             .then(({data}) => {
                 setTableData(data.content)
+
                 console.log(data)                
                 console.log(data.content)
 
@@ -45,11 +46,15 @@ function ServiceAllComponent() {
     }, []);
     
     const column = [
-        { heading : '번호', value : 'index'},
+        { heading : '번호', value :  "" },
         { heading : '시스템', value : 'sysCd'},
-        { heading : '제목', value : 'ttl'}
+        { heading : '제목', value : 'ttl' },
+        { heading : '요청일', value : 'registDt'},
+        { heading : '요청자', value : 'reqId'},
+        { heading : '담당자', value : 'requestAttachments: {fileNm }' },
+        { heading : '상태', value : ''}
     ]
-   
+
     
     return (
         <section className='pt-4 pt-md-11'>
@@ -68,7 +73,9 @@ function ServiceAllComponent() {
                 </div>
                 <hr></hr>
                 <div>
-                    검색
+                    <label>검색:</label>
+                    
+                    <input placeholder="제목 검색" type="text" />
                 </div>
                 <div>    
                     <div>

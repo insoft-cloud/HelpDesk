@@ -28,8 +28,8 @@ export type MyWorkTableModel = {
     reqId : string | undefined, //등록자(=요청자) 아이디
     goalDt : string | undefined, //목표일
 
-    requestHistories : {
-        userId? : string | undefined, //담당자id
+    requestAttachments : {
+        fileNm? : string | undefined, //담당자id
         userNm? : string | undefined, //담당자이름
         sttsCd? : string | undefined //상태(?)
     }
