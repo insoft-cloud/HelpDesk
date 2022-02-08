@@ -117,11 +117,18 @@ public class Member implements UserDetails {
     @Transient
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+
         ArrayList<GrantedAuthority> auth = new ArrayList<>();
         auth.add(new SimpleGrantedAuthority("USER"));
-        auth.add(new SimpleGrantedAuthority("ADMIN"));
+        if(auth != null && this.auth.getAdminYn().equals("Y")){
+            auth.add(new SimpleGrantedAuthority("ADMIN"));
+        }
         return auth;
     }
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "AUTH_NO", referencedColumnName = "AUTH_NO")
+    private Auth auth;
 
     @Override
     @JsonIgnore

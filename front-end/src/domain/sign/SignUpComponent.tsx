@@ -1,10 +1,12 @@
-import React, {ChangeEvent, CSSProperties, useEffect, useState} from "react";
+import React, {ChangeEvent, ChangeEventHandler, CSSProperties, useEffect, useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import {API_LOGIN, API_SIGN_PATH, ContextPath} from "../../utils/ContextPath";
 import {useTokenDispatch} from "../../utils/TokenContext";
 import {SignUp} from "../../interface/Login/LoginModel";
 import {procPostAxios} from "../../axios/Axios";
 import BackgroundImage from "assets/img/covers/cover-15.jpg";
+import {DivType} from "../../interface/label/LabelType";
+import DivComponent from "../../component/div/DivComponent";
 
 function SignUpComponent() {
 
@@ -16,6 +18,44 @@ function SignUpComponent() {
         height : "100px" ,
         backgroundImage: "url(" + BackgroundImage + ")"
     } ;
+
+    const [emailType]= useState<DivType>({
+        className : "form-group",
+        inputType: {
+            type : "email",
+            className : "form-control",
+            id : "email",
+            onChange : emailChange,
+            placeholder : "name@address.com"
+        },
+        labelType: {
+            className : "form-label",
+            htmlFor : "email",
+            text : "Email Address",
+        }
+    });
+
+    const [passwordType]= useState<DivType>({
+        className : "form-group mb-5",
+        inputType: {
+            type : "password",
+            className : "form-control",
+            id : "password",
+            onChange : passwordChange,
+            placeholder : "Enter your password"
+        },
+        labelType: {
+            className : "form-label",
+            htmlFor : "password",
+            text : "Password",
+        }
+    });
+
+
+
+
+
+
 
 
     useEffect(() => {
@@ -38,21 +78,8 @@ function SignUpComponent() {
                             Simplify your workflow in minutes.
                         </p>
 
-                            <div className="form-group">
-                                <label className="form-label" htmlFor="email">
-                                    Email Address
-                                </label>
-                                <input type="email" className="form-control" id="email" onChange={emailChange} placeholder="name@address.com"/>
-                            </div>
-
-
-                            <div className="form-group mb-5">
-                                <label className="form-label" htmlFor="password">
-                                    Password
-                                </label>
-                                <input type="password" className="form-control" id="password" onChange={passwordChange}
-                                       placeholder="Enter your password"/>
-                            </div>
+                        <DivComponent DivType={emailType} />
+                        <DivComponent DivType={passwordType} />
 
 
                             <button className="btn w-100 btn-primary" onClick={signUp}>
