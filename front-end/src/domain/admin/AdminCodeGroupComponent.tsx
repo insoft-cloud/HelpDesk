@@ -20,11 +20,13 @@ function AdminCodeGroupComponent() {
   let dispatch = useTokenDispatch();
   const state = useTokenState();
   const [tableData,setTableData] = useState([]);
+  const [contentType] = useState("application/json");
+  const [url] = useState("/user/service/requests/test?day=all");
 
     useEffect(() => {
       dispatch({ type: 'SET_PAGE', page: "codeGroup"})
-      procGetAxios("/user/service/requests/test?day=all", state.token,"application/json",getData);
-    }, [state.token]);
+      procGetAxios(url,state.token,contentType,getData);
+    }, [url,contentType,state.token]);
 
     function getData(data) {
       setTableData(data.content)

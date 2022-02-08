@@ -1,11 +1,22 @@
 import Pagination from "component/list/Pagination"
-import { useState } from "react";
+import  { useState } from "react";
 
 const CheckTableComponent = ({column, data, del}) => {   
     const limit = 5; // 표시될 컨텐츠 수
     const [page, setPage] = useState(1);
     const offset = (page - 1) * limit;
+    // const [isChecked,setIsChecked] = useState(false);
     console.log(data);
+
+    
+// function selectAll(isChecked){
+//     const data = document.getElementsByName('child');
+//     console.log(isChecked)
+//     document.querySelectorAll('child')
+//     data.forEach(e => {
+//         setIsChecked(isChecked);
+//     })
+// }
     
     return (
         <>
@@ -13,7 +24,7 @@ const CheckTableComponent = ({column, data, del}) => {
             <table  className="table table-sm table-responsive table-bordered border-dark text-center">
                 <thead className="table-secondary border-dark">
                 <tr>
-                    <th><input type="checkbox" onChange={(event) => selectAll(event.target.checked)}/></th>
+                    <th><input type="checkbox"  /></th>
                    {column.map((item, index)=><TableHeadItem item={item} key={index} />)}
                 </tr>
                 </thead>
@@ -33,11 +44,10 @@ const CheckTableComponent = ({column, data, del}) => {
 }
 
 const TableHeadItem = ({item}) => <th>{item.heading}</th>
-
-
-const TableRow = ({ item, column }) => (
+const TableRow = ({ item, column}) => (
+    
 <tr>
-    <td scope="row"><input type="checkbox" name="child"  /></td>
+    <th scope="row" key={item.index}><input type="checkbox" name="child" /></th>
     {column.map((columnItem, index : any) =>{
         return <td key={index}>{item[`${columnItem.value}`]}</td>
                 
@@ -51,14 +61,15 @@ const TableRow = ({ item, column }) => (
 </tr>
 )
 
-function selectAll(check){
-    console.log('header check : '+check)
-    const child = document.getElementsByName('child');
-    child.forEach((data) => {
-        data.setAttribute('checked','true')
-        console.log(data.spellcheck)
-    })
-}
+
+
+
+// function selectAll(selectAll){
+//     const child = document.getElementsByName('child');
+//     child.forEach((data) => {
+//         data.checked = selectAll.checked;
+//     })
+// }
 
 
 export default CheckTableComponent;
