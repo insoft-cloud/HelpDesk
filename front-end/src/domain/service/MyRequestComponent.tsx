@@ -1,7 +1,10 @@
+import axios from "axios";
 import { ButtonComponent } from "component/button/ButtonComponent";
-import MyRequestTableComponent from "component/table/MyRequestTableComponent";
+import TableComponent from "component/table/TableComponent";
 import moment from "moment"
+import { useEffect, useState } from "react";
 import { API_DOMAIN_PATH } from "utils/ContextPath";
+import { useTokenState } from "utils/TokenContext";
 
 
 /**
@@ -15,6 +18,42 @@ import { API_DOMAIN_PATH } from "utils/ContextPath";
  function MyRequestComponent() {    
 
     const nowTime = moment().format('YYYY년 MM월 DD일 HH:mm');
+
+    const state = useTokenState();
+    const [tableData, setTableData] = useState([]);
+
+    useEffect(() => {
+
+        axios.get("/user/service/requests/"+state.user+"?day=all", {
+            headers: {
+                'Content-Type' : "application/json",
+                'X-AUTH-TOKEN' : state.token + ""
+            }
+        })
+            .then(({data}) => {
+                setTableData(data.content)
+
+                console.log(data)                
+                console.log(data.content)
+
+            })
+            .catch(function (error:any){
+                console.log(error)
+    
+            }); 
+    }, [state]);
+
+    
+    const column = [
+        { heading : '번호', value :  "" },
+        { heading : '유형', value : 'tyCd'},
+        { heading : '제목', value : 'ttl' },
+        { heading : '요청일', value : 'registDt'},
+        { heading : '담당자', value : ''},
+        { heading : '목표일', value : '' },
+        { heading : '상태', value : ''},
+        { heading : '평가', value : ''}
+    ]
 
     return (
         <section className='pt-4 pt-md-11'>
@@ -44,6 +83,7 @@ import { API_DOMAIN_PATH } from "utils/ContextPath";
                     </div>
                     <div>
                         <div>
+                            <TableComponent data={tableData} column={column}/>
                         </div>
                     </div>
                 </div>
