@@ -3,7 +3,7 @@ import logo from "assets/img/ect-logo-big.svg";
 import './HeaderComponent.css'
 import { ButtonComponent } from "component/button/ButtonComponent";
 import { Link, useNavigate } from "react-router-dom";
-import {API_DOMAIN_PATH, API_LOGIN, ContextPath} from "../../utils/ContextPath";
+import {API_ADMIN_PATH, API_DOMAIN_PATH, API_LOGIN, ContextPath} from "../../utils/ContextPath";
 import { useTokenDispatch } from "utils/TokenContext";
 
 /**
@@ -62,6 +62,14 @@ function HeaderComponent(){
                             url={API_DOMAIN_PATH.notice} btnName="공지사항" />
                         </li>
                         <li className="nav-item">
+                            <ButtonComponent btnClassName="nav-link" 
+                            url={API_ADMIN_PATH.codeGroup} btnName="서비스코드" />
+                        </li>
+                        <li className="nav-item">
+                            <ButtonComponent btnClassName="nav-link" 
+                            url={API_ADMIN_PATH.managerList} btnName="서비스운영자" />
+                        </li>
+                        <li className="nav-item">
                             {(refreshToken==null)
                             ?<Link className="nav-link" id="navbarDocumentation" to={ContextPath(API_LOGIN.singIn)} aria-expanded="false">{logCheck}</Link>
                             : <Link className="nav-link" onClick={logout} to={ContextPath(API_DOMAIN_PATH.main)}>{logCheck}</Link>}
@@ -95,6 +103,7 @@ function HeaderComponent(){
                                 </div>
                             </div>
                         </li>
+                        
                     </ul>
 
                 </div>
