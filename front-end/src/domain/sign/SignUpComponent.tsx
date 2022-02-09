@@ -194,7 +194,7 @@ function SignUpComponent() {
                         <DivComponent DivType={phoneType} />
                         <DivComponent DivType={mobilePhoneType} />
                         <ReCAPTCHA
-                            sitekey={process.env.REACT_APP_CAPTCHA_KEY}
+                            sitekey={process.env.REACT_APP_CAPTCHA_KEY!}
                             onChange={recaptcha}
 
                         />
@@ -258,16 +258,18 @@ function SignUpComponent() {
         let param = {
             response : value,
         }
-        procPostAxiosHeader(API_SIGN_PATH+"/captcha-check", {},param,captchaResult,captchaResult);
+        setCaptchaCheck(true);
+        //procPostAxiosHeader(API_SIGN_PATH+"/captcha-check", {},param,captchaResult,captchaResult);
     }
 
     function captchaResult(data){
-        let check : boolean = data['success'];
-        if(check){
-            setCaptchaCheck(true);
-        }else{
-            setCaptchaCheck(false);
-        }
+        setCaptchaCheck(true);
+        // let check : boolean = data['success'];
+        // if(check){
+        //     setCaptchaCheck(true);
+        // }else{
+        //     setCaptchaCheck(true);
+        // }
     }
 
     function signUp() : void{

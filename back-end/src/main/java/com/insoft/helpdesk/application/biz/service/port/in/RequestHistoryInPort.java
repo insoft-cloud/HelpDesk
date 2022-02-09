@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface RequestHistoryInPort {
+
     Page<RequestHistory> getRequestHistories(Pageable pageable);
     Long getRequestsCount();
     Page<RequestHistory> getRequestHistories(String userId, Pageable pageable);
