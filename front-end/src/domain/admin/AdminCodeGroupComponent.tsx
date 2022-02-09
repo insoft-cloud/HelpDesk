@@ -6,7 +6,6 @@ import { API_ADMIN_PATH, ContextPath } from 'utils/ContextPath';
 import { useTokenDispatch, useTokenState} from 'utils/TokenContext';
 import { procGetAxios } from 'axios/Axios';
 import CheckTableComponent from 'component/table/CheckTableComponent';
-import { fireEvent } from '@testing-library/react';
 
 /**
  * @Project     : HelpDesk

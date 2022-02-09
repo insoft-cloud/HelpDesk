@@ -6,10 +6,8 @@ const CheckTableComponent = ({column, data, chkArr, setChkArr}) => {
     const limit = 5; 
     const [page, setPage] = useState(1);
     const offset = (page - 1) * limit;
-    const [stat, setStat] = useState(false);
 
     //체크박스
-    const [allChecked,setAllChecked] = useState(false);
     
     
     function selectAll(e){    
