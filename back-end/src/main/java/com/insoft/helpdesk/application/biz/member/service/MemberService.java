@@ -23,6 +23,16 @@ public class MemberService implements MemberInPort {
         return ResponseEntity.ok(memberOutPort.getMemberId(id));
     }
 
+    @Override
+    public boolean existUserId(String userId) {
+        return memberOutPort.existUserId(userId);
+    }
+
+    @Override
+    public boolean existEmail(String email) {
+        return memberOutPort.existEmail(email);
+    }
+
 
     @Override
     public ResponseEntity createMember(Member member) {

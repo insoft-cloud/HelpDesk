@@ -120,7 +120,7 @@ public class Member implements UserDetails {
 
         ArrayList<GrantedAuthority> auth = new ArrayList<>();
         auth.add(new SimpleGrantedAuthority("USER"));
-        if(auth != null && this.auth.getAdminYn().equals("Y")){
+        if(this.auth != null && this.auth.getAdminYn().equals("Y")){
             auth.add(new SimpleGrantedAuthority("ADMIN"));
         }
         return auth;

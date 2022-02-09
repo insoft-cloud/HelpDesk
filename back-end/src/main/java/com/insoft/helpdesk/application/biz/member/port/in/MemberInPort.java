@@ -16,6 +16,10 @@ public interface MemberInPort<T> {
 
     ResponseEntity<T> getMembers();
     ResponseEntity<T> getMemberId(String id);
+
+    boolean existUserId(String userId);
+    boolean existEmail(String email);
+
     ResponseEntity<T> createMember(Member member);
     ResponseEntity<T> updateMember(Member member);
     ResponseEntity<T> deleteMember(Member member);

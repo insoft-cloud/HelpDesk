@@ -31,6 +31,16 @@ public class MemberAdapter implements MemberOutPort {
     }
 
     @Override
+    public boolean existUserId(String userId) {
+        return memberRepo.existsByUserId(userId);
+    }
+
+    @Override
+    public boolean existEmail(String email) {
+        return memberRepo.existsByEmail(email);
+    }
+
+    @Override
     public void createMember(Member member) {
         memberRepo.save(member);
     }

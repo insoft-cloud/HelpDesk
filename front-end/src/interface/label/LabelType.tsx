@@ -1,21 +1,21 @@
-import {ChangeEventHandler} from "react";
+import {ChangeEventHandler, RefObject} from "react";
 
 export type LabelType = {
-    className : string | ""
-    htmlFor : string | ""
-    text : string | ""
+    className? : string | ""
+    htmlFor? : string | ""
+    text? : string | ""
 }
 
 export type InputType = {
-    type : string | ""
-    className : string | ""
-    id : string | ""
-    onChange : ChangeEventHandler<HTMLInputElement>
-    placeholder : string | ""
+    type? : string | ""
+    className? : string | ""
+    onChange? : ChangeEventHandler<HTMLInputElement> | null
+    ref? : RefObject<any>
+    placeholder? : string | ""
 }
 
 export type DivType = {
-    inputType : InputType
-    labelType : LabelType
-    className : string | ""
+    inputType? : InputType
+    labelType? : LabelType
+    className? : string | ""
 }

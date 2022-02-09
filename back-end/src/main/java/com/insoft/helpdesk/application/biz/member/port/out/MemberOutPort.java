@@ -8,6 +8,14 @@ public interface MemberOutPort {
     List<Member> getMembers();
     Member getMemberId(String id);
     long countMembers();
+
+    boolean existUserId(String userId);
+    boolean existEmail(String email);
+
+
+
+
+
     void createMember(Member member);
     void updateMember(Member member);
     void deleteMember(Member member);

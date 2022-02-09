@@ -7,15 +7,18 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {TokenProvider} from "./utils/TokenContext";
+import React from "react";
 
 
 
 const rootElement = document.getElementById('root');
 
 ReactDOM.render(
-    <TokenProvider>
-    <App/>
-    </TokenProvider>,
+
+        <TokenProvider>
+            <App/>
+        </TokenProvider>,
+
     rootElement
 );
 
