@@ -1,22 +1,60 @@
 import Pagination from "component/list/Pagination"
 import  { useState } from "react";
 
-const CheckTableComponent = ({column, data, del}) => {   
-    const limit = 5; // 표시될 컨텐츠 수
+const CheckTableComponent = ({column, data, chkArr, setChkArr}) => {   
+    //페이징
+    const limit = 5; 
     const [page, setPage] = useState(1);
     const offset = (page - 1) * limit;
-    // const [isChecked,setIsChecked] = useState(false);
-    console.log(data);
+    const [stat, setStat] = useState(false);
 
+    //체크박스
+    const [allChecked,setAllChecked] = useState(false);
     
-// function selectAll(isChecked){
-//     const data = document.getElementsByName('child');
-//     console.log(isChecked)
-//     document.querySelectorAll('child')
-//     data.forEach(e => {
-//         setIsChecked(isChecked);
-//     })
-// }
+    
+    function selectAll(e){    
+        // console.log(true);
+        // setStat(true)
+        // setAllChecked(e)
+        const data = document.getElementsByName('child');
+        let idx = 0;
+        console.log(idx);
+        if(e){
+            data.forEach(element => {  
+                element.removeAttribute('checked');
+                element.setAttribute('checked','checked');
+                individualCheck(true,idx)
+                idx++;
+                console.log(idx);
+            })
+        }else{
+            data.forEach(element => {
+                element.removeAttribute('checked');
+                individualCheck(false,idx);
+                idx++;
+                console.log(idx);
+            })
+        }
+    
+        
+    
+    }
+
+    function individualCheck(value,index){
+        console.log(value);
+        if(value){
+            chkArr.add(index);
+            setChkArr(chkArr);
+        }else{
+            console.log(value);
+            const selectAllBox = document.querySelector("#selectAllBox");
+            selectAllBox?.removeAttribute('checked');
+            chkArr.delete(index);
+            setChkArr(chkArr);
+        }
+       
+    console.log(chkArr);
+}
     
     return (
         <>
@@ -24,12 +62,12 @@ const CheckTableComponent = ({column, data, del}) => {
             <table  className="table table-sm table-responsive table-bordered border-dark text-center">
                 <thead className="table-secondary border-dark">
                 <tr>
-                    <th><input type="checkbox"  /></th>
+                    <th><input type="checkbox" id="selectAllBox" onChange={e=> selectAll(e.target.checked)}  /></th>
                    {column.map((item, index)=><TableHeadItem item={item} key={index} />)}
                 </tr>
                 </thead>
                 <tbody>
-                    {data.map((item, index)=><TableRow item={item} column={column} key={index} />).slice(offset, offset + limit)}
+                    {data.map((item, index)=><TableRow item={item} column={column} idx={index} key={index} individualCheck={individualCheck} />).slice(offset, offset + limit)}
                 </tbody>
             </table>                
 
@@ -43,14 +81,14 @@ const CheckTableComponent = ({column, data, del}) => {
 
 }
 
+
 const TableHeadItem = ({item}) => <th>{item.heading}</th>
-const TableRow = ({ item, column}) => (
-    
+
+const TableRow = ({ item,idx, column,individualCheck}) => (    
 <tr>
-    <th scope="row" key={item.index}><input type="checkbox" name="child" /></th>
+    <td scope="row" key={item.index}><input type="checkbox" name="child" onChange={e=>individualCheck(e.target.checked,idx)} /></td>
     {column.map((columnItem, index : any) =>{
         return <td key={index}>{item[`${columnItem.value}`]}</td>
-                
     })}
     {/* {column.map((columnItem, index : any) =>{
         console.log(item[`${columnItem.value}`]);
@@ -60,16 +98,5 @@ const TableRow = ({ item, column}) => (
         })} */}
 </tr>
 )
-
-
-
-
-// function selectAll(selectAll){
-//     const child = document.getElementsByName('child');
-//     child.forEach((data) => {
-//         data.checked = selectAll.checked;
-//     })
-// }
-
 
 export default CheckTableComponent;

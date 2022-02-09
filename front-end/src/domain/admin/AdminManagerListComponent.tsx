@@ -12,6 +12,7 @@ function AdminManagerListComponent(){
     let dispatch = useTokenDispatch();
     const state = useTokenState();
     const [tableData, setTableData] = useState([]);
+    const [chkArr, setChkArr] = useState<Set<number>>(new Set());
 
     useEffect(() => {
         dispatch({ type: 'SET_PAGE', page: "codeDetail"})
@@ -53,11 +54,11 @@ function AdminManagerListComponent(){
         <div className="container">
             <AdminHeaderComponent title="서비스 운영자 등록" info="서비스 운영 담당자를 관리할 수 있는 메뉴입니다."/>
                 <div className="d-flex justify-content-end">
-                  <AdminButtonComponent className="btn btn-xs btn-outline-dark rounded-1 ms-2 lift ml-3 mb-3" btnName="삭제" onEventHandler={testResult} />
+                <AdminButtonComponent className="btn btn-xs btn-outline-dark rounded-1 ms-2 ml-3 mb-3" btnName="삭제" onEventHandler={del} />
                   <ButtonComponent btnClassName="btn btn-xs btn-outline-dark rounded-1 ms-2 lift ml-3 mb-3" btnName="추가" url={ContextPath.call('codeEdit',API_ADMIN_PATH.codeDetail)} />
                 </div>
             <div>
-            <CheckTableComponent data={tableData} column={column} del={testResult}/>
+            <CheckTableComponent data={tableData} column={column} chkArr={chkArr} setChkArr={setChkArr}/>
             </div>
 
             {/* <React.Fragment>
@@ -68,10 +69,15 @@ function AdminManagerListComponent(){
             {/* <Modal isOpen={isModalOpen} close={closeModal} /> */}
         </div>
     )
+
+    //삭제
+ function del(){
+    chkArr.forEach((index)=> {
+      console.log(tableData[index])
+    }) 
+  }
 }
 
-function testResult() {
-    alert("이벤트!");
-  };
+ 
 
 export default AdminManagerListComponent;

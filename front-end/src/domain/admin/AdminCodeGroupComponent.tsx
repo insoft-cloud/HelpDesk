@@ -6,6 +6,7 @@ import { API_ADMIN_PATH, ContextPath } from 'utils/ContextPath';
 import { useTokenDispatch, useTokenState} from 'utils/TokenContext';
 import { procGetAxios } from 'axios/Axios';
 import CheckTableComponent from 'component/table/CheckTableComponent';
+import { fireEvent } from '@testing-library/react';
 
 /**
  * @Project     : HelpDesk
@@ -22,6 +23,8 @@ function AdminCodeGroupComponent() {
   const [tableData,setTableData] = useState([]);
   const [contentType] = useState("application/json");
   const [url] = useState("/user/service/requests/test?day=all");
+  const [chkArr, setChkArr] = useState<Set<number>>(new Set());
+
 
     useEffect(() => {
       dispatch({ type: 'SET_PAGE', page: "codeGroup"})
@@ -41,22 +44,25 @@ function AdminCodeGroupComponent() {
 
   return (
         <div className="container">
+          <div className="card-body">
             <AdminHeaderComponent title="서비스 코드 관리" info="헬프 데스크 서비스 운영에 필요한 항목들을 분류하고 관리합니다."/>
                 <div className="d-flex justify-content-end">
-                  <AdminButtonComponent className="btn btn-xs btn-outline-dark rounded-1 ms-2 lift ml-3 mb-3" btnName="삭제" onEventHandler={del} />
-                  <ButtonComponent btnClassName="btn btn-xs btn-outline-dark rounded-1 ms-2 lift ml-3 mb-3" btnName="추가" url={ContextPath(API_ADMIN_PATH.codeDetail)} />
+                  <AdminButtonComponent className="btn btn-xs btn-outline-dark rounded-1 ms-2 ml-3 mb-3" btnName="삭제" onEventHandler={del} />
+                  <ButtonComponent btnClassName="btn btn-xs btn-outline-dark rounded-1 ms-2 ml-3 mb-3" btnName="추가" url={ContextPath(API_ADMIN_PATH.codeDetail)} />
                 </div>
                 <div>
-                <CheckTableComponent data={tableData} column={column} del={del}/>
+                  <CheckTableComponent data={tableData} column={column} chkArr={chkArr} setChkArr={setChkArr}/>
                 </div>
-              
+          </div>
         </div>
           
   );
 
- 
+  //삭제
   function del(){
-    console.log('del버튼');
+    chkArr.forEach((index)=> {
+      console.log(tableData[index])
+    }) 
   }
 }
 

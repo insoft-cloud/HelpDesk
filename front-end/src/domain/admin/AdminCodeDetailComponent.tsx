@@ -19,9 +19,8 @@ function AdminCodeDetailComponent() {
     let dispatch = useTokenDispatch();
     const navigate = useNavigate();
     const state = useTokenState();
-    const [text,setText] = useState('')
-    const [tableData, setTableData] = useState([]);
-
+    const [tableData, setTableData] = useState<Object>([]);
+    
     useEffect(() => {
         dispatch({ type: 'SET_PAGE', page: "codeDetail"})
         procGetAxios("/user/service/requests/test?day=all", state.token,"application/json",getData);
@@ -30,6 +29,10 @@ function AdminCodeDetailComponent() {
     function getData(data) {
     setTableData(data.content)
     }
+
+    const [text,setText] = useState('');
+    console.log(tableData[1]);
+    // setText(tableData[1]['ttl'])
 
     const column = [
         { heading : '코드', value : 'priortCd'},
@@ -58,9 +61,9 @@ function AdminCodeDetailComponent() {
         </div>
     )
 
-    function del(){
-        console.log('del버튼');
-      }
+    // function del(){
+    //     console.log('del버튼');
+    //   }
 
     function useConfirm(){
       if(window.confirm("입력하신 내용을 저장하시겠습니까?")){
