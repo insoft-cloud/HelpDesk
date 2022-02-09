@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import logo from "assets/img/ect-logo-big.svg";
 import './HeaderComponent.css'
 import { ButtonComponent } from "component/button/ButtonComponent";
@@ -33,10 +33,10 @@ function HeaderComponent(){
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-white border-bottom">
             <div className="container-fluid">
-                <a className="navbar-brand" href="{() => false}">
+                <Link className="navbar-brand" to={ContextPath(API_DOMAIN_PATH.main)}>
                     <img src={ logo } className="navbar-brand-img" alt="중소벤처24 Help Desk" />
                     <span>Help Desk</span>
-                </a>
+                </Link>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false"
                         aria-label="Toggle navigation">
