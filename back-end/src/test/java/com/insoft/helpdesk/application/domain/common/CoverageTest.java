@@ -3,11 +3,13 @@ package com.insoft.helpdesk.application.domain.common;
 import com.insoft.helpdesk.HelpDeskApplication;
 import com.insoft.helpdesk.application.domain.jpa.entity.service.Request;
 import com.insoft.helpdesk.application.domain.jpa.entity.service.RequestAttachment;
+import com.insoft.helpdesk.application.domain.jpa.repo.code.DetailRepo;
 import com.insoft.helpdesk.application.domain.jpa.repo.service.RequestAttachmentRepo;
 import com.insoft.helpdesk.application.domain.jpa.repo.service.RequestRepo;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -29,6 +31,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(classes = HelpDeskApplication.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@Slf4j
 class CoverageTest {
 
     @Autowired
@@ -36,6 +39,9 @@ class CoverageTest {
 
     @Autowired
     RequestAttachmentRepo requestAttachmentRepo;
+
+    @Autowired
+    DetailRepo detailRepo;
 
 
     @Test
@@ -66,6 +72,11 @@ class CoverageTest {
     void 리퀘스트어태치먼트_GET_리퀘스트_ID_COUNT_테스트(){
         long count = requestAttachmentRepo.countAllBySvcReqNo("test");
         System.out.println(count);
+    }
+
+    @Test
+    void 코드디테일_테스트(){
+        System.out.println(detailRepo.findAll().toString());
     }
 
 

@@ -49,8 +49,6 @@ public class RequestAttachmentController {
         return ResponseEntity.ok(requestAttachmentInPort.getRequestAttachmentsSvcReqNo(reqId, pageable));
     }
 
-
-
     @Tag(name = "RequestAttachment")
     @PostMapping("/service/req-attache")
     public ResponseEntity createRequestAttachments(@RequestBody RequestAttachment requestAttachment){

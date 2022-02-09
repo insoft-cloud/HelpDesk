@@ -42,7 +42,6 @@ public class RequestController {
             case "all" : startDatetime = LocalDateTime.of(LocalDate.of(0000,1,1), LocalTime.of(0,0,0)); break;
         }
         LocalDateTime endDatetime = LocalDateTime.of(LocalDate.now(), LocalTime.of(23,59,59));
-
         return ResponseEntity.ok(requestInPort.getRequestsDate(userId, startDatetime, endDatetime, pageable));
     }
 
