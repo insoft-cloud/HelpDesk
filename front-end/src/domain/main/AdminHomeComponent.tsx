@@ -1,27 +1,31 @@
-import {useEffect} from 'react'
 import mainImage from "assets/img/new_img/main_visual.png";
 import './HomeComponent.css'
 import 'assets/css/libs.bundle.css';
+import AOS from 'aos';
 import { ButtonComponent } from 'component/button/ButtonComponent';
-import {useTokenDispatch} from "../../utils/TokenContext";
-import { API_DOMAIN_PATH, ContextPath } from 'utils/ContextPath';
+import { API_DOMAIN_PATH } from 'utils/ContextPath';
+import { useEffect, useState } from "react";
+import { useTokenDispatch } from "utils/TokenContext";
 
 
 /**
  * @Project     : HelpDesk
  * @FileName    : ListComponent.tsx
- * @Date        : 2021-01-25
+ * @Date        : 2021-02-09
  * @author      : 김지인
- * @description : 메인화면 컴포넌트
+ * @description : 관리자 메인화면 컴포넌트
  */
 
-function HomeComponent() {
+function AdminHomeComponent() {
+  
+  let dispatch = useTokenDispatch()
 
-    let dispatch = useTokenDispatch()
+  useState( () => {AOS.init(); AOS.refresh();});
 
-    useEffect(() => {
-        dispatch({ type: 'SET_PAGE', page: "HOME"})
-    }, []);
+  useEffect(() => {
+      dispatch({ type: 'SET_PAGE', page: "HOME"})
+  }, []);
+
 
 
     return(
@@ -50,7 +54,10 @@ function HomeComponent() {
                     <ButtonComponent btnName='신규 서비스 요청 작성' url="/" btnClassName="btn btn-primary shadow lift" />
                 </p>
                 <p>
-                    <ButtonComponent btnName='서비스 요청 진행사항 확인' url={ContextPath(API_DOMAIN_PATH.myWork)} btnClassName="btn btn-primary-soft lift" />
+                    <ButtonComponent btnName='서비스 요청 진행사항 확인' url={API_DOMAIN_PATH.myWork} btnClassName="btn btn-primary-soft lift" />
+                </p>
+                <p>
+                    <ButtonComponent btnName='서비스관리' url="/" btnClassName="btn btn-dark-soft lift" />
                 </p>
             </div>
         </div>
@@ -59,4 +66,4 @@ function HomeComponent() {
   </section>
   )
 }
-export default HomeComponent
+export default AdminHomeComponent
