@@ -51,23 +51,23 @@ function HeaderComponent(){
                     <ul className="navbar-nav ms-auto">
                         <li className="nav-item">
                             <ButtonComponent btnClassName="nav-link" 
-                            url={API_DOMAIN_PATH.serviceAll} btnName="전체 서비스" />
+                            url={ContextPath(API_DOMAIN_PATH.serviceAll)} btnName="전체 서비스" />
                         </li>
                         <li className="nav-item">
                             <ButtonComponent btnClassName="nav-link" 
-                            url={API_DOMAIN_PATH.myWork} btnName="요청 현황" />
+                            url={ContextPath(API_DOMAIN_PATH.myWork)} btnName="요청 현황" />
                         </li>
                         <li className="nav-item">
                             <ButtonComponent btnClassName="nav-link" 
-                            url={API_DOMAIN_PATH.notice} btnName="공지사항" />
+                            url={ContextPath(API_DOMAIN_PATH.notice)} btnName="공지사항" />
                         </li>
                         <li className="nav-item">
                             <ButtonComponent btnClassName="nav-link" 
-                            url={API_ADMIN_PATH.codeGroup} btnName="서비스코드" />
+                            url={ContextPath(API_ADMIN_PATH.codeGroup)} btnName="서비스코드" />
                         </li>
                         <li className="nav-item">
                             <ButtonComponent btnClassName="nav-link" 
-                            url={API_ADMIN_PATH.managerList} btnName="서비스운영자" />
+                            url={ContextPath(API_ADMIN_PATH.managerList)} btnName="서비스운영자" />
                         </li>
                         <li className="nav-item">
                             {(refreshToken==null)
