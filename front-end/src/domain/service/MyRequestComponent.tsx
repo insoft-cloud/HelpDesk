@@ -5,6 +5,7 @@ import TableComponent from "component/table/TableComponent";
 import { Fragment, useEffect, useState } from "react";
 import { API_DOMAIN_PATH, ContextPath } from "utils/ContextPath";
 import { useTokenState } from "utils/TokenContext";
+import ServiceDetailComponent from "component/table/ServiceDetailComponent";
 
 
 /**
@@ -55,8 +56,9 @@ import { useTokenState } from "utils/TokenContext";
             accessor: 'tyCd',
         },
         {
-          Header: '제목',
-          accessor: 'ttl',
+          Header: '제목', id: 'ttl',
+          accessor : a => <button onClick={()=>{}}>{a.ttl}</button>
+
         },
         {
             Header : '요청일', id : 'registDt',
@@ -110,6 +112,10 @@ import { useTokenState } from "utils/TokenContext";
                     <div>
                         <div>
                             <TableComponent data={tableData} columns={columns}/>
+                        </div>
+
+                        <div>
+                            <ServiceDetailComponent data={tableData}/>
                         </div>
                     </div>
                 </div>
