@@ -1,9 +1,9 @@
 import axios from "axios";
 import { ButtonComponent } from "component/button/ButtonComponent";
-import TableComponent from "component/table/TableComponent";
 import moment from "moment"
-import { useEffect, useState } from "react";
-import { API_DOMAIN_PATH } from "utils/ContextPath";
+import TableComponent from "component/table/TableComponent";
+import { Fragment, useEffect, useState } from "react";
+import { API_DOMAIN_PATH, ContextPath } from "utils/ContextPath";
 import { useTokenState } from "utils/TokenContext";
 
 
@@ -43,17 +43,43 @@ import { useTokenState } from "utils/TokenContext";
             }); 
     }, [state]);
 
-    
-    const column = [
-        { heading : '번호', value :  "" },
-        { heading : '유형', value : 'tyCd'},
-        { heading : '제목', value : 'ttl' },
-        { heading : '요청일', value : 'registDt'},
-        { heading : '담당자', value : ''},
-        { heading : '목표일', value : '' },
-        { heading : '상태', value : ''},
-        { heading : '평가', value : ''}
+
+    const columns = [
+        {
+          Header: '번호',
+          id: 'index',
+          accessor: (_row: any, i : number) => i + 1 
+        },
+        {
+            Header: '유형',
+            accessor: 'tyCd',
+        },
+        {
+          Header: '제목',
+          accessor: 'ttl',
+        },
+        {
+            Header : '요청일', id : 'registDt',
+            accessor: a => <Fragment>{moment(a.registDt).format("MM/DD")}</Fragment>
+        },
+        {
+            Header: '목표일',
+            accessor:  a => <Fragment>{moment().format("MM/DD")}</Fragment>
+          },
+        {
+            Header: '상태',
+            accessor: data => 
+                data.requestHistories.map( (item, index) => (
+                    <Fragment key={index}>{item.sttsCd}</Fragment>
+                ))
+          },
+        {
+            Header: '평가',
+            accessor: '',
+        }
     ]
+
+    
 
     return (
         <section className='pt-4 pt-md-11'>
@@ -70,10 +96,10 @@ import { useTokenState } from "utils/TokenContext";
                 <div>
                     <ul className='list mb-0 list-group list-group-horizontal'>
                         <li className='list-group-item'>
-                            <ButtonComponent url={API_DOMAIN_PATH.myWork} btnName='내 업무' btnClassName='list-link' />
+                            <ButtonComponent url={ContextPath(API_DOMAIN_PATH.myWork)} btnName='담당 업무' btnClassName='list-link' />
                         </li>
                         <li className='list-group-item'>
-                            <ButtonComponent url={API_DOMAIN_PATH.myRequest} btnName='내 요청' btnClassName='list-link' />
+                            <ButtonComponent url={ContextPath(API_DOMAIN_PATH.myRequest)} btnName='내 요청' btnClassName='list-link' />
                         </li>
                     </ul>
                 </div>
@@ -83,7 +109,7 @@ import { useTokenState } from "utils/TokenContext";
                     </div>
                     <div>
                         <div>
-                            <TableComponent data={tableData} column={column}/>
+                            <TableComponent data={tableData} columns={columns}/>
                         </div>
                     </div>
                 </div>

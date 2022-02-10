@@ -1,6 +1,5 @@
 import { ButtonComponent } from 'component/button/ButtonComponent'
 import moment from 'moment';
-import React from 'react'
 import { API_DOMAIN_PATH, ContextPath } from 'utils/ContextPath';
 
 /**
@@ -30,7 +29,7 @@ function MyWorkComponent() {
                 <div>
                     <ul className='list mb-0 list-group list-group-horizontal'>
                         <li className='list-group-item'>
-                            <ButtonComponent url={ContextPath(API_DOMAIN_PATH.myWork)} btnName='내 업무' btnClassName='list-link' />
+                            <ButtonComponent url={ContextPath(API_DOMAIN_PATH.myWork)} btnName='담당 업무' btnClassName='list-link' />
                         </li>
                         <li className='list-group-item'>
                             <ButtonComponent url={ContextPath(API_DOMAIN_PATH.myRequest)} btnName='내 요청' btnClassName='list-link' />

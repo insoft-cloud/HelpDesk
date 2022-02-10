@@ -53,7 +53,7 @@ function AdminCodeDetailComponent() {
                 </ul>
             </div>
             <div>
-            <TableComponent data={tableData} column={column}/>
+            {/* <TableComponent data={tableData} column={column}/> */}
             </div>
             <div className="d-flex justify-content-end">
                   <AdminButtonComponent className="btn btn-xs btn-outline-dark rounded-1 ms-2 lift ml-3 mb-3" btnName="저장" onEventHandler={useConfirm}/>

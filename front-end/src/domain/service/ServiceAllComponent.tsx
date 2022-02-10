@@ -1,7 +1,7 @@
 import axios from 'axios';
-import TableComponent from 'component/table/TableComponent';
 import moment from 'moment';
-import { useEffect, useState } from 'react';
+import TableComponent from "component/table/TableComponent";
+import { Fragment, useEffect, useState } from 'react';
 import { useTokenDispatch, useTokenState } from 'utils/TokenContext';
 
 /**
@@ -44,17 +44,46 @@ function ServiceAllComponent() {
     
             }); 
     }, []);
-    
-    const column = [
-        { heading : '번호', value :  "" },
-        { heading : '시스템', value : 'sysCd'},
-        { heading : '제목', value : 'ttl' },
-        { heading : '요청일', value : 'registDt'},
-        { heading : '요청자', value : 'reqId'},
-        { heading : '담당자', value : 'requestAttachments: {fileNm }' },
-        { heading : '상태', value : ''}
-    ]
 
+    const columns = [
+        {
+          Header: '번호',
+          id: 'index',
+          accessor: (_row: any, i : number) => i + 1 
+        },
+        {
+            Header: '시스템',
+            accessor: 'sysCd',
+        },
+        {
+          Header: '제목',
+          accessor: 'ttl',
+        },
+        {
+            Header : '요청일', id : 'registDt',
+            accessor: a => <Fragment>{moment(a.registDt).format("MM/DD")}</Fragment>
+        },
+        {
+            Header: '요청자',
+            accessor: 'reqId',
+          },
+        {
+            Header: '담당자',
+            id:'requestHistories',
+            accessor: data => 
+                data.requestHistories.map( (item, index) => (
+                    <Fragment key={index}>{item.userId}</Fragment>
+                ))        
+        },
+        {
+            Header: '상태',
+            accessor: data => 
+                data.requestHistories.map( (item, index) => (
+                    <Fragment key={index}>{item.sttsCd}</Fragment>
+                ))
+          }
+    ]
+    
     
     return (
         <section className='pt-4 pt-md-11'>
@@ -82,9 +111,11 @@ function ServiceAllComponent() {
                         <h4>진행 사항</h4>
                     </div>
                     <div>
-                      <TableComponent data={tableData} column={column}/>
+                        <div></div>
+                        <TableComponent data={tableData} columns={columns}/>
                     </div>
                     <div>
+                         {/* <ServiceDetailComponent data={tableData} /> */}
                     </div>
                 </div>
             </div>
