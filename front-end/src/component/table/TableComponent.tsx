@@ -58,7 +58,7 @@ function SampleComponent({ columns, data }) {
           <div>
                     {/* 페이징처리 */}
                     <div className="justify-content-center">
-                        <Pagination total={columns.length} limit={limit} page={page} setPage={setPage} />
+                        <Pagination total={columns.length} limit={limit} page={page} setPage={setPage} chkArr={null} setChkArr={null}/>
                     </div>
                 </div>
         </>

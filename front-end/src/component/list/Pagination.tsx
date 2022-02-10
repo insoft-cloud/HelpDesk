@@ -1,8 +1,14 @@
 import React from "react";
 
-function Pagination({ total, limit, page, setPage }) {
+function Pagination({ total, limit, page, setPage, chkArr, setChkArr}) {
   const numPages = Math.ceil(total / limit);
-
+  function test(){
+    if(chkArr!=null){
+      chkArr.clear()
+      setChkArr(chkArr);
+    }
+    
+}
   return (
       <ul className="pagination pagination-sm justify-content-center">
         <li>
@@ -12,7 +18,7 @@ function Pagination({ total, limit, page, setPage }) {
           .fill(0)
           .map((_, i) => (
             <li key={i + 1}>
-              <button className={"page-item page-link "+(page===i+1?'bg-primary text-white':'')} onClick={() => {setPage(i + 1)}}>
+              <button className={"page-item page-link "+(page===i+1?'bg-primary text-white':'')} onClick={() => {setPage(i + 1); test()}}>
                 {i + 1}
               </button> 
             </li>

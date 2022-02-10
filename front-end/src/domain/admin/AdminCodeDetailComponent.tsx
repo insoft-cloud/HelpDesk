@@ -1,7 +1,8 @@
 import { procGetAxios } from "axios/Axios";
 import AdminButtonComponent from "component/button/AdminButtonComponent";
 import AdminHeaderComponent from "component/layout/AdminHeaderComponent";
-import TableComponent from "component/table/TableComponent";
+import AddRowTableComponent from "component/table/AddRowTableComponent";
+import moment from "moment";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { API_ADMIN_PATH, ContextPath } from "utils/ContextPath";
@@ -20,27 +21,33 @@ function AdminCodeDetailComponent() {
     const navigate = useNavigate();
     const state = useTokenState();
     const [tableData, setTableData] = useState<Object>([]);
+    const [viewData,setViewData] = useState(new Set());
+    const [delData,setDelData] = useState<Set<number>>(new Set());
+    const [text,setText] = useState('');
+    const [date,setDate] = useState(moment().format('YYYY.MM.DD HH:mm'));
     
     useEffect(() => {
         dispatch({ type: 'SET_PAGE', page: "codeDetail"})
         procGetAxios("/user/service/requests/test?day=all", state.token,"application/json",getData);
+        window.onbeforeunload = function () {
+            return '메세지 내용';
+        };
+        window.onhashchange = function() {
+            return "안바뀌나봐";
+        }
     }, [state.token]);
 
     function getData(data) {
     setTableData(data.content)
     }
 
-    const [text,setText] = useState('');
-    console.log(tableData[1]);
-    // setText(tableData[1]['ttl'])
-
     const column = [
-        { heading : '코드', value : 'priortCd'},
-        { heading : '명칭', value : 'sysCd'},
-        { heading : '설명', value : 'ttl'},
-        { heading : '등록자', value : 'registDt'},
-        { heading : '등록일', value : ''},
-        { heading : '삭제', value : ''},
+        { heading : '코드', value : 'cnts',class: "col-md-2 bg-gray"},
+        { heading : '명칭', value : 'ttl',class: "col-md-2 bg-gray"},
+        { heading : '설명', value : 'id',class: "col-md-3 bg-gray"},
+        { heading : '등록자', value : 'reqId',class: "col-md-2 bg-gray"},
+        { heading : '등록일', value : 'registDt',class: "col-md-1 bg-gray"},
+
       ]
 
     return(
@@ -49,24 +56,26 @@ function AdminCodeDetailComponent() {
             <div className="mt-7 mb-3">
                 <ul className="nav">
                     <li className="col-9 align-self-center">항목 이름 <input className="bg-light border-1 text-secondary" value={text} onChange={(event) =>{setText(event.target.value)}} /></li>
-                    <li className="col-3 text-end text-secondary align-self-center">업데이트 : '2022-02-07'</li>
+                    <li className="col-3 text-end text-secondary align-self-center">업데이트 : {date}</li>
                 </ul>
             </div>
             <div>
-            {/* <TableComponent data={tableData} column={column}/> */}
+            <AddRowTableComponent data={tableData} column={column} setViewData={setViewData} delData={delData} setDelData={setDelData} />
             </div>
             <div className="d-flex justify-content-end">
-                  <AdminButtonComponent className="btn btn-xs btn-outline-dark rounded-1 ms-2 lift ml-3 mb-3" btnName="저장" onEventHandler={useConfirm}/>
+                  <AdminButtonComponent btnClassName="btn btn-xs btn-outline-dark rounded-1 ms-2 lift ml-3 mb-3" btnName="저장" onEventHandler={useConfirm} url="null"/>
                 </div>
         </div>
     )
 
-    // function del(){
-    //     console.log('del버튼');
-    //   }
-
     function useConfirm(){
+        let data = "";
+        delData.forEach((element) => {
+            data += element+"\n"
+          });
       if(window.confirm("입력하신 내용을 저장하시겠습니까?")){
+         console.log(data);
+         setDate(moment().format('YYYY.MM.DD HH:mm'));
           alert("저장되었습니다");
       }else{
           navigate(ContextPath(API_ADMIN_PATH.codeGroup));
@@ -75,19 +84,3 @@ function AdminCodeDetailComponent() {
 }
 
 export default AdminCodeDetailComponent;
-
- // 감시자 인스턴스 만들기
-    // let observer = new MutationObserver((mutations) => {
-    //     // 노드가 변경 됐을 때의 작업
-    //     alert('DOM 변경 감지');
-    // })
-
-    // 감시자의 설정
-    // let option = {
-    //     attributes: true,
-    //     childList: true,
-    //     characterData: true
-    // };
-
-    // 대상 노드에 감시자 전달
-    // observer.observe(target,option);
