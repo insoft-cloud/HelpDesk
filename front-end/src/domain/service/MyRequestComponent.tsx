@@ -63,8 +63,8 @@ import { useTokenState } from "utils/TokenContext";
             accessor: a => <Fragment>{moment(a.registDt).format("MM/DD")}</Fragment>
         },
         {
-            Header: '목표일',
-            accessor:  a => <Fragment>{moment().format("MM/DD")}</Fragment>
+            Header: '목표일', id : 'goalDt',
+            accessor:  a => <Fragment>{ (a.goalDt) != null ? moment(a.goalDt).format("MM/DD") : null}</Fragment>
           },
         {
             Header: '상태',
