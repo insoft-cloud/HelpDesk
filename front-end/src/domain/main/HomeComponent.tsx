@@ -47,7 +47,7 @@ function HomeComponent() {
 
             <div className="text-center text-md-start main_btn">
                 <p>
-                    <ButtonComponent btnName='신규 서비스 요청 작성' url="/" btnClassName="btn btn-primary shadow lift" />
+                    <ButtonComponent btnName='신규 서비스 요청 작성' url={ContextPath(API_DOMAIN_PATH.serviceRequest)} btnClassName="btn btn-primary shadow lift" />
                 </p>
                 <p>
                     <ButtonComponent btnName='서비스 요청 진행사항 확인' url={ContextPath(API_DOMAIN_PATH.myWork)} btnClassName="btn btn-primary-soft lift" />

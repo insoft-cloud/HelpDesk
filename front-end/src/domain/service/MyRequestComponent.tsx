@@ -6,6 +6,9 @@ import { Fragment, useEffect, useState } from "react";
 import { API_DOMAIN_PATH, ContextPath } from "utils/ContextPath";
 import { useTokenState } from "utils/TokenContext";
 import ServiceDetailComponent from "component/table/ServiceDetailComponent";
+import "assets/css/theme.bundle.css";
+import "assets/css/style.css";
+import "assets/css/libs.bundle.css";
 
 
 /**
@@ -21,6 +24,7 @@ import ServiceDetailComponent from "component/table/ServiceDetailComponent";
     const nowTime = moment().format('YYYY년 MM월 DD일 HH:mm');
 
     const state = useTokenState();
+    const [id, setId] = useState();
     const [tableData, setTableData] = useState([]);
 
     useEffect(() => {
@@ -34,8 +38,8 @@ import ServiceDetailComponent from "component/table/ServiceDetailComponent";
             .then(({data}) => {
                 setTableData(data.content)
 
-                console.log(data)                
-                console.log(data.content)
+//                console.log(data)                
+//                console.log(data.content)  
 
             })
             .catch(function (error:any){
@@ -49,7 +53,7 @@ import ServiceDetailComponent from "component/table/ServiceDetailComponent";
         {
           Header: '번호',
           id: 'index',
-          accessor: (_row: any, i : number) => i + 1 
+          accessor: (_row: any, i : number) => i + 1
         },
         {
             Header: '유형',
@@ -57,12 +61,12 @@ import ServiceDetailComponent from "component/table/ServiceDetailComponent";
         },
         {
           Header: '제목', id: 'ttl',
-          accessor : a => <button onClick={()=>{}}>{a.ttl}</button>
+          accessor : a => <button className="btn btn-link" onClick={() =>test(a.id) }>{a.ttl}</button>
 
         },
         {
             Header : '요청일', id : 'registDt',
-            accessor: a => <Fragment>{moment(a.registDt).format("MM/DD")}</Fragment>
+            accessor: a => <Fragment >{moment(a.registDt).format("MM/DD")}</Fragment>
         },
         {
             Header: '목표일', id : 'goalDt',
@@ -80,48 +84,151 @@ import ServiceDetailComponent from "component/table/ServiceDetailComponent";
             accessor: '',
         }
     ]
-
     
 
-    return (
-        <section className='pt-4 pt-md-11'>
-          <div className="container">
-           <div className="row align-items-center">
-            
-            <div>
-                <h1>서비스 요청 현황</h1>
-                <hr></hr>
-                <p>나의 업무 및 요청의 진행 현황을 확인할 수 있습니다.</p>
-            </div>
+     const test = (data) => {
+         setId(data)
+     };
 
-            <div>
-                <div>
-                    <ul className='list mb-0 list-group list-group-horizontal'>
-                        <li className='list-group-item'>
-                            <ButtonComponent url={ContextPath(API_DOMAIN_PATH.myWork)} btnName='담당 업무' btnClassName='list-link' />
+     
+  const styles = {
+    height: "calc(100vh - 290px);" } as const
+
+     
+    //  console.log('넘겨주는======'+id)
+
+
+
+    return (
+        <section>
+        <header className="pt-7 pb-7 d-md-block overlay overlay-black overlay-60 header_bg">
+           <div className="content_wrap">
+           <div className="row align-items-center">
+           <div className="col text-center">
+            
+           {/* Heading  */}
+                <h1 className="fw-bold text-white mb-2">서비스 요청 현황</h1>
+
+                <p className="fs-lg text-white-75 mb-0">나의 업무 및 요청의 진행 현황을 확인할 수 있습니다.</p>
+            
+            </div>
+            </div>
+            </div>
+        </header>
+            
+            
+            
+        <div className="content_wrap">
+                
+                    <ul className="my_desk nav nav-pills mb-3 mt-5 justify-content-center">
+                        <li className="nav-item">
+                            <ButtonComponent url={ContextPath(API_DOMAIN_PATH.myWork)} btnName='담당 업무' btnClassName='nav-link' />
                         </li>
-                        <li className='list-group-item'>
-                            <ButtonComponent url={ContextPath(API_DOMAIN_PATH.myRequest)} btnName='내 요청' btnClassName='list-link' />
+                        <li className='nav-item'>
+                            <ButtonComponent url={ContextPath(API_DOMAIN_PATH.myRequest)} btnName='내 요청' btnClassName='nav-link active' />
                         </li>
                     </ul>
-                </div>
-                <div>
-                    <div>
+            
+
+                <div className="d-flex align-items-center justify-content-between">
+                    <div className="fs-sm">
                         {nowTime} 업데이트
                     </div>
                     <div>
-                        <div>
-                            <TableComponent data={tableData} columns={columns}/>
-                        </div>
-
-                        <div>
-                            <ServiceDetailComponent data={tableData}/>
-                        </div>
+                        <button className="btn btn-outline-primary btn-xs mb-1">오늘</button>
+                        <button className="btn btn-outline-primary btn-xs mb-1">1주일</button>
+                        <button className="btn btn-outline-primary btn-xs mb-1">1개월</button>
+                        <button className="btn btn-outline-primary btn-xs mb-1">전체</button>
+                        <button type="button" className="btn btn-primary btn-xs mb-1">
+                          <span data-bs-toggle="tooltip" data-placement="top" title="통계">
+                            <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <g fill="none" fill-rule="evenodd"><path d="M0 0h24v24H0z"/>
+                                <path d="M5 19h15a1 1 0 010 2H4a1 1 0 01-1-1V4a1 1 0 112 0v15z" fill="#fff"/>
+                                <path d="M8.73 14.684a1 1 0 11-1.46-1.368l3.75-4a1 1 0 011.38-.077l2.959 2.526 3.856-4.885a1 1 0 011.57 1.24l-4.5 5.7a1 1 0 01-1.434.14l-3.024-2.58-3.097 3.304z" fill="#fff" opacity=".6"/>
+                            </g>
+                            </svg>
+                        </span>
+                        </button>
                     </div>
                 </div>
-            </div>
-           </div>
-          </div>
+
+
+            <div className="row mt-7 help_desk">
+                    
+
+                    <div className="col-12 col-md-6 border-right">
+            
+                        <div className="row mb-3 align-items-center">
+                         <div className="col-auto">
+                            <div className="icon-circle bg-primary text-white">
+                            <i className="fe fe-chevrons-right"></i>
+                            </div>
+                         </div>
+                            <div className="col ms-n5">
+                                <h3 className="mb-0">나의 업무 현황  <span className="fs-sm text-primary-desat">(신규 배정 : 2건)</span></h3>
+                            </div>
+                        </div> 
+
+                        <div className="d-flex card shadow">
+                        <div className="card-footer">
+                            <div className="col_5 text-center">
+                            <div className="border-right cursor-pointer">
+                                <h3 className="fs-1 text-primary">7</h3>
+                                <p className="mb-0 fs-sm text-muted">전체</p>
+                            </div>
+                            <div className="border-right cursor-pointer">
+                                <h3 className="fs-1 text-primary-desat">2</h3>
+                                <p className="mb-0 fs-sm text-muted">신규</p>
+                            </div>
+                            <div className="border-right cursor-pointer">
+                                <h3 className="fs-1 text-success">13</h3>
+                                <p className="mb-0 fs-sm text-muted">진행</p>
+                            </div>
+                            <div className="border-right cursor-pointer">
+                                <h3 className="fs-1 text-danger">40</h3>
+                                <p className="mb-0 fs-sm text-muted">완료</p>
+                            </div>
+                            <div className="cursor-pointer">
+                                <h3 className="fs-1 text-muted">3</h3>
+                                <p className="mb-0 fs-sm text-muted">보류</p>
+                            </div>
+                            </div>
+                        <div>
+                        </div>
+                        </div>
+                        </div>
+                    
+                    
+
+
+                    <div className="card mt-3">
+                        <div className="card-body">
+                            <TableComponent data={tableData} columns={columns}/>
+                            </div>
+                    </div>
+                </div>
+            
+
+                    <div  className="col-12 col-md-6 pl00">
+                        <div className="row mb-3 align-items-center pl30">
+                            <div className="col-auto">
+                                <div className="icon-circle bg-primary text-white">
+                                <i className="fe fe-chevrons-right"></i>
+                                </div>
+
+                            </div>
+                            <div className="col ms-n5">
+                                <h3 className="mb-0">서비스 요청 상세 정보</h3>
+                            </div>
+                        </div>
+                        <div className="scroll_y pd30 pt00" style={styles}>
+                            <div className="card shadow">
+                            <ServiceDetailComponent id ={ id } />
+                            </div>
+                        </div>
+                    </div>
+                </div>                        
+        </div>
         </section>
     )
 }

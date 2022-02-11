@@ -23,5 +23,8 @@ export const API_DOMAIN_PATH = {
     serviceAll : "/serviceAll",
     notice : "/notice",
     myWork : "/myWork", 
-    myRequest : "/myRequest"
+    myRequest : "/myRequest",
+    
+    serviceRequest: "/serviceRequest"
+
 }

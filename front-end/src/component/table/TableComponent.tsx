@@ -1,6 +1,9 @@
+
+
 import Pagination from 'component/list/Pagination';
 import { useState } from 'react';
 import { useSortBy, useTable } from 'react-table';
+
 
 
 /**
@@ -21,21 +24,30 @@ function SampleComponent({ columns, data }) {
         prepareRow,
       } = useTable({ columns, data }, useSortBy);
 
-      const limit = 10; // 표시될 컨텐츠 수
+      const limit = 7; // 표시될 컨텐츠 수
       const [page, setPage] = useState(1);
       const offset = (page - 1) * limit;
     
       return (
         <>
-          <div>
-            목록({data.length})
+          <div className="d-flex justify-content-between mb-2">
+            <span>
+              목록({data.length})
+            </span>
+            <div className="col-auto ms-auto">
+              <select className="form-select form-select-xs" data-choices>
+                      <option selected>전체</option>
+              </select>
+            </div>
           </div>
-          <table {...getTableProps()} className="table table-sm table-responsive table-bordered border-dark text-center">
+
+          <div className="table-responsive fs-sm">
+          <table className="table table-striped border-top" {...getTableProps()} >
             <thead>
               {headerGroups.map((headerGroup) => (
                 <tr {...headerGroup.getHeaderGroupProps()}>
                   {headerGroup.headers.map((column) => (
-                        <th {...column.getHeaderProps()}>
+                        <th scope="col" {...column.getHeaderProps()}>
                       {column.render("Header")}
                     </th>
                   ))}
@@ -48,19 +60,22 @@ function SampleComponent({ columns, data }) {
                 return (
                   <tr {...row.getRowProps()}>
                     {row.cells.map((cell) => (
-                      <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                      <td className="text-center" {...cell.getCellProps()}>{cell.render("Cell")}</td>
                     ))}
                   </tr>
                 );
               }).slice(offset,offset+limit)}
             </tbody>
           </table>
-          <div>
+          </div>
+       
+              
                     {/* 페이징처리 */}
-                    <div className="justify-content-center">
+                    <div className="d-flex justify-content-center">
+                      <nav aria-label="Page navigation example">
                         <Pagination total={columns.length} limit={limit} page={page} setPage={setPage} chkArr={null} setChkArr={null}/>
+                      </nav>
                     </div>
-                </div>
         </>
       );
     }
