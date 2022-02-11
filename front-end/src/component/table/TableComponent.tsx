@@ -73,7 +73,7 @@ function SampleComponent({ columns, data }) {
                     {/* 페이징처리 */}
                     <div className="d-flex justify-content-center">
                       <nav aria-label="Page navigation example">
-                        <Pagination total={columns.length} limit={limit} page={page} setPage={setPage} chkArr={null} setChkArr={null}/>
+                        <Pagination total={data.length} limit={limit} page={page} setPage={setPage} chkArr={null} setChkArr={null}/>
                       </nav>
                     </div>
         </>

@@ -4,7 +4,7 @@ import moment from "moment"
 import TableComponent from "component/table/TableComponent";
 import { Fragment, useEffect, useState } from "react";
 import { API_DOMAIN_PATH, ContextPath } from "utils/ContextPath";
-import { useTokenState } from "utils/TokenContext";
+import { useTokenDispatch, useTokenState } from "utils/TokenContext";
 import ServiceDetailComponent from "component/table/ServiceDetailComponent";
 import "assets/css/theme.bundle.css";
 import "assets/css/style.css";
@@ -19,8 +19,7 @@ import "assets/css/libs.bundle.css";
  * @description : 요청 현황 > 내 요청 화면 컴포넌트
  */
 
- function MyRequestComponent() {    
-
+ function MyRequestComponent() {
     const nowTime = moment().format('YYYY년 MM월 DD일 HH:mm');
 
     const state = useTokenState();
@@ -173,23 +172,23 @@ import "assets/css/libs.bundle.css";
                         <div className="card-footer">
                             <div className="col_5 text-center">
                             <div className="border-right cursor-pointer">
-                                <h3 className="fs-1 text-primary">7</h3>
+                                <h3 className="fs-1 text-primary">{tableData.length}</h3>
                                 <p className="mb-0 fs-sm text-muted">전체</p>
                             </div>
                             <div className="border-right cursor-pointer">
-                                <h3 className="fs-1 text-primary-desat">2</h3>
+                                <h3 className="fs-1 text-primary-desat">0</h3>
                                 <p className="mb-0 fs-sm text-muted">신규</p>
                             </div>
                             <div className="border-right cursor-pointer">
-                                <h3 className="fs-1 text-success">13</h3>
+                                <h3 className="fs-1 text-success">0</h3>
                                 <p className="mb-0 fs-sm text-muted">진행</p>
                             </div>
                             <div className="border-right cursor-pointer">
-                                <h3 className="fs-1 text-danger">40</h3>
+                                <h3 className="fs-1 text-danger">0</h3>
                                 <p className="mb-0 fs-sm text-muted">완료</p>
                             </div>
                             <div className="cursor-pointer">
-                                <h3 className="fs-1 text-muted">3</h3>
+                                <h3 className="fs-1 text-muted">0</h3>
                                 <p className="mb-0 fs-sm text-muted">보류</p>
                             </div>
                             </div>
