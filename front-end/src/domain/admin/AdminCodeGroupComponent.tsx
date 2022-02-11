@@ -1,6 +1,6 @@
 import AdminHeaderComponent from 'component/layout/AdminHeaderComponent';
 import AdminButtonComponent from 'component/button/AdminButtonComponent';
-import { useEffect, useState} from 'react';
+import { useEffect, useState,useMemo} from 'react';
 import { API_ADMIN_PATH, ContextPath } from 'utils/ContextPath';
 import { useTokenDispatch, useTokenState} from 'utils/TokenContext';
 import { procGetAxios } from 'axios/Axios';
@@ -22,13 +22,10 @@ function AdminCodeGroupComponent() {
   const [tableData,setTableData] = useState<Object>([]);
   const [contentType] = useState("application/json");
   const [url] = useState("/user/service/requests/test?day=all");
-  const [chkArr, setChkArr] = useState<Set<number>>(new Set());
+  const [chkNums, setChkNums] = useState<Array<number>>(new Array());
   const navigate = useNavigate();
   const [path] = useState('null');
 
-  // console.log('-------여기-------')
-  // console.log(adminYn);
- 
     useEffect(() => {
       dispatch({ type: 'SET_PAGE', page: "codeGroup"})
       procGetAxios(url,state.token,contentType,getData);
@@ -39,23 +36,13 @@ function AdminCodeGroupComponent() {
       setTableData(data.content)
     }
 
-    const column = [
-      { heading : '코드', value : 'id'},
-      { heading : '항목', value : 'sysCd'},
-      { heading : '등록자', value : 'ttl'},
-      { heading : '등록일', value : 'registDt'},
-      
-    ]
-    
-    
-    // useEffect(() => {
-    //   if(tableData[1].requestAttachments[0].id){
-    //     console.log(tableData[1].requestAttachments[0].id);
-    //   }
-    // },[tableData[1].requestAttachments[0].id]);
-
-    
-    
+    const columns = useMemo(
+      () => [
+        {Header : "코드",accessor: "id"},
+        {Header : "항목",accessor: "sysCd"},
+        {Header : "등록자",accessor: "ttl"},
+        {Header : "등록일",accessor: "registDt"},
+      ],[])
 
   return (
         <div className="container">
@@ -66,7 +53,7 @@ function AdminCodeGroupComponent() {
                   <AdminButtonComponent btnClassName="btn btn-xs btn-outline-dark rounded-1 ms-2 ml-3 mb-3" btnName="추가" path={path} onEventHandler={add} url={"null"} />
                 </div>
                 <div>
-                  <CheckTableComponent data={tableData} column={column} chkArr={chkArr} setChkArr={setChkArr}/>
+                  <CheckTableComponent data={tableData} columns={columns} setChkNums={setChkNums}/>
                 </div>
           </div>
         </div>
@@ -76,7 +63,8 @@ function AdminCodeGroupComponent() {
   //삭제
   function del(){
     let arr = "";
-    chkArr.forEach((index)=> {
+
+    chkNums.forEach((index)=> {
       console.log(tableData[index])
       arr += tableData[index].id +", \n"
     })
@@ -85,16 +73,11 @@ function AdminCodeGroupComponent() {
   }
 
   function add(){
-    if(chkArr.size!==1){
+    if(chkNums.length!==1){
       alert('하나 선택');
     }else{
-      navigate(ContextPath(API_ADMIN_PATH.codeDetail));
+      navigate(ContextPath(API_ADMIN_PATH.codeDetail),{});
     }
-    // chkArr.forEach(e=>{
-    //   console.log(e);
-    //   setPath(tableData[e]);
-    // })
-    // console.log(tableData[checkNum]);
   }
 
   

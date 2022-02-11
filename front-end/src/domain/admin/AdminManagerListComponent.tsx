@@ -1,21 +1,29 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import AdminHeaderComponent from "component/layout/AdminHeaderComponent";
 import AdminButtonComponent from "component/button/AdminButtonComponent";
-import CheckTableComponent from "component/table/CheckTableComponent";
 import { useTokenDispatch, useTokenState } from "utils/TokenContext";
 import { procGetAxios } from "axios/Axios";
+import CheckTableComponent from "component/table/CheckTableComponent";
+
+/**
+ * @Project     : HelpDesk
+ * @FileName    : AdminManagerListComponent.tsx
+ * @Date        : 2021-01-27
+ * @author      : 김수진
+ * @description : 서비스운영자 리스트 컴포넌트
+ */
 
 function AdminManagerListComponent(){
 
     let dispatch = useTokenDispatch();
     const state = useTokenState();
     const [tableData, setTableData] = useState([]);
-    const [chkArr, setChkArr] = useState<Set<number>>(new Set());
+    const [chkNums, setChkNums] = useState<Array<number>>(new Array());
     const [isModalOpen,setIsModalOpen] = useState(false);
 
     useEffect(() => {
         dispatch({ type: 'SET_PAGE', page: "codeDetail"})
-        procGetAxios("/user/service/requests/test?day=all", state.token,"application/json",getData);
+        procGetAxios("/user/service/requests/"+state.user+"?day=all", state.token,"application/json",getData);
     }, [state.token]);
 
     function getData(data) {
@@ -26,15 +34,17 @@ function AdminManagerListComponent(){
       setIsModalOpen(!isModalOpen);
       console.log('팝업창 오픈')
      }
-     
-    const column = [
-        { heading : '코드', value : 'priortCd'},
-        { heading : '명칭', value : 'sysCd'},
-        { heading : '설명', value : 'ttl'},
-        { heading : '등록자', value : 'registDt'},
-        { heading : '등록일', value : ''},
-        { heading : '삭제', value : ''},
-      ]  
+
+    const columns = useMemo(
+      () => [
+        {Header : "코드",accessor: "priortCd"},
+        {Header : "명칭",accessor: ""},
+        {Header : "설명",accessor: "ttl"},
+        {Header : "등록자",accessor: ""},
+        {Header : "등록일",accessor: "registDt"},
+        {Header : "삭제",accessor: ""},
+      ],[])
+
 
     return(
         <div className="container">
@@ -44,7 +54,7 @@ function AdminManagerListComponent(){
                 <AdminButtonComponent btnClassName="btn btn-xs btn-outline-dark rounded-1 ms-2 lift ml-3 mb-3" btnName="추가" onEventHandler={openModal} url={"null"}  />
                 </div>
             <div>
-            <CheckTableComponent data={tableData} column={column} chkArr={chkArr} setChkArr={setChkArr}/>
+            <CheckTableComponent data={tableData} columns={columns} setChkNums={setChkNums}/>
             </div>
 
             {/* <React.Fragment>
@@ -58,10 +68,10 @@ function AdminManagerListComponent(){
 
     //삭제
  function del(){
-   if(chkArr.size<=0){
+   if(chkNums.length<=0){
      alert('삭제할 항목에 체크해주세요');
    }else{
-    chkArr.forEach((index)=> {
+    chkNums.forEach((index)=> {
       console.log(tableData[index])
     }) 
    }
