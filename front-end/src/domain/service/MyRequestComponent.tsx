@@ -6,9 +6,9 @@ import { Fragment, useEffect, useState } from "react";
 import { API_DOMAIN_PATH, ContextPath } from "utils/ContextPath";
 import { useTokenDispatch, useTokenState } from "utils/TokenContext";
 import ServiceDetailComponent from "component/table/ServiceDetailComponent";
-import "assets/css/theme.bundle.css";
-import "assets/css/style.css";
 import "assets/css/libs.bundle.css";
+import './MyRequestComponent.css';
+import TittleComponent from "component/div/TittleComponent";
 
 
 /**
@@ -46,7 +46,7 @@ import "assets/css/libs.bundle.css";
                 console.log(error)
     
             }); 
-    }, [state.user, state.token]);
+    }, [state.user]);
 
 
     const columns = [
@@ -101,21 +101,7 @@ import "assets/css/libs.bundle.css";
 
     return (
         <section>
-        <header className="pt-7 pb-7 d-md-block overlay overlay-black overlay-60 header_bg">
-           <div className="content_wrap">
-           <div className="row align-items-center">
-           <div className="col text-center">
-            
-           {/* Heading  */}
-                <h1 className="fw-bold text-white mb-2">서비스 요청 현황</h1>
-
-                <p className="fs-lg text-white-75 mb-0">나의 업무 및 요청의 진행 현황을 확인할 수 있습니다.</p>
-            
-            </div>
-            </div>
-            </div>
-        </header>
-            
+            <TittleComponent tittle={"서비스 요청 현황"} subTittle={"나의 업무 및 요청의 진행 현황을 확인할 수 있습니다."}/>      
             
             
         <div className="content_wrap">
@@ -165,7 +151,7 @@ import "assets/css/libs.bundle.css";
                             </div>
                          </div>
                             <div className="col ms-n5">
-                                <h3 className="mb-0">나의 업무 현황  <span className="fs-sm text-primary-desat">(신규 배정 : 2건)</span></h3>
+                                <h3 className="mb-0">나의 요청 현황</h3>
                             </div>
                         </div> 
 
