@@ -26,7 +26,7 @@ function ServiceDetailComponent ( {id} ){
         }
       })
     .then( function(res){
-      setData(res.data)
+      setData(res.data.id)
       console.log('전달 받는데이터=========')
       console.log(data)
 //        setTest(data.cnts)
@@ -37,34 +37,64 @@ function ServiceDetailComponent ( {id} ){
     })
   }, [id])
 
-  const styles = {
-    height: "calc(100vh - 290px)"}
       
-  return (
-    <>
-      <div className="scroll_y pd30 pt00" style={styles}>
-        <h3>서비스 요청 상세 정보</h3>
-      </div> 
-
+  return ( 
+    <div className="card-body">
+      
         
 
-       {/* {
+       {
          data ? (
           <>
-          <div>
-            내용 : {test}
-             test: {(test : ServiceTableModel) => (<>{test.cnts}</>)}
+                  <div className="d-flex justify-content-between">
+                    <h5><span className="fs-xs text-primary-desat mr10">[완료]</span> 서비스 요청 제목</h5>
+                    <button className="btn btn-success-soft btn-pill btn-xs mb-1">수정</button>
+                  </div>
+                  
+                  <hr className="card-meta-divider mb-2" />
 
-          </div>
-            <div>
-              {data}
-            </div>
-            </>
+              
+                  <hr className="card-meta-divider mb-2" />
+
+                  <div className="fs-sm">
+
+                   
+                    <dl className="row mb-0">
+                      <dt className="col-auto">요청자</dt>
+                      <dd className="col-6 ms-n5">요청자명 : {data} </dd>
+                    </dl>
+                    <dl className="row mb-0">
+                      <dt className="col-auto">시스템</dt>
+                      <dd className="col-6 ms-n5">중소벤처24</dd>
+                    </dl>
+                    <dl className="row mb-0">
+                      <dt className="col-auto">요청일</dt>
+                      <dd className="col-6 ms-n5">2022/01/11  13:22:02</dd>
+                    </dl> 
+
+                    <hr className="card-meta-divider" />
+
+                    <div className="m-3 pb-2">
+                      서비스 요청 내용입니다.
+                      서비스 요청 내용입니다. 서비스 요청 내용입니다.
+                      서비스 요청 내용입니다. 서비스 요청 내용입니다. 서비스 요청 내용입니다. 서비스 요청 내용입니다.
+                      서비스 요청 내용입니다. 서비스 요청 내용입니다.
+                      서비스 요청 내용입니다. 서비스 요청 내용입니다. 서비스 요청 내용입니다.
+                    </div>
+                    <hr className="card-meta-divider" />
+                    <dl className="mb-0">
+                      <dt className="col-auto">첨부파일</dt>
+            
+                    </dl>
+                   
+                  
+                </div>
+              </>
            ) 
            : '목록에서 개별 요청건을 선택하면 상세 정보가 표시됩니다.'
-      } */}
+      }
       
-    </>
+    </div>
   );
 }
 

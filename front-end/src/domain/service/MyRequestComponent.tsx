@@ -20,6 +20,7 @@ import "assets/css/libs.bundle.css";
  */
 
  function MyRequestComponent() {
+    let dispatch = useTokenDispatch()
     const nowTime = moment().format('YYYY년 MM월 DD일 HH:mm');
 
     const state = useTokenState();
@@ -27,7 +28,7 @@ import "assets/css/libs.bundle.css";
     const [tableData, setTableData] = useState([]);
 
     useEffect(() => {
-
+        dispatch({ type: 'SET_PAGE', page: "myRequest"})
         axios.get("/user/service/requests/"+state.user+"?day=all", {
             headers: {
                 'Content-Type' : "application/json",
@@ -45,7 +46,7 @@ import "assets/css/libs.bundle.css";
                 console.log(error)
     
             }); 
-    }, [state]);
+    }, [state.user, state.token]);
 
 
     const columns = [
