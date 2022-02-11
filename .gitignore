@@ -69,4 +69,5 @@ front-end/.idea/
 back-end/.idea/
 back-end/gradle/
 back-end/out/
+back-end/gradlew
 .idea/
