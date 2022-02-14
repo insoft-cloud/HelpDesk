@@ -36,7 +36,7 @@ function SampleComponent({ columns, data }) {
             </span>
             <div className="col-auto ms-auto">
               <select className="form-select form-select-xs" data-choices>
-                      <option selected>전체</option>
+                      <option>전체</option>
               </select>
             </div>
           </div>

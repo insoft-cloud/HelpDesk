@@ -3,6 +3,8 @@ import TittleComponent from 'component/div/TittleComponent';
 import moment from 'moment';
 import { API_DOMAIN_PATH, ContextPath } from 'utils/ContextPath';
 
+
+
 /**
  * @Project     : HelpDesk
  * @FileName    : DashBoardComponent.tsx
@@ -41,7 +43,7 @@ function MyWorkComponent() {
                         <button type="button" className="btn btn-primary btn-xs mb-1">
                           <span data-bs-toggle="tooltip" data-placement="top" title="통계">
                             <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <g fill="none" fill-rule="evenodd"><path d="M0 0h24v24H0z"/>
+                            <g fill="none" fillRule="evenodd"><path d="M0 0h24v24H0z"/>
                                 <path d="M5 19h15a1 1 0 010 2H4a1 1 0 01-1-1V4a1 1 0 112 0v15z" fill="#fff"/>
                                 <path d="M8.73 14.684a1 1 0 11-1.46-1.368l3.75-4a1 1 0 011.38-.077l2.959 2.526 3.856-4.885a1 1 0 011.57 1.24l-4.5 5.7a1 1 0 01-1.434.14l-3.024-2.58-3.097 3.304z" fill="#fff" opacity=".6"/>
                             </g>
