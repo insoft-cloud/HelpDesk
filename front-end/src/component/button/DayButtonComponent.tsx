@@ -1,5 +1,14 @@
 
 
+/**
+ * @Project     : HelpDesk
+ * @FileName    : DashBoardComponent.tsx
+ * @Date        : 2022-02-14
+ * @author      : 김지인
+ * @description : 날짜별 조회 버튼 컴포넌트
+ */
+
+
 export default function DayButtonComponent({ setDay}) {
   return (
       <>    

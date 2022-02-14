@@ -43,8 +43,16 @@ function ServiceDetailComponent ( {id} ){
          data.id != null ? (
           <>
                   <div className="d-flex justify-content-between">
-                    {/* 상태값 없으면 오류 나서 일단 주석처리 {data.requestHistories[0].sttsCd} */}
-                  <h5><span className="fs-xs text-primary-desat mr10">[상태]</span> {data.ttl} </h5>
+                  <h5>
+                     <span className="fs-xs text-primary-desat mr10">
+                        [{data.requestHistories[0].sttsCd === 'n' 
+                        ? '신규' 
+                        : (data.requestHistories[0].sttsCd === 's'
+                        ? '완료'
+                        : (data.requestHistories[0].sttsCd === 't'
+                        ? '진행'
+                        : '보류')) }]</span>
+                        {data.ttl} </h5>
                   <button className="btn btn-success-soft btn-pill btn-xs mb-1">수정</button>
                   </div>
                   

@@ -15,7 +15,7 @@ import DayButtonComponent from "component/button/DayButtonComponent";
 /**
  * @Project     : HelpDesk
  * @FileName    : DashBoardComponent.tsx
- * @Date        : 2021-01-25
+ * @Date        : 2022-01-25
  * @author      : 김지인
  * @description : 요청 현황 > 내 요청 화면 컴포넌트
  */
@@ -75,7 +75,13 @@ import DayButtonComponent from "component/button/DayButtonComponent";
             Header: '상태',
             accessor: data => 
                 data.requestHistories.map( (item, index) => (
-                    <Fragment key={index}>{item.sttsCd}</Fragment>
+                    <Fragment key={index}>{item.sttsCd === 'n' 
+                        ? '신규' 
+                        : (item.sttsCd === 's'
+                        ? '완료'
+                        : (item.sttsCd === 't'
+                        ? '진행'
+                        : '보류'))}</Fragment>
                 ))
           },
         {

@@ -5,6 +5,7 @@ import { Fragment, useEffect, useState } from 'react';
 import { useTokenDispatch, useTokenState } from 'utils/TokenContext';
 import TittleComponent from 'component/div/TittleComponent';
 import "assets/css/libs.bundle.css";
+import ServiceDetailComponent from 'component/service/ServiceDetailComponent';
 
 /**
  * @Project     : HelpDesk
@@ -23,6 +24,7 @@ function ServiceAllComponent() {
     const state = useTokenState();
 
     const [tableData, setTableData] = useState([]);
+    const [id, setId] = useState();
 
     useEffect(() => {
         dispatch({ type: 'SET_PAGE', page: "ServiceAll"})
@@ -45,7 +47,7 @@ function ServiceAllComponent() {
                 console.log(error)
     
             }); 
-    }, []);
+    }, [state.token]);
 
     const columns = [
         {
@@ -58,8 +60,8 @@ function ServiceAllComponent() {
             accessor: 'sysCd',
         },
         {
-          Header: '제목',
-          accessor: 'ttl',
+          Header: '제목', id : 'ttl',
+          accessor : a => <button className="btn btn-link" onClick={() =>setId(a.id) }>{a.ttl}</button>
         },
         {
             Header : '요청일', id : 'registDt',
@@ -122,7 +124,7 @@ function ServiceAllComponent() {
                         <div className="input-group input-group-lg">
                             <div className="col-auto ms-auto" >
 
-                            <select value="전체" className="form-select form-select-lg" data-choices>
+                            <select className="form-select form-select-lg" data-choices>
                                 <option>전체</option>
                             </select>
                             </div>
@@ -212,7 +214,7 @@ function ServiceAllComponent() {
                         </div>
                         <div className="scroll_y pd30 pt00">
                             <div className="card shadow">
-                                {/* <ServiceDetailComponent id ={ id } /> */}
+                                <ServiceDetailComponent id ={ id } />
                             </div>
                         </div>
                     </div>
