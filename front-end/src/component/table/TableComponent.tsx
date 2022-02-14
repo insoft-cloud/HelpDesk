@@ -9,7 +9,7 @@ import { useSortBy, useTable } from 'react-table';
 /**
  * @Project     : HelpDesk
  * @FileName    : TableComponent.tsx
- * @Date        : 2021-02-10
+ * @Date        : 2022-02-10
  * @author      : 김지인
  * @description : 재사용 가능한 테이블 컴포넌트(domin쪽에서 data 받아옴)
  */

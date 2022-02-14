@@ -1,24 +1,26 @@
 import axios from "axios";
-import { ServiceTableModel } from "interface/TableInterface";
 import moment from "moment";
 import { useEffect, useState } from "react";
 import { useTokenState } from "utils/TokenContext";
 
+
+/**
+ * @Project     : HelpDesk
+ * @FileName    : DashBoardComponent.tsx
+ * @Date        : 2022-02-14
+ * @author      : 김지인
+ * @description : 서비스 상세조회 컴포넌트
+ */
+
+
 function ServiceDetailComponent ( {id} ){
-
-  
-  // console.log('넘겨받는========='+id)
-
-  // const matchId = data.find(function(data){ return data.id === id })
 
    const [data, setData] : any = useState({});
   const state = useTokenState();
 
-  const [test, setTest] = useState();
 
   useEffect(() => {
     if(id != null){
-//    axios.get(`/user/service/request/${id}`, {
     axios.get('/user/service/request/'+ id, {
     headers: {
       'Content-Type' : "application/json",
@@ -27,25 +29,14 @@ function ServiceDetailComponent ( {id} ){
       })
     .then( function(res){
       setData(res.data)
-      // console.log('전달 받는데이터=========')
-      // console.log(res.data)
-//        setTest(data.cnts)
-      // console.log('test======'+data)
     })
       .catch(error => {
       console.log(error)
     })
   } }, [id])
 
-  // const [obj] = [...Object.values({data})]
-  console.log('전달 받는데이터=========')
-  // console.log(obj)
-    
-  console.log({data})
-
   return ( 
     <div className="card-body">
-
       
     
          {
@@ -99,68 +90,6 @@ function ServiceDetailComponent ( {id} ){
     </div>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  //   return (
-  //     <>
-  //       <div>
-  //         <h3>서비스 요청 상세 정보</h3>
-  //       </div> 
-
-  //        {
-  //          data ? (
-  //           <>
-  //           <div>
-  //              test: {(test : ServiceTableModel) => (<>{test.cnts}</>)}
-
-  //           </div>
-  //             <div>
-  //               {'상태'} {'서비스 제목'} 
-  //               <button>수정</button>
-  //             </div>
-  //             <div>
-  //                 <div>
-  //                   요청자 : {'요청자명'}
-  //                   시스템 : {'시스템명 ex:중소벤처24'}
-  //                   요청일 : 
-  //                   <p>
-  //                     내용 : 
-  //                   </p>
-  //                 </div>
-  //                 <div>
-  //                   첨부파일
-  //                 </div>
-  //             </div>
-  //             <div>
-  //               서비스 관리
-  //               유형 
-  //             </div>
-  //             </>
-  //         ) : '목록에서 개별 요청건을 선택하면 상세 정보가 표시됩니다.'
-  //       }
-        
-  //     </>
-  //   );
-  // }
-
-
 
 
 export default ServiceDetailComponent;

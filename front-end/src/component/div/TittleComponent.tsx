@@ -1,4 +1,12 @@
-import React from 'react'
+
+/**
+ * @Project     : HelpDesk
+ * @FileName    : DashBoardComponent.tsx
+ * @Date        : 2022-02-14
+ * @author      : 김지인
+ * @description : 도메인 상단에 출력되는 타이틀 컴포넌트
+ */
+
 
 export default function TittleComponent({tittle, subTittle}) {
   return (

@@ -5,10 +5,11 @@ import TableComponent from "component/table/TableComponent";
 import { Fragment, useEffect, useMemo, useState } from "react";
 import { API_DOMAIN_PATH, ContextPath } from "utils/ContextPath";
 import { useTokenDispatch, useTokenState } from "utils/TokenContext";
-import ServiceDetailComponent from "component/table/ServiceDetailComponent";
+import ServiceDetailComponent from "component/service/ServiceDetailComponent";
 import "assets/css/libs.bundle.css";
 import './MyRequestComponent.css';
 import TittleComponent from "component/div/TittleComponent";
+import DayButtonComponent from "component/button/DayButtonComponent";
 
 
 /**
@@ -26,10 +27,12 @@ import TittleComponent from "component/div/TittleComponent";
     const state = useTokenState();
     const [id, setId] = useState();
     const [tableData, setTableData] = useState([]);
+    const [day, setDay] = useState('?day=all');
+
 
     useEffect(() => {
         dispatch({ type: 'SET_PAGE', page: "myRequest"})
-        axios.get("/user/service/requests/"+state.user+"?day=all", {
+        axios.get("/user/service/requests/"+state.user+`${day}`, {
             headers: {
                 'Content-Type' : "application/json",
                 'X-AUTH-TOKEN' : state.token + ""
@@ -43,7 +46,7 @@ import TittleComponent from "component/div/TittleComponent";
                 console.log(error)
     
             }); 
-    }, [state.user]);
+    }, [state.user, day], );
 
     const columns = useMemo( () => [
         {
@@ -104,26 +107,12 @@ import TittleComponent from "component/div/TittleComponent";
                         {nowTime} 업데이트
                     </div>
                     <div>
-                        <button className="btn btn-outline-primary btn-xs mb-1">오늘</button>
-                        <button className="btn btn-outline-primary btn-xs mb-1">1주일</button>
-                        <button className="btn btn-outline-primary btn-xs mb-1">1개월</button>
-                        <button className="btn btn-outline-primary btn-xs mb-1">전체</button>
-                        <button type="button" className="btn btn-primary btn-xs mb-1">
-                          <span data-bs-toggle="tooltip" data-placement="top" title="통계">
-                            <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <g fill="none" fillRule="evenodd"><path d="M0 0h24v24H0z"/>
-                                <path d="M5 19h15a1 1 0 010 2H4a1 1 0 01-1-1V4a1 1 0 112 0v15z" fill="#fff"/>
-                                <path d="M8.73 14.684a1 1 0 11-1.46-1.368l3.75-4a1 1 0 011.38-.077l2.959 2.526 3.856-4.885a1 1 0 011.57 1.24l-4.5 5.7a1 1 0 01-1.434.14l-3.024-2.58-3.097 3.304z" fill="#fff" opacity=".6"/>
-                            </g>
-                            </svg>
-                        </span>
-                        </button>
+                        <DayButtonComponent setDay={setDay} />
                     </div>
                 </div>
 
 
             <div className="row mt-7 help_desk">
-                    
 
                     <div className="col-12 col-md-6 border-right">
             
@@ -162,11 +151,8 @@ import TittleComponent from "component/div/TittleComponent";
                                 <p className="mb-0 fs-sm text-muted">보류</p>
                             </div>
                             </div>
-                        <div>
                         </div>
-                        </div>
-                        </div>
-                    
+                        </div>                 
                     
 
 

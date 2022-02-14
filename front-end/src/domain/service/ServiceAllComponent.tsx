@@ -9,7 +9,7 @@ import "assets/css/libs.bundle.css";
 /**
  * @Project     : HelpDesk
  * @FileName    : ServiceAllComponent.tsx
- * @Date        : 2021-01-25
+ * @Date        : 2022-01-25
  * @author      : 김지인
  * @description : 전체 서비스 화면 컴포넌트
  */
