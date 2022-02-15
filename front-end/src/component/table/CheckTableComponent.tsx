@@ -1,126 +1,73 @@
-import Pagination from "component/list/Pagination"
-import  { useState } from "react";
+import Pagination from "component/list/Pagination";
+import { useState } from "react";
+import { useTable } from "react-table";
 
-const CheckTableComponent = ({column, data, chkArr, setChkArr}) => {   
+/**
+ * @Project     : HelpDesk
+ * @FileName    : CheckTableComponent.tsx
+ * @Date        : 2022-02-11
+ * @author      : 김수진
+ * @description : 체크박스적용 테이블 컴포넌트(컬럼,데이터,화면표시갯수,단어검색,개별선택,전체선택,체크된번호)
+ */
+
+function CheckTableComponent({columns,data,limitCnt,word,changeHandler,allCheck,chkArr}){
+ 
     //페이징
-    const limit = 5; 
+    const limit = parseInt(limitCnt); 
     const [page, setPage] = useState(1);
     const offset = (page - 1) * limit;
-
-    //체크박스
-    const [boxChecked, setBoxChecked] = useState(false);
-    const [isClicked,setIsClicked] = useState(false)
-    const [allChecked,setAllChecked] = useState(false);
     
-    function selectAll(e){
-        let data = document.getElementsByName('child');
-        
-        setBoxChecked(e);
-        setAllChecked(e);
-        
-        if(e){
-            setChkArr(new Set())
-            for(let idx=0; idx<data.length; idx++){
-                chkArr.add(idx);
-            }
-            setChkArr(chkArr);
-        }else{
-            chkArr.clear();
-            setChkArr(chkArr);
-        }
-        console.log(chkArr);
-        
-        // let idx = 0;
-        // console.log(idx);
-        // if(e){
-        //     data.forEach(element => {  
-        //         element.setAttribute('checked','checked');
-        //         individualCheck(true,idx)
-        //         idx++;
-        //         console.log(idx);
-        //     })
-        // }else{
-        //     data.forEach(element => {
-        //         element.removeAttribute('checked');
-        //         individualCheck(false,idx);
-        //         idx++;
-        //         console.log(idx);
-        //     })
-        // }
-    
-        
-    
-    }
-    function testClick(){
-        setIsClicked(!isClicked);
-    }
-        
-    function individualCheck(value,index){
-        let data = document.getElementById(index);
-        setIsClicked(false);
-        setBoxChecked(false);
-        console.log(value);
-        if(value){
-            chkArr.add(index);
-            setChkArr(chkArr);
-            
-        }else{
-            chkArr.delete(index);
-            setChkArr(chkArr);
-        }
-        console.log(chkArr);
-}  
+    //테이블
+    const {
+        getTableProps,
+        getTableBodyProps,
+        headerGroups,
+        rows,
+        prepareRow,
+    } = useTable({
+        columns,
+        data,
+    });
 
-
-    return (
-        <>
-        <div>
-            <table  className="table table-sm table-responsive table-bordered border-dark text-center">
-                <thead className="table-secondary border-dark">
-                <tr>
-                    <th><input type="checkbox" name="selectAllBox" onChange={e=> selectAll(e.target.checked)} onClick={testClick} checked={boxChecked} /></th>
-                   {column.map((item, index)=><TableHeadItem item={item} key={index} />)}
-                </tr>
+    return(
+        <div className="table-responsive fs-sm">
+            <table className="table table-striped border-top border" {...getTableProps()}>
+                <thead>
+                    {headerGroups.map(headerGroup => (
+                        <tr {...headerGroup.getHeaderGroupProps()}>
+                            <th><input type="checkbox" onChange={e=>allCheck(e.target.checked)}  checked={chkArr.length===0?false:chkArr.length===data.length?true:false}/></th> 
+                            {headerGroup.headers.map(column => (
+                                <th {...column.getHeaderProps()}>
+                                    {column.render('Header')}
+                                </th>
+                            ))}
+                        </tr>
+                    ))}
                 </thead>
-                <tbody>
-                    {data.map((item, index)=><TableRow item={item} column={column} idx={index} key={index} allChecked={allChecked} isClicked={isClicked} chkArr={chkArr} individualCheck={individualCheck} />).slice(offset, offset + limit)}
+                <tbody {...getTableBodyProps()}>
+                    {rows.filter(x=>x.values.ttl.includes(word)).map((row,i) => {
+                        prepareRow(row)
+                        return (
+                            <tr {...row.getRowProps()}>
+                                <td className="text-center"><input type="checkbox" onChange={e=> changeHandler(e.target.checked,i) }checked={chkArr.includes(i)?true:false} /></td>
+                                {row.cells.map(cell => {
+                                    return <td {...cell.getCellProps()}>
+                                        {cell.render('Cell')}
+                                    </td>
+                                })}
+                            </tr>
+                        )
+                    }).slice(offset, offset + limit)}
                 </tbody>
-            </table>                
-
-             {/* 페이징처리 */}
-             <div className="justify-content-center">
-                <Pagination total={data.length} limit={limit} page={page} setPage={setPage} chkArr={chkArr} setChkArr={setChkArr} />
+            </table>
+            {/* 페이징처리 */}
+            <div className="d-flex justify-content-center">
+                <nav aria-label="Page navigation example">
+                    <Pagination total={data.length} limit={limit} page={page} setPage={setPage} chkArr={null} setChkArr={null} />
+                </nav>
             </div>
         </div>
-        </>
     )
-
 }
-
-
-const TableHeadItem = ({item}) => <th>{item.heading}</th>
-
-const TableRow = ({ item,idx, column,individualCheck,chkArr,allChecked,isClicked}) => (    
-<tr>
-    <td key={item.index}>
-        {(isClicked)?<input type="checkbox" name="child" id={idx} onChange={e=>individualCheck(e.target.checked,idx)} checked={allChecked} />
-        :<input type="checkbox" name="child" onChange={e=>individualCheck(e.target.checked,idx)}  />}
-        
-        </td>
-    {column.map((columnItem, index : any) =>{
-        // console.log(item[`${columnItem.value}`])
-        return <td key={index}>{item[`${columnItem.value}`]}</td>
-        
-    })}
-    {/* <td>{item['requestAttachments'][0].id}</td> */}
-    {/* console.log(item['requestAttachments'][0]); */}
-    {/* {column.map((columnItem, index : any) =>{
-        console.log(item[`${columnItem.value}`]);
-        console.log()
-        // (item[`${columnItem.value}`]=='requestAttachments'?columnItem.value.map((data,i : any) =>{
-        //     <td>{data.id}</td>}):<td>{item[`${columnItem.value}`]}</td>)
-        })} */}
-</tr>
-)
 
 export default CheckTableComponent;

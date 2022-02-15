@@ -5,13 +5,13 @@ import React, { forwardRef, MutableRefObject, useEffect } from "react";
 export type ServiceTableModel = {
     
     cnts : string | undefined, //내용
-    priortCd : string | undefined, //우선순위
-    ttl : string | undefined, //제목
-    registDt: string | undefined, //등록일
-    updateDt? : string | undefined, //수정일
-    tyCd : string | undefined, //유형
-    sysCd : string | undefined, //시스템명(ex 중소벤처)
-    reqId : string | undefined //등록자(=요청자) 아이디
+    // priortCd : string | undefined, //우선순위
+    // ttl : string | undefined, //제목
+    // registDt: string | undefined, //등록일
+    // updateDt? : string | undefined, //수정일
+    // tyCd : string | undefined, //유형
+    // sysCd : string | undefined, //시스템명(ex 중소벤처)
+    // reqId : string | undefined //등록자(=요청자) 아이디
 
 }
 

@@ -13,7 +13,7 @@ import ServiceAllComponent from 'domain/service/ServiceAllComponent';
 import AdminCodeGroupComponent from 'domain/admin/AdminCodeGroupComponent';
 import AdminCodeDetailComponent from 'domain/admin/AdminCodeDetailComponent';
 import AdminManagerListComponent from 'domain/admin/AdminManagerListComponent';
-import ServiceRequestComponent from 'component/form/ServiceRequestComponent';
+import ServiceRequestComponent from 'domain/service/ServiceRequestComponent';
 
 function App() {
 

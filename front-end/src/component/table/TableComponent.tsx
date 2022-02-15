@@ -9,7 +9,7 @@ import { useSortBy, useTable } from 'react-table';
 /**
  * @Project     : HelpDesk
  * @FileName    : TableComponent.tsx
- * @Date        : 2021-02-10
+ * @Date        : 2022-02-10
  * @author      : 김지인
  * @description : 재사용 가능한 테이블 컴포넌트(domin쪽에서 data 받아옴)
  */
@@ -36,7 +36,7 @@ function SampleComponent({ columns, data }) {
             </span>
             <div className="col-auto ms-auto">
               <select className="form-select form-select-xs" data-choices>
-                      <option selected>전체</option>
+                      <option>전체</option>
               </select>
             </div>
           </div>
@@ -73,7 +73,7 @@ function SampleComponent({ columns, data }) {
                     {/* 페이징처리 */}
                     <div className="d-flex justify-content-center">
                       <nav aria-label="Page navigation example">
-                        <Pagination total={columns.length} limit={limit} page={page} setPage={setPage} chkArr={null} setChkArr={null}/>
+                        <Pagination total={data.length} limit={limit} page={page} setPage={setPage} chkArr={null} setChkArr={null}/>
                       </nav>
                     </div>
         </>

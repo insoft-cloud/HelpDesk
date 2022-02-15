@@ -2,34 +2,37 @@ import axios from "axios";
 import { ButtonComponent } from "component/button/ButtonComponent";
 import moment from "moment"
 import TableComponent from "component/table/TableComponent";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 import { API_DOMAIN_PATH, ContextPath } from "utils/ContextPath";
-import { useTokenState } from "utils/TokenContext";
-import ServiceDetailComponent from "component/table/ServiceDetailComponent";
-import "assets/css/theme.bundle.css";
-import "assets/css/style.css";
+import { useTokenDispatch, useTokenState } from "utils/TokenContext";
+import ServiceDetailComponent from "component/service/ServiceDetailComponent";
 import "assets/css/libs.bundle.css";
+import './MyRequestComponent.css';
+import TittleComponent from "component/div/TittleComponent";
+import DayButtonComponent from "component/button/DayButtonComponent";
 
 
 /**
  * @Project     : HelpDesk
  * @FileName    : DashBoardComponent.tsx
- * @Date        : 2021-01-25
+ * @Date        : 2022-01-25
  * @author      : 김지인
  * @description : 요청 현황 > 내 요청 화면 컴포넌트
  */
 
- function MyRequestComponent() {    
-
+ function MyRequestComponent() {
+    let dispatch = useTokenDispatch()
     const nowTime = moment().format('YYYY년 MM월 DD일 HH:mm');
 
     const state = useTokenState();
     const [id, setId] = useState();
     const [tableData, setTableData] = useState([]);
+    const [day, setDay] = useState('?day=all');
+
 
     useEffect(() => {
-
-        axios.get("/user/service/requests/"+state.user+"?day=all", {
+        dispatch({ type: 'SET_PAGE', page: "myRequest"})
+        axios.get("/user/service/requests/"+state.user+`${day}`, {
             headers: {
                 'Content-Type' : "application/json",
                 'X-AUTH-TOKEN' : state.token + ""
@@ -38,18 +41,14 @@ import "assets/css/libs.bundle.css";
             .then(({data}) => {
                 setTableData(data.content)
 
-//                console.log(data)                
-//                console.log(data.content)  
-
             })
             .catch(function (error:any){
                 console.log(error)
     
             }); 
-    }, [state]);
+    }, [state.user, day], );
 
-
-    const columns = [
+    const columns = useMemo( () => [
         {
           Header: '번호',
           id: 'index',
@@ -61,7 +60,7 @@ import "assets/css/libs.bundle.css";
         },
         {
           Header: '제목', id: 'ttl',
-          accessor : a => <button className="btn btn-link" onClick={() =>test(a.id) }>{a.ttl}</button>
+          accessor : a => <button className="btn btn-link" onClick={() =>setId(a.id) }>{a.ttl}</button>
 
         },
         {
@@ -76,46 +75,25 @@ import "assets/css/libs.bundle.css";
             Header: '상태',
             accessor: data => 
                 data.requestHistories.map( (item, index) => (
-                    <Fragment key={index}>{item.sttsCd}</Fragment>
+                    <Fragment key={index}>{item.sttsCd === 'n' 
+                        ? '신규' 
+                        : (item.sttsCd === 's'
+                        ? '완료'
+                        : (item.sttsCd === 't'
+                        ? '진행'
+                        : '보류'))}</Fragment>
                 ))
           },
         {
             Header: '평가',
             accessor: '',
         }
-    ]
+    ], [])
     
-
-     const test = (data) => {
-         setId(data)
-     };
-
-     
-  const styles = {
-    height: "calc(100vh - 290px);" } as const
-
-     
-    //  console.log('넘겨주는======'+id)
-
-
 
     return (
         <section>
-        <header className="pt-7 pb-7 d-md-block overlay overlay-black overlay-60 header_bg">
-           <div className="content_wrap">
-           <div className="row align-items-center">
-           <div className="col text-center">
-            
-           {/* Heading  */}
-                <h1 className="fw-bold text-white mb-2">서비스 요청 현황</h1>
-
-                <p className="fs-lg text-white-75 mb-0">나의 업무 및 요청의 진행 현황을 확인할 수 있습니다.</p>
-            
-            </div>
-            </div>
-            </div>
-        </header>
-            
+            <TittleComponent tittle={"서비스 요청 현황"} subTittle={"나의 업무 및 요청의 진행 현황을 확인할 수 있습니다."}/>      
             
             
         <div className="content_wrap">
@@ -135,26 +113,12 @@ import "assets/css/libs.bundle.css";
                         {nowTime} 업데이트
                     </div>
                     <div>
-                        <button className="btn btn-outline-primary btn-xs mb-1">오늘</button>
-                        <button className="btn btn-outline-primary btn-xs mb-1">1주일</button>
-                        <button className="btn btn-outline-primary btn-xs mb-1">1개월</button>
-                        <button className="btn btn-outline-primary btn-xs mb-1">전체</button>
-                        <button type="button" className="btn btn-primary btn-xs mb-1">
-                          <span data-bs-toggle="tooltip" data-placement="top" title="통계">
-                            <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <g fill="none" fill-rule="evenodd"><path d="M0 0h24v24H0z"/>
-                                <path d="M5 19h15a1 1 0 010 2H4a1 1 0 01-1-1V4a1 1 0 112 0v15z" fill="#fff"/>
-                                <path d="M8.73 14.684a1 1 0 11-1.46-1.368l3.75-4a1 1 0 011.38-.077l2.959 2.526 3.856-4.885a1 1 0 011.57 1.24l-4.5 5.7a1 1 0 01-1.434.14l-3.024-2.58-3.097 3.304z" fill="#fff" opacity=".6"/>
-                            </g>
-                            </svg>
-                        </span>
-                        </button>
+                        <DayButtonComponent setDay={setDay} />
                     </div>
                 </div>
 
 
             <div className="row mt-7 help_desk">
-                    
 
                     <div className="col-12 col-md-6 border-right">
             
@@ -165,7 +129,7 @@ import "assets/css/libs.bundle.css";
                             </div>
                          </div>
                             <div className="col ms-n5">
-                                <h3 className="mb-0">나의 업무 현황  <span className="fs-sm text-primary-desat">(신규 배정 : 2건)</span></h3>
+                                <h3 className="mb-0">나의 요청 현황</h3>
                             </div>
                         </div> 
 
@@ -173,31 +137,28 @@ import "assets/css/libs.bundle.css";
                         <div className="card-footer">
                             <div className="col_5 text-center">
                             <div className="border-right cursor-pointer">
-                                <h3 className="fs-1 text-primary">7</h3>
+                                <h3 className="fs-1 text-primary">{tableData.length}</h3>
                                 <p className="mb-0 fs-sm text-muted">전체</p>
                             </div>
                             <div className="border-right cursor-pointer">
-                                <h3 className="fs-1 text-primary-desat">2</h3>
+                                <h3 className="fs-1 text-primary-desat">0</h3>
                                 <p className="mb-0 fs-sm text-muted">신규</p>
                             </div>
                             <div className="border-right cursor-pointer">
-                                <h3 className="fs-1 text-success">13</h3>
+                                <h3 className="fs-1 text-success">0</h3>
                                 <p className="mb-0 fs-sm text-muted">진행</p>
                             </div>
                             <div className="border-right cursor-pointer">
-                                <h3 className="fs-1 text-danger">40</h3>
+                                <h3 className="fs-1 text-danger">0</h3>
                                 <p className="mb-0 fs-sm text-muted">완료</p>
                             </div>
                             <div className="cursor-pointer">
-                                <h3 className="fs-1 text-muted">3</h3>
+                                <h3 className="fs-1 text-muted">0</h3>
                                 <p className="mb-0 fs-sm text-muted">보류</p>
                             </div>
                             </div>
-                        <div>
                         </div>
-                        </div>
-                        </div>
-                    
+                        </div>                 
                     
 
 
@@ -221,7 +182,7 @@ import "assets/css/libs.bundle.css";
                                 <h3 className="mb-0">서비스 요청 상세 정보</h3>
                             </div>
                         </div>
-                        <div className="scroll_y pd30 pt00" style={styles}>
+                        <div className="scroll_y pd30 pt00" >
                             <div className="card shadow">
                             <ServiceDetailComponent id ={ id } />
                             </div>
