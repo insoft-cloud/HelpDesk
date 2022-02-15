@@ -174,11 +174,8 @@ public class RequestAttachmentController {
     }
 
     @GetMapping("/service/req-attaches/download")
-    public void getRequestAttachmentReqIdFile(HttpServletResponse httpServletResponse) {
+    public void getRequestAttachmentReqIdFile(@RequestBody AttachmentItem attachmentItem, HttpServletResponse httpServletResponse) {
         File file = null;
-        AttachmentItem attachmentItem = new AttachmentItem();
-        attachmentItem.setReqId("1c101206-1568-416f-b82c-b81255378639");
-        attachmentItem.setFileName("[CSMPv2]_IA_v0.21_1차_UIUX_PSW_20211116.pptx");
         try {
             file = new File(attachmentItem.getFileName());
             minioClient.downloadObject(DownloadObjectArgs.builder().filename(file.getAbsolutePath()).bucket(bucket).object(attachmentItem.getReqId() + "/" +attachmentItem.getFileName()).build());
