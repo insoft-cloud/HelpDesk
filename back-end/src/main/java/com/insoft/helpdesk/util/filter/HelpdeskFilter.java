@@ -27,19 +27,18 @@ public class HelpdeskFilter implements Filter  {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        ServletWrapper servletWrapper = new ServletWrapper((HttpServletRequest)request);
-        chain.doFilter(servletWrapper, response);
-        HttpServletRequest httpServletRequest = (HttpServletRequest)servletWrapper.getRequest();
+
+        chain.doFilter(request, response);
+        HttpServletRequest httpServletRequest = (HttpServletRequest)request;
         String token = httpServletRequest.getHeader("X-AUTH-TOKEN");
         HelpDeskLog helpDeskLog = new HelpDeskLog();
-        if(token != null && !token.isEmpty()){
-            try{
+        if(token != null && !token.isEmpty()) {
+            try {
                 helpDeskLog.setUser(jwtTokenProvider.getUserPk(token));
-            }catch (Exception e){
+            } catch (Exception e) {
 
             }
         }
-        helpDeskLog.setBody(getServletInputStream(servletWrapper.getInputStream()));
         helpDeskLog.setMethod(httpServletRequest.getMethod());
         helpDeskLog.setRequestUrl(httpServletRequest.getRequestURI());
         log.info(helpDeskLog.toString());
