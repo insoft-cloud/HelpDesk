@@ -1,44 +1,22 @@
 import Pagination from "component/list/Pagination";
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 import { useTable } from "react-table";
 
 /**
  * @Project     : HelpDesk
  * @FileName    : CheckTableComponent.tsx
- * @Date        : 2021-02-11
+ * @Date        : 2022-02-11
  * @author      : 김수진
- * @description : 체크박스적용 테이블 컴포넌트(컬럼,데이터,체크번호)
+ * @description : 체크박스적용 테이블 컴포넌트(컬럼,데이터,화면표시갯수,단어검색,개별선택,전체선택,체크된번호)
  */
 
-function CheckTableComponent({columns,data,setChkNums}){
+function CheckTableComponent({columns,data,limitCnt,word,changeHandler,allCheck,chkArr}){
  
     //페이징
-    const limit = 10; 
+    const limit = parseInt(limitCnt); 
     const [page, setPage] = useState(1);
     const offset = (page - 1) * limit;
-    //체크박스
-    const [chkArr, setChkArr] = useState<Array<number>>(new Array()); 
-    //전체체크
-    const allCheck = (e) =>{ 
-        if(e){
-            const checkedArray:number[] = [];
-            data.forEach((element,index) => {
-                checkedArray.push(index);
-            });
-            setChkArr(checkedArray);
-        }else{
-            setChkArr([]);
-        }}
-    //개별체크
-    const changeHandler = useCallback( 
-        (e,index) => {
-        if(e){
-            setChkArr([...chkArr,index])
-        }else{
-            setChkArr(chkArr.filter((i)=>i!==index))
-        }
-        
-    },[chkArr])
+    
     //테이블
     const {
         getTableProps,
@@ -50,10 +28,6 @@ function CheckTableComponent({columns,data,setChkNums}){
         columns,
         data,
     });
-
-    useEffect(()=>{
-        setChkNums(chkArr)
-    },[chkArr]);
 
     return(
         <div className="table-responsive fs-sm">
@@ -71,7 +45,7 @@ function CheckTableComponent({columns,data,setChkNums}){
                     ))}
                 </thead>
                 <tbody {...getTableBodyProps()}>
-                    {rows.map((row,i) => {
+                    {rows.filter(x=>x.values.ttl.includes(word)).map((row,i) => {
                         prepareRow(row)
                         return (
                             <tr {...row.getRowProps()}>

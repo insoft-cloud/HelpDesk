@@ -3,64 +3,105 @@ import AdminButtonComponent from "component/button/AdminButtonComponent";
 import AdminHeaderComponent from "component/layout/AdminHeaderComponent";
 import AddRowTableComponent from "component/table/AddRowTableComponent";
 import moment from "moment";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { API_ADMIN_PATH, ContextPath } from "utils/ContextPath";
 import { useTokenDispatch, useTokenState } from "utils/TokenContext";
 
 /**
  * @Project     : HelpDesk
  * @FileName    : AdminCodeGroupComponent.tsx
- * @Date        : 2021-01-24
+ * @Date        : 2022-01-24
  * @author      : 김수진
  * @description : 서비스코드상세 리스트화면 컴포넌트
  */
 
 function AdminCodeDetailComponent() {
+    const location = useLocation();
+    const response  = location.state as string;
+    const [text,setText] = useState(response['cdNM']);
     let dispatch = useTokenDispatch();
     const navigate = useNavigate();
     const state = useTokenState();
-    const [tableData, setTableData] = useState<Object>([]);
-    const [viewData,setViewData] = useState(new Set());
+    const [tableData, setTableData] = useState<any>([]);
+    // const [viewData,setViewData] = useState(new Set())
     const [delData,setDelData] = useState<Set<number>>(new Set());
-    const [text,setText] = useState('');
     const [date,setDate] = useState(moment().format('YYYY.MM.DD HH:mm'));
-    
     useEffect(() => {
         dispatch({ type: 'SET_PAGE', page: "codeDetail"})
         procGetAxios("/user/service/requests/test?day=all", state.token,"application/json",getData);
         window.onbeforeunload = function () {
             return '메세지 내용';
         };
-        window.onhashchange = function() {
-            return "안바뀌나봐";
-        }
     }, [state.token]);
 
     function getData(data) {
     setTableData(data.content)
     }
 
-    const column = [
-        { heading : '코드', value : 'cnts',class: "col-md-2 bg-gray"},
-        { heading : '명칭', value : 'ttl',class: "col-md-2 bg-gray"},
-        { heading : '설명', value : 'id',class: "col-md-3 bg-gray"},
-        { heading : '등록자', value : 'reqId',class: "col-md-2 bg-gray"},
-        { heading : '등록일', value : 'registDt',class: "col-md-1 bg-gray"},
+    const columns = useMemo(
+    () => [
+        {
+            Header : "코드",
+            id:"index",
+            accessor: (row: any, i : number) => <div className="text-center">{i + 1}</div> ,
+        },
+        {
+            Header : "명칭",
+            id: "ttl",
+            accessor: a => <input className="form-control" type="text" value={a.ttl} readOnly/>,
+        },
+        {
+            Header : "설명",
+            id: "id",
+            accessor: a=> <input className="form-control" type="text" value={a.id} readOnly/>,
+        },
+        {
+            Header : "등록자",
+            id: "reqId",
+            accessor: a=> <div className="text-secondary">{a.reqId}</div>
+        },
+        {
+            Header : "등록일",
+            id: "registDt",
+            accessor: a=> <div className="text-secondary">{a.registDt.substring(0,10)}</div>,
+        },
+    ],[])
 
-      ]
-
+    //행삭제
+    function delEvent(id) {
+        setDelData(delData.add(id));
+        setTableData(tableData.filter(del => del.id !== id))
+       }
+    //행추가
+    function add(){
+    const tbody = document.querySelector('tbody');
+    let row = tbody?.insertRow(tbody.rows.length-1);
+    row?.insertCell(0);
+    let cell2 = row?.insertCell(1);
+    let cell3 = row?.insertCell(2);
+        row?.insertCell(3);
+        row?.insertCell(4);
+        row?.insertCell(5);
+    let inputCD_NM = document.createElement('input');
+    inputCD_NM.setAttribute("class","form-control");
+    let inputCD_EXPLNT = document.createElement('input');
+    inputCD_EXPLNT.setAttribute("class","form-control");
+    cell2?.appendChild(inputCD_NM);
+    cell3?.appendChild(inputCD_EXPLNT);
+    }
+    
     return(
         <div className="container">
             <AdminHeaderComponent title="서비스 코드 등록/수정" info="" />
             <div className="mt-7 mb-3">
                 <ul className="nav">
-                    <li className="col-9 align-self-center">항목 이름 <input className="bg-light border-1 text-secondary" value={text} onChange={(event) =>{setText(event.target.value)}} /></li>
+                    <li className="col-9 align-self-center">항목이름 <input className="bg-light border-1 text-secondary" value={text} onChange={(event) =>{setText(event.target.value)}} /></li>
                     <li className="col-3 text-end text-secondary align-self-center">업데이트 : {date}</li>
                 </ul>
             </div>
             <div>
-            <AddRowTableComponent data={tableData} column={column} setViewData={setViewData} delData={delData} setDelData={setDelData} />
+            <AddRowTableComponent data={tableData} columns={columns}  delData={delData} setDelData={setDelData} limitCnt="5" setTableData={setTableData} delEvent={delEvent} add={add}/>
             </div>
             <div className="d-flex justify-content-end">
                   <AdminButtonComponent btnClassName="btn btn-xs btn-outline-dark rounded-1 ms-2 lift ml-3 mb-3" btnName="저장" onEventHandler={useConfirm} url="null"/>
