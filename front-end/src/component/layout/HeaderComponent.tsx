@@ -70,6 +70,10 @@ function HeaderComponent(){
                             url={ContextPath(API_ADMIN_PATH.managerList)} btnName="서비스운영자" />
                         </li>
                         <li className="nav-item">
+                            <ButtonComponent btnClassName="nav-link" 
+                            url={ContextPath(API_ADMIN_PATH.memberManage)} btnName="회원관리" />
+                        </li>
+                        <li className="nav-item">
                             {(refreshToken==null)
                             ?<Link className="nav-link" id="navbarDocumentation" to={ContextPath(API_LOGIN.singIn)} aria-expanded="false">{logCheck}</Link>
                             : <Link className="nav-link" onClick={logout} to={ContextPath(API_DOMAIN_PATH.main)}>{logCheck}</Link>}
