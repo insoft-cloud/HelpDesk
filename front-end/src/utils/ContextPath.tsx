@@ -14,7 +14,8 @@ export const API_ADMIN_PATH = {
     codeGroup : "/codeGroup",
     codeDetail : "/codeDetail",
     managerList : "/managerList",
-    managerRegist: "/managerRegist"
+    managerRegist: "/managerRegist",
+    memberManage: "/memberManage",
 }
 
 

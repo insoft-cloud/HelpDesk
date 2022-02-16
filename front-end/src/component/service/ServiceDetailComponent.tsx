@@ -29,6 +29,7 @@ function ServiceDetailComponent ( {id} ){
       })
     .then( function(res){
       setData(res.data)
+      console.log(res.data)
     })
       .catch(error => {
       console.log(error)
@@ -52,7 +53,7 @@ function ServiceDetailComponent ( {id} ){
                         : (data.requestHistories[0].sttsCd === 't'
                         ? '진행'
                         : '보류')) }]</span>
-                        {data.ttl} </h5>
+                         {data.ttl} </h5>
                   <button className="btn btn-success-soft btn-pill btn-xs mb-1">수정</button>
                   </div>
                   
@@ -85,7 +86,7 @@ function ServiceDetailComponent ( {id} ){
                     <hr className="card-meta-divider" />
                     <dl className="mb-0">
                       <dt className="col-auto">첨부파일</dt>
-            
+                        {data.requestAttachments.map(att => <img key={att.id} alt={att.fileNm}>{}</img>)}
                     </dl>
                    
                   

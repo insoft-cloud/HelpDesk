@@ -10,6 +10,7 @@ import "assets/css/libs.bundle.css";
 import './MyRequestComponent.css';
 import TittleComponent from "component/div/TittleComponent";
 import DayButtonComponent from "component/button/DayButtonComponent";
+import ServiceCountComponent from "component/service/ServiceCountComponent";
 
 
 /**
@@ -74,8 +75,8 @@ import DayButtonComponent from "component/button/DayButtonComponent";
         {
             Header: '상태',
             accessor: data => 
-                data.requestHistories.map( (item, index) => (
-                    <Fragment key={index}>{item.sttsCd === 'n' 
+                data.requestHistories.map( (item) => (
+                    <Fragment key={item.id}>{item.sttsCd === 'n' 
                         ? '신규' 
                         : (item.sttsCd === 's'
                         ? '완료'
@@ -158,7 +159,7 @@ import DayButtonComponent from "component/button/DayButtonComponent";
                             </div>
                             </div>
                         </div>
-                        </div>                 
+                        </div>                                        
                     
 
 

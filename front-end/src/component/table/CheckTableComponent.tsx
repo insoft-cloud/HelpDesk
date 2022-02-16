@@ -31,8 +31,8 @@ function CheckTableComponent({columns,data,limitCnt,word,changeHandler,allCheck,
 
     return(
         <div className="table-responsive fs-sm">
-            <table className="table table-striped border-top border" {...getTableProps()}>
-                <thead>
+            <table className="table table-responsive border-top border" {...getTableProps()}>
+                <thead className="table-secondary">
                     {headerGroups.map(headerGroup => (
                         <tr {...headerGroup.getHeaderGroupProps()}>
                             <th><input type="checkbox" onChange={e=>allCheck(e.target.checked)}  checked={chkArr.length===0?false:chkArr.length===data.length?true:false}/></th> 
@@ -45,10 +45,10 @@ function CheckTableComponent({columns,data,limitCnt,word,changeHandler,allCheck,
                     ))}
                 </thead>
                 <tbody {...getTableBodyProps()}>
-                    {rows.filter(x=>x.values.ttl.includes(word)).map((row,i) => {
+                    {rows.filter(x=>x.original['ttl'].includes(word)).map((row,i) => {
                         prepareRow(row)
                         return (
-                            <tr {...row.getRowProps()}>
+                            <tr {...row.getRowProps()} className={row.values['delYn']==='N'?"text-primary":""}>
                                 <td className="text-center"><input type="checkbox" onChange={e=> changeHandler(e.target.checked,i) }checked={chkArr.includes(i)?true:false} /></td>
                                 {row.cells.map(cell => {
                                     return <td {...cell.getCellProps()}>

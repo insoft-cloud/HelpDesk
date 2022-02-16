@@ -1,5 +1,7 @@
 
 export default function ServiceCountComponent({data}) {
+
+    console.log(data)
   return (
     <div className="d-flex card shadow">
                         <div className="card-footer">
@@ -9,7 +11,7 @@ export default function ServiceCountComponent({data}) {
                                 <p className="mb-0 fs-sm text-muted">전체</p>
                             </div>
                             <div className="border-right cursor-pointer">
-                                <h3 className="fs-1 text-primary-desat">{data.requestHistories[0].sttsCd === 'S' ? data.length : ''}</h3>
+                                <h3 className="fs-1 text-primary-desat">0</h3>
                                 <p className="mb-0 fs-sm text-muted">신규</p>
                             </div>
                             <div className="border-right cursor-pointer">

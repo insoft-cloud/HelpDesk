@@ -14,6 +14,7 @@ import AdminCodeGroupComponent from 'domain/admin/AdminCodeGroupComponent';
 import AdminCodeDetailComponent from 'domain/admin/AdminCodeDetailComponent';
 import AdminManagerListComponent from 'domain/admin/AdminManagerListComponent';
 import ServiceRequestComponent from 'domain/service/ServiceRequestComponent';
+import MemberManageComponent from 'domain/admin/MemberManageComponent';
 
 function App() {
 
@@ -35,6 +36,8 @@ function App() {
                     <Route path={ContextPath(API_ADMIN_PATH.codeGroup)} element={<PrivateRoute component={AdminCodeGroupComponent } status={state}/>}/>
                     <Route path={ContextPath(API_ADMIN_PATH.codeDetail)} element={<PrivateRoute component={AdminCodeDetailComponent } status={state}/>}/>
                     <Route path={ContextPath(API_ADMIN_PATH.managerList)} element={<PrivateRoute component={AdminManagerListComponent } status={state}/>}/>
+                    <Route path={ContextPath(API_ADMIN_PATH.memberManage)} element={<PrivateRoute component={MemberManageComponent } status={state}/>}/>
+                    
             </Routes>
             {
                 state.page === "LOGIN" ? null : <FooterComponent/>

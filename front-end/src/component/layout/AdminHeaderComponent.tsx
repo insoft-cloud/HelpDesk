@@ -9,6 +9,7 @@ function AdminHeaderComponent({title,info}){
             <h2 className="mt-3">{title}</h2>
             <hr className="bg-dark border border-dark" />
             <p>{info}</p>
+            <br />
         </div>
         
     )
