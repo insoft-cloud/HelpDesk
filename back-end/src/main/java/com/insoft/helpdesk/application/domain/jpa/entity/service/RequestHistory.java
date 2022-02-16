@@ -3,6 +3,7 @@ package com.insoft.helpdesk.application.domain.jpa.entity.service;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,6 +15,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "TB_HELP_SVC_RQST_HIST")
@@ -75,6 +77,12 @@ public class RequestHistory {
     @Comment("서비스 요청번호")
     @ManyToOne(fetch = FetchType.LAZY)
     private Request svcReqNo;
+
+    @JsonManagedReference
+    @JoinColumn(name = "SVC_RQST_HIST_NO", referencedColumnName = "SVC_RQST_HIST_NO")
+    @Comment("서비스 요청 이력번호")
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<RequestAttachmentHistory> requestAttachmentHistoryList;
 
     public RequestHistory updateRequestHistory(RequestHistory requestHistory){
         this.delYn = requestHistory.delYn == null ? this.delYn : requestHistory.delYn;

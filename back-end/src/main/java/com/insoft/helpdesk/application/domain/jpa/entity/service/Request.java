@@ -100,7 +100,6 @@ public class Request {
 
 
     public Request updateRequest(Request request){
-        System.out.println(request);
         this.reqId = request.reqId == null ? this.reqId : request.reqId;
         this.tyCd = request.tyCd == null ? this.tyCd : request.tyCd;
         this.priortCd = request.priortCd == null ? this.priortCd : request.priortCd;

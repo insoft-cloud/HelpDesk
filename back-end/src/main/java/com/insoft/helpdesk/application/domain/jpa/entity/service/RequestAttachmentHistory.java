@@ -33,9 +33,10 @@ public class RequestAttachmentHistory {
     @Size(max = 36)
     private String id;
 
+    @JsonBackReference
     @JoinColumn(name = "SVC_RQST_HIST_NO", nullable = false)
     @Comment("서비스 요청 이력번호")
-    @OneToOne
+    @ManyToOne
     private RequestHistory svcReqHistNo;
 
     @Column(name = "FILE_NM", nullable = false)
@@ -73,4 +74,15 @@ public class RequestAttachmentHistory {
     @ManyToOne(fetch = FetchType.LAZY)
     private Request svcReqNo;
 
+
+    public RequestAttachmentHistory update(RequestAttachmentHistory requestAttachmentHistory){
+        this.svcReqHistNo = requestAttachmentHistory.svcReqHistNo == null ? this.svcReqHistNo : requestAttachmentHistory.svcReqHistNo;
+        this.fileNm = requestAttachmentHistory.fileNm == null ? this.fileNm : requestAttachmentHistory.fileNm;
+        this.filePath = requestAttachmentHistory.filePath == null ? this.filePath : requestAttachmentHistory.filePath;
+        this.fileSize = requestAttachmentHistory.fileSize == null ? this.fileSize : requestAttachmentHistory.fileSize;
+        this.fileExt = requestAttachmentHistory.fileExt == null ? this.fileExt : requestAttachmentHistory.fileExt;
+        this.registDt = requestAttachmentHistory.registDt == null ? this.registDt : requestAttachmentHistory.registDt;
+        this.svcReqNo = requestAttachmentHistory.svcReqNo == null ? this.svcReqNo : requestAttachmentHistory.svcReqNo;
+        return this;
+    }
 }

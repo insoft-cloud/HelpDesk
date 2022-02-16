@@ -4,6 +4,7 @@ import com.insoft.helpdesk.application.biz.service.port.in.RequestAttachmentHist
 import com.insoft.helpdesk.application.biz.service.port.out.RequestAttachmentHistoryOutPort;
 import com.insoft.helpdesk.application.domain.jpa.entity.service.RequestAttachmentHistory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -17,18 +18,23 @@ public class RequestAttachmentHistoryService implements RequestAttachmentHistory
     final RequestAttachmentHistoryOutPort requestAttachmentHistoryOutPort;
 
     @Override
-    public List<RequestAttachmentHistory> getRequestAttachmentHistories() {
-        return null;
+    public Page<RequestAttachmentHistory> getRequestAttachmentHistories(Pageable pageable) {
+        return requestAttachmentHistoryOutPort.getRequestAttachmentHistories(pageable);
     }
 
     @Override
     public Optional<RequestAttachmentHistory> getRequestAttachmentHistoryId(String id) {
-        return requestAttachmentHistoryOutPort.getRequestAttachmentId(id);
+        return requestAttachmentHistoryOutPort.getRequestAttachmentHistoryId(id);
     }
 
     @Override
-    public List<RequestAttachmentHistory> getRequestAttachmentHistoriesReqId(String svcReqNo, Pageable pageable) {
-        return null;
+    public Page<RequestAttachmentHistory> getRequestAttachmentHistoriesReqId(String svcReqNo, Pageable pageable) {
+        return requestAttachmentHistoryOutPort.getRequestAttachmentHistoriesReqId(svcReqNo, pageable);
+    }
+
+    @Override
+    public Page<RequestAttachmentHistory> getRequestAttachmentHistoriesReqHisId(String svcReqNo, Pageable pageable) {
+        return requestAttachmentHistoryOutPort.getRequestAttachmentHistoriesReqHisId(svcReqNo, pageable);
     }
 
     @Override

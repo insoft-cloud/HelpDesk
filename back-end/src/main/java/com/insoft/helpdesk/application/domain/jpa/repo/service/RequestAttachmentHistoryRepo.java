@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface RequestAttachmentHistoryRepo extends JpaRepository<RequestAttachmentHistory, String> {
 
     Page<RequestAttachmentHistory> findAllBySvcReqNo(String svcReqNo, Pageable pageable);
+    Page<RequestAttachmentHistory> findAllBySvcReqHistNo(String vcReqHistNo, Pageable pageable);
     long countAllBySvcReqNo(String svcReqNo);
 
 }

@@ -18,18 +18,23 @@ public class RequestAttachmentHistoryAdapter implements RequestAttachmentHistory
     final RequestAttachmentHistoryRepo requestAttachmentHistoryRepo;
 
     @Override
-    public List<RequestAttachmentHistory> getRequestAttachmentHistories() {
-        return requestAttachmentHistoryRepo.findAll();
+    public Page<RequestAttachmentHistory> getRequestAttachmentHistories(Pageable pageable) {
+        return requestAttachmentHistoryRepo.findAll(pageable);
     }
 
     @Override
-    public Optional<RequestAttachmentHistory> getRequestAttachmentId(String id) {
+    public Optional<RequestAttachmentHistory> getRequestAttachmentHistoryId(String id) {
         return requestAttachmentHistoryRepo.findById(id);
-
     }
+
     @Override
-    public List<RequestAttachmentHistory> getRequestAttachmentHistoriesReqId(String svcReqNo, Pageable pageable) {
-        return (List<RequestAttachmentHistory>) requestAttachmentHistoryRepo.findAllBySvcReqNo(svcReqNo , pageable);
+    public Page<RequestAttachmentHistory> getRequestAttachmentHistoriesReqId(String svcReqNo, Pageable pageable) {
+        return requestAttachmentHistoryRepo.findAllBySvcReqNo(svcReqNo , pageable);
+    }
+
+    @Override
+    public Page<RequestAttachmentHistory> getRequestAttachmentHistoriesReqHisId(String svcReqNo, Pageable pageable) {
+        return requestAttachmentHistoryRepo.findAllBySvcReqHistNo(svcReqNo, pageable);
     }
 
     @Override
