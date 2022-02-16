@@ -10,7 +10,7 @@ import { useTable } from "react-table";
  * @description : 체크박스적용 테이블 컴포넌트(컬럼,데이터,화면표시갯수,단어검색,개별선택,전체선택,체크된번호)
  */
 
-function CheckTableComponent({columns,data,limitCnt,word,changeHandler,allCheck,chkArr}){
+function CheckTableComponent({columns,data,limitCnt,word,changeHandler,allCheck,chkArr,isSelected}){
  
     //페이징
     const limit = parseInt(limitCnt); 
@@ -45,13 +45,17 @@ function CheckTableComponent({columns,data,limitCnt,word,changeHandler,allCheck,
                     ))}
                 </thead>
                 <tbody {...getTableBodyProps()}>
-                    {rows.filter(x=>x.original['ttl'].includes(word)).map((row,i) => {
+                    {rows.filter(x =>x.original['id'].includes(word)).map((row,i) => {
+                        // {rows.filter(x=>x.original['ttl'].includes(word)).map((row,i) => {
+                          // {rows.filter(x=>{isSelected!==''?x.original[isSelected].includes(word):""}).map((row,i) => {
+                            // :x.original['ttl'].inclides(word)||x.original['id'].inclides(word)
                         prepareRow(row)
                         return (
                             <tr {...row.getRowProps()} className={row.values['delYn']==='N'?"text-primary":""}>
                                 <td className="text-center"><input type="checkbox" onChange={e=> changeHandler(e.target.checked,i) }checked={chkArr.includes(i)?true:false} /></td>
                                 {row.cells.map(cell => {
                                     return <td {...cell.getCellProps()}>
+                                        {console.log(cell.render('Cell')?.valueOf)}
                                         {cell.render('Cell')}
                                     </td>
                                 })}
