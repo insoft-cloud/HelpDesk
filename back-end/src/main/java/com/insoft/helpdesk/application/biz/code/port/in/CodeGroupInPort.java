@@ -2,6 +2,8 @@ package com.insoft.helpdesk.application.biz.code.port.in;
 
 import com.insoft.helpdesk.application.domain.common.ResponseMessage;
 import com.insoft.helpdesk.application.domain.jpa.entity.code.Group;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,83 +18,13 @@ import java.util.Optional;
  */
 public interface CodeGroupInPort {
 
-    /**
-     * @Method      : selectCountCodeGroups
-     * @Param       : []
-     * @Date        : 2021-12-13
-     * @author      : 박철한
-     * @description : CodeGroup 의 전체 데이터 수 조회
-     * @return      : long
-     */
-    ResponseMessage selectCountCodeGroups();
 
-    /**
-     * @Method      : selectCountCodeGroups
-     * @Param       : [userId]
-     * @Date        : 2021-12-13
-     * @author      : 박철한
-     * @description : CodeGroup 의 userId가 일치한 데이터 수 조회
-     * @return      : long
-     */
-    ResponseMessage selectCountCodeGroups(String userId);
-
-    /**
-     * @Method      : selectCodeGroups
-     * @Param       : []
-     * @Date        : 2021-12-13
-     * @author      : 박철한
-     * @description : CodeGroup 의 전체 데이터 조회
-     * @return      : java.util.List
-     */
-    ResponseMessage selectCodeGroups();
-
-    /**
-     * @Method      : selectCodeGroups
-     * @Param       : [userId]
-     * @Date        : 2021-12-13
-     * @author      : 박철한
-     * @description : CodeGroup 의 param 속성 값과 일치한 데이터 조회
-     * @return      : java.util.List
-     */
-    ResponseMessage selectCodeGroups(String userId);
-
-    /**
-     * @Method      : selectCodeGroupId
-     * @Param       : [groupId]
-     * @Date        : 2021-12-13
-     * @author      : 박철한
-     * @description : CodeGroup 의 ID 값과 일치한 데이터 조회
-     * @return      : com.insoft.helpdesk.jpa.entity.code.Group
-     */
-    ResponseMessage selectCodeGroupId(String id);
-
-    /**
-     * @Method      : saveCodeGroup
-     * @Param       : [group]
-     * @Date        : 2021-12-13
-     * @author      : 박철한
-     * @description : CodeGroup 의  데이터 저장
-     * @return      : com.insoft.helpdesk.jpa.entity.code.Group
-     */
-    ResponseMessage saveCodeGroup(Group group);
-
-    /**
-     * @Method      : updateCodeGroup
-     * @Param       : [group]
-     * @Date        : 2021-12-13
-     * @author      : 박철한
-     * @description : CodeGroup 의  데이터 변경
-     * @return      : com.insoft.helpdesk.jpa.entity.code.Group
-     */
-    ResponseMessage updateCodeGroup(Group group);
-
-    /**
-     * @Method      : deleteCodeGroup
-     * @Param       : [group]
-     * @Date        : 2021-12-13
-     * @author      : 박철한
-     * @description : CodeGroup 의  데이터 삭제
-     * @return      : void
-     */
-    ResponseMessage deleteCodeGroup(Group group);
+    Page<Group> getCodeGroups(Pageable pageable);
+    Page<Group> getCodeGroupsUserId(String userId, Pageable pageable);
+    Optional<Group> getCodeGroup(String id);
+    Long countCodeGroups();
+    Long countCodeGroupsUserId(String userId);
+    void createCodeGroup(Group group);
+    void updateCodeGroup(Group group);
+    void deleteCodeGroup(Group group);
 }

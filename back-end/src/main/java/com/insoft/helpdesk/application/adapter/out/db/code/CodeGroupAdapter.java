@@ -4,56 +4,59 @@ import com.insoft.helpdesk.application.biz.code.port.out.CodeGroupOutPort;
 import com.insoft.helpdesk.application.domain.common.ResponseMessage;
 import com.insoft.helpdesk.application.domain.jpa.entity.code.Group;
 import com.insoft.helpdesk.application.domain.jpa.repo.code.GroupRepo;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
+@RequiredArgsConstructor
 public class CodeGroupAdapter implements CodeGroupOutPort {
 
-    private final GroupRepo groupRepo;
+    final GroupRepo groupRepo;
 
-    public CodeGroupAdapter(GroupRepo groupRepo) {
-        this.groupRepo = groupRepo;
+
+    @Override
+    public Page<Group> getCodeGroups(Pageable pageable) {
+        return groupRepo.findAll(pageable);
     }
 
     @Override
-    public ResponseMessage selectCountCodeGroups() {
-        return ResponseMessage.builder().count(Long.valueOf(groupRepo.count()).intValue()).build();
+    public Page<Group> getCodeGroupsUserId(String userId, Pageable pageable) {
+        return groupRepo.findAllByUserId(userId, pageable);
     }
 
     @Override
-    public ResponseMessage selectCountCodeGroups(String groupId) {
-        return ResponseMessage.builder().count(Long.valueOf(groupRepo.countAllByUserId(groupId)).intValue()).build();
+    public Optional getCodeGroup(String id) {
+        return groupRepo.findById(id);
     }
 
     @Override
-    public ResponseMessage selectCodeGroups() {
-        return ResponseMessage.builder().data(groupRepo.findAll()).count(Long.valueOf(groupRepo.count()).intValue()).build();
+    public Long countCodeGroups() {
+        return groupRepo.count();
     }
 
     @Override
-    public ResponseMessage selectCodeGroups(String groupId) {
-        return ResponseMessage.builder().data(groupRepo.findAllByUserId(groupId)).count(Long.valueOf(groupRepo.countAllByUserId(groupId)).intValue()).build();
+    public Long countCodeGroupsUserId(String userId) {
+        return groupRepo.countAllByUserId(userId);
     }
 
     @Override
-    public ResponseMessage selectCodeGroupId(String id) {
-        return ResponseMessage.builder().data(groupRepo.findById(id)).build();
+    public void createCodeGroup(Group group) {
+        groupRepo.save(group);
     }
 
     @Override
-    public ResponseMessage saveCodeGroup(Group group) {
-        return ResponseMessage.builder().build();
+    public void updateCodeGroup(Group group) {
+        groupRepo.save(group);
     }
 
     @Override
-    public ResponseMessage updateCodeGroup(Group group) {
-        return ResponseMessage.builder().build();
-    }
-
-    @Override
-    public ResponseMessage deleteCodeGroup(Group group) {
-        return ResponseMessage.builder().build();
+    public void deleteCodeGroup(Group group) {
+        groupRepo.delete(group);
     }
 }

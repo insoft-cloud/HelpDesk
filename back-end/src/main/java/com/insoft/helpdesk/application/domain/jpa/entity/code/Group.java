@@ -1,5 +1,7 @@
 package com.insoft.helpdesk.application.domain.jpa.entity.code;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.insoft.helpdesk.application.domain.jpa.entity.service.RequestHistory;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -7,10 +9,12 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "TB_HELP_CD_GRP")
@@ -52,4 +56,17 @@ public class Group {
     @UpdateTimestamp
     private LocalDateTime updateDt;
 
+    @JsonManagedReference
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "CD_GRP_NO", referencedColumnName = "CD_NO")
+    private List<Detail> details;
+
+
+
+    public Group updateGroup(Group group){
+        this.name = group.name == null ? this.name : group.name;
+        this.delYn = group.delYn == null ? this.delYn : group.delYn;
+        this.userId = group.userId == null ? this.userId : group.userId;
+        return this;
+    }
 }

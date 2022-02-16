@@ -1,5 +1,8 @@
 package com.insoft.helpdesk.application.domain.jpa.entity.code;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.insoft.helpdesk.application.domain.jpa.entity.service.Request;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,10 +11,7 @@ import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
@@ -40,10 +40,10 @@ public class Detail {
     @Size(max = 512)
     private String cdExplnt;
 
-    @Column(name = "CD_GRP_NO", length = 16, nullable = false)
-    @Comment("코드 그룹 번호")
-    @Size(max = 16)
-    private String cdGroupNo;
+//    @Column(name = "CD_GRP_NO", length = 16, nullable = false)
+//    @Comment("코드 그룹 번호")
+//    @Size(max = 16)
+//    private String cdGroupNo;
 
     @Column(name = "DEL_YN", length = 1, nullable = false)
     @Comment("삭제여부(Y,N)")
@@ -64,5 +64,14 @@ public class Detail {
     @Comment("수정일시")
     @UpdateTimestamp
     private LocalDateTime updateDt;
+
+
+    @JsonBackReference
+    @JoinColumn(name = "CD_GRP_NO", referencedColumnName = "CD_NO")
+    @Comment("코드번호")
+    @Schema(description = "코드번호")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Group cdGroupNo;
+
 
 }

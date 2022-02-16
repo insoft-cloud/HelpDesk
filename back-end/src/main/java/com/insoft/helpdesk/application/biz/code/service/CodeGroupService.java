@@ -5,6 +5,8 @@ import com.insoft.helpdesk.application.biz.code.port.out.CodeGroupOutPort;
 import com.insoft.helpdesk.application.domain.common.ResponseMessage;
 import com.insoft.helpdesk.application.domain.jpa.entity.code.Group;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -17,43 +19,44 @@ public class CodeGroupService implements CodeGroupInPort {
 
     final CodeGroupOutPort codeGroupOutPort;
 
+
     @Override
-    public ResponseMessage selectCountCodeGroups() {
-        return codeGroupOutPort.selectCountCodeGroups();
+    public Page<Group> getCodeGroups(Pageable pageable) {
+        return codeGroupOutPort.getCodeGroups(pageable);
     }
 
     @Override
-    public ResponseMessage selectCountCodeGroups(String userId) {
-        return codeGroupOutPort.selectCountCodeGroups(userId);
+    public Page<Group> getCodeGroupsUserId(String userId, Pageable pageable) {
+        return codeGroupOutPort.getCodeGroupsUserId(userId, pageable);
     }
 
     @Override
-    public ResponseMessage selectCodeGroups() {
-        return codeGroupOutPort.selectCodeGroups();
+    public Optional getCodeGroup(String id) {
+        return codeGroupOutPort.getCodeGroup(id);
     }
 
     @Override
-    public ResponseMessage selectCodeGroups(String userId) {
-        return codeGroupOutPort.selectCodeGroups(userId);
+    public Long countCodeGroups() {
+        return codeGroupOutPort.countCodeGroups();
     }
 
     @Override
-    public ResponseMessage selectCodeGroupId(String id) {
-        return codeGroupOutPort.selectCodeGroupId(id);
+    public Long countCodeGroupsUserId(String userId) {
+        return codeGroupOutPort.countCodeGroupsUserId(userId);
     }
 
     @Override
-    public ResponseMessage saveCodeGroup(Group group) {
-        return codeGroupOutPort.saveCodeGroup(group);
+    public void createCodeGroup(Group group) {
+        codeGroupOutPort.createCodeGroup(group);
     }
 
     @Override
-    public ResponseMessage updateCodeGroup(Group group) {
-        return codeGroupOutPort.updateCodeGroup(group);
+    public void updateCodeGroup(Group group) {
+        codeGroupOutPort.updateCodeGroup(group);
     }
 
     @Override
-    public ResponseMessage deleteCodeGroup(Group group) {
-        return codeGroupOutPort.deleteCodeGroup(group);
+    public void deleteCodeGroup(Group group) {
+        codeGroupOutPort.deleteCodeGroup(group);
     }
 }
