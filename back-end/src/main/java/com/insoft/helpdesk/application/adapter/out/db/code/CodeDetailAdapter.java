@@ -35,24 +35,23 @@ public class CodeDetailAdapter implements CodeDetailOutPort {
     public Long getDetailsGroupIdCount(String groupId) {
         return detailRepo.countAllByCdGroupNo(groupId);
     }
-
     @Override
-    public Optional<Detail> getDetail(String id) {
-        return detailRepo.findById(id);
+    public Optional<Detail> getDetail(String groupId, String detailId) {
+        return detailRepo.findByCdGroupNoAndId( groupId, detailId);
     }
 
     @Override
-    public void createRequest(Detail detail) {
+    public void createDetail(Detail detail) {
         detailRepo.save(detail);
     }
 
     @Override
-    public void updateRequest(Detail detail) {
+    public void updateDetail(Detail detail) {
         detailRepo.save(detail);
     }
 
     @Override
-    public void deleteRequest(Detail detail) {
+    public void deleteDetail(Detail detail) {
         detailRepo.delete(detail);
     }
 }

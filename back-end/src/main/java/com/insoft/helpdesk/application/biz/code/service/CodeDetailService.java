@@ -37,22 +37,22 @@ public class CodeDetailService implements CodeDetailInPort {
     }
 
     @Override
-    public Optional<Detail> getDetail(String id) {
-        return codeDetailOutPort.getDetail(id);
+    public Optional<Detail> getDetail(String groupId, String detailId) {
+        return codeDetailOutPort.getDetail(groupId, detailId);
     }
 
     @Override
-    public void createRequest(Detail detail) {
-        codeDetailOutPort.createRequest(detail);
+    public void createDetail(Detail detail) {
+        codeDetailOutPort.createDetail(detail);
     }
 
     @Override
-    public void updateRequest(Detail detail) {
-        codeDetailOutPort.updateRequest(detail);
+    public void updateDetail(Detail detail) {
+        codeDetailOutPort.updateDetail(detail);
     }
 
     @Override
-    public void deleteRequest(Detail detail) {
-        codeDetailOutPort.deleteRequest(detail);
+    public void deleteDetail(Detail detail) {
+        codeDetailOutPort.deleteDetail(detail);
     }
 }

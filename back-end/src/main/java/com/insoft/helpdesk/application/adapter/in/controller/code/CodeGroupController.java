@@ -50,7 +50,7 @@ public class CodeGroupController {
     @PostMapping("/group")
     public ResponseEntity countCodeGroupsUserId(@RequestBody Group group){
         codeGroupInPort.createCodeGroup(group);
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok(group);
     }
 
     @Tag(name = "CodeGroup")
@@ -59,7 +59,7 @@ public class CodeGroupController {
         Group _group = codeGroupInPort.getCodeGroup(id).orElse(null);
         _group = _group.updateGroup(group);
         codeGroupInPort.updateCodeGroup(_group);
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok(_group);
     }
 
     @Tag(name = "CodeGroup")
@@ -70,7 +70,7 @@ public class CodeGroupController {
             return ResponseEntity.badRequest().build();
         }
         codeGroupInPort.deleteCodeGroup(_group);
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok(_group);
     }
 
 

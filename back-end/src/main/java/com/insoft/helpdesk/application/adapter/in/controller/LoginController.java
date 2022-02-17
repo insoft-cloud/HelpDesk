@@ -1,8 +1,7 @@
 package com.insoft.helpdesk.application.adapter.in.controller;
 
 import com.insoft.helpdesk.application.biz.member.port.in.LoginInPort;
-import com.insoft.helpdesk.application.biz.member.port.in.MemberInPort;
-import com.insoft.helpdesk.application.domain.common.Content;
+import com.insoft.helpdesk.application.biz.member.port.in.MemberInPort;;
 import com.insoft.helpdesk.application.domain.common.JwtTokenProvider;
 import com.insoft.helpdesk.application.domain.entity.login.HelpDeskToken;
 import com.insoft.helpdesk.application.domain.entity.login.HelpdeskCaptcha;
@@ -30,7 +29,7 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @HelpdeskSignRestController
-public class LoginController extends Content {
+public class LoginController {
 
     private final PasswordEncoder passwordEncoder;
 

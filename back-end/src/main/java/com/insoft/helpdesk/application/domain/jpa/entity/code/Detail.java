@@ -73,5 +73,14 @@ public class Detail {
     @ManyToOne(fetch = FetchType.LAZY)
     private Group cdGroupNo;
 
+    public Detail updateDetail(Detail detail){
+        this.userId = detail.userId == null ? this.userId : detail.userId;
+        this.delYn = detail.delYn == null ? this.delYn : detail.delYn;
+        this.cdExplnt = detail.cdExplnt == null ? this.cdExplnt : detail.cdExplnt;
+        this.name = detail.name == null ? this.name : detail.name;
+        this.id = detail.id == null ? this.id : detail.id;
+        return this;
+    }
+
 
 }

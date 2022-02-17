@@ -1,12 +1,9 @@
 package com.insoft.helpdesk.application.biz.code.port.out;
 
-import com.insoft.helpdesk.application.domain.common.Content;
-import com.insoft.helpdesk.application.domain.common.ResponseMessage;
 import com.insoft.helpdesk.application.domain.jpa.entity.code.Group;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.List;
 import java.util.Optional;
 
 /**

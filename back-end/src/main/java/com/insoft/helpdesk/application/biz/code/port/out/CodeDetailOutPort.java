@@ -12,8 +12,8 @@ public interface CodeDetailOutPort {
     Long getDetailsCount();
     Page<Detail> getDetailsGroupId(String groupId, Pageable pageable);
     Long getDetailsGroupIdCount(String groupId);
-    Optional<Detail> getDetail(String id);
-    void createRequest(Detail detail);
-    void updateRequest(Detail detail);
-    void deleteRequest(Detail detail);
+    Optional<Detail> getDetail(String groupId, String detailId);
+    void createDetail(Detail detail);
+    void updateDetail(Detail detail);
+    void deleteDetail(Detail detail);
 }
