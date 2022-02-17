@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "RequestHistory", description = "서비스 히스토리 API")
@@ -21,43 +22,43 @@ public class RequestHistoryController {
 
     @Tag(name = "RequestHistory")
     @Operation(summary  = "해당 유저의 리퀘스트 조회", description  = "해당 유저의 리퀘스트 조회")
-    @GetMapping("/service/request-history/{id}")
-    public ResponseEntity getRequestHistory(@PathVariable String id){
+    @GetMapping("/service/request/{reqId}/history/{historyId}")
+    public ResponseEntity getRequestHistory(@PathVariable String reqId, @PathVariable String id){
         RequestHistory requestHistory = requestHistoryInPort.getRequestHistory(id).orElseThrow(null);
         return ResponseEntity.ok(requestHistory);
     }
 
     @Tag(name = "RequestHistory")
     @Operation(summary  = "해당 유저의 리퀘스트 조회", description  = "해당 유저의 리퀘스트 조회")
-    @GetMapping("/service/request-histories")
+    @GetMapping("/service/request/{reqId}/histories")
     public ResponseEntity getRequestHistoriesAll(Pageable pageable){
         return ResponseEntity.ok(requestHistoryInPort.getRequestHistories(pageable));
     }
 
     @Tag(name = "RequestHistory")
     @Operation(summary  = "해당 유저의 리퀘스트 조회", description  = "해당 유저의 리퀘스트 조회")
-    @GetMapping("/service/request-histories/count")
+    @GetMapping("/service/request/{reqId}/history/count")
     public ResponseEntity getRequestHistories(){
         return ResponseEntity.ok(requestHistoryInPort.getRequestsCount());
     }
 
     @Tag(name = "RequestHistory")
     @Operation(summary  = "해당 유저의 리퀘스트 조회", description  = "해당 유저의 리퀘스트 조회")
-    @GetMapping("/service/request-histories/{userid}")
+    @GetMapping("/service/request/{reqId}/{userId}/history")
     public ResponseEntity getRequestHistories(@PathVariable String userId, Pageable pageable){
         return ResponseEntity.ok(requestHistoryInPort.getRequestHistories(userId, pageable));
     }
 
     @Tag(name = "RequestHistory")
     @Operation(summary  = "해당 유저의 리퀘스트 조회", description  = "해당 유저의 리퀘스트 조회")
-    @GetMapping("/service/request-histories/{userid}/count")
+    @GetMapping("/service/request/{reqId}/{userId}/history/count")
     public ResponseEntity getRequestHistories(@PathVariable String userId){
         return ResponseEntity.ok(requestHistoryInPort.getRequestsCount(userId));
     }
 
     @Tag(name = "Request")
     @Operation(summary  = "해당 유저의 리퀘스트 생성", description  = "해당 유저의 리퀘스트 생성")
-    @PostMapping("/service/request-history")
+    @PostMapping("/service/request/{reqId}/history")
     public ResponseEntity createRequestHistory(@RequestBody RequestHistory requestHistory){
         requestHistoryInPort.createRequestHistory(requestHistory);
         return ResponseEntity.status(HttpStatus.CREATED).body(null);
@@ -65,7 +66,7 @@ public class RequestHistoryController {
 
     @Tag(name = "Request")
     @Operation(summary  = "해당 유저의 리퀘스트 수정", description  = "해당 유저의 리퀘스트 수정")
-    @PatchMapping("/service/request-history/{id}")
+    @PatchMapping("/service/request/{reqId}/history/{historyId}")
     public ResponseEntity updateRequestHistory(@PathVariable String id, @RequestBody RequestHistory requestHistory){
         RequestHistory _requestHistory = requestHistoryInPort.getRequestHistory(id).orElseThrow(null);
         _requestHistory = _requestHistory.updateRequestHistory(requestHistory);
@@ -75,7 +76,7 @@ public class RequestHistoryController {
 
     @Tag(name = "Request")
     @Operation(summary  = "해당 유저의 리퀘스트 삭제", description  = "해당 유저의 리퀘스트 삭제")
-    @DeleteMapping("/service/request-history/{id}")
+    @DeleteMapping("/service/request/{reqId}/history/{historyId}")
     public ResponseEntity deleteRequestHistory(@PathVariable String id){
         RequestHistory requestHistory = requestHistoryInPort.getRequestHistory(id).orElseThrow(null);
         requestHistoryInPort.deleteRequestHistory(requestHistory);

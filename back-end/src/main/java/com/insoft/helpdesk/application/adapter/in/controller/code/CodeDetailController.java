@@ -24,13 +24,13 @@ public class CodeDetailController {
     @Tag(name = "CodeDetail")
     @GetMapping("/group/{groupId}/details")
     public ResponseEntity getDetails(@PathVariable String groupId, Pageable pageable){
-        return ResponseEntity.ok(codeDetailInPort.getDetailsGroupId(groupId,pageable));
+        return ResponseEntity.ok(codeDetailInPort.getDetailsGroupId(Group.builder().id(groupId).build(),pageable));
     }
 
     @Tag(name = "CodeDetail")
     @GetMapping("/group/{groupId}/detail/{detailId}")
     public ResponseEntity selectCodeGroups(@PathVariable String groupId, @PathVariable String detailId){
-        return ResponseEntity.ok(codeDetailInPort.getDetail(groupId,detailId).orElse(null));
+        return ResponseEntity.ok(codeDetailInPort.getDetail(Group.builder().id(groupId).build(),detailId).orElse(null));
     }
 
     @Tag(name = "CodeDetail")
@@ -60,7 +60,7 @@ public class CodeDetailController {
     @Tag(name = "CodeDetail")
     @PatchMapping("/group/{groupId}/detail/{detailId}")
     public ResponseEntity updateDetail(@PathVariable String groupId, @PathVariable String detailId,@RequestBody Detail detail){
-        Detail _detail = codeDetailInPort.getDetail(groupId,detailId).orElse(null);
+        Detail _detail = codeDetailInPort.getDetail(Group.builder().id(groupId).build(),detailId).orElse(null);
         if( _detail == null){
             return ResponseEntity.badRequest().build();
         }
@@ -72,7 +72,7 @@ public class CodeDetailController {
     @Tag(name = "CodeDetail")
     @DeleteMapping("/group/{groupId}/detail/{id}")
     public ResponseEntity deleteDetail(@PathVariable String groupId, @PathVariable String id){
-        Detail detail = codeDetailInPort.getDetail(groupId,id).orElse(null);
+        Detail detail = codeDetailInPort.getDetail(Group.builder().id(groupId).build(),id).orElse(null);
         if(detail == null){
             return ResponseEntity.badRequest().build();
         }

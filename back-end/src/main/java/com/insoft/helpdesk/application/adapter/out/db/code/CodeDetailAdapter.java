@@ -2,6 +2,7 @@ package com.insoft.helpdesk.application.adapter.out.db.code;
 
 import com.insoft.helpdesk.application.biz.code.port.out.CodeDetailOutPort;
 import com.insoft.helpdesk.application.domain.jpa.entity.code.Detail;
+import com.insoft.helpdesk.application.domain.jpa.entity.code.Group;
 import com.insoft.helpdesk.application.domain.jpa.repo.code.DetailRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -27,8 +28,8 @@ public class CodeDetailAdapter implements CodeDetailOutPort {
     }
 
     @Override
-    public Page<Detail> getDetailsGroupId(String groupId, Pageable pageable) {
-        return detailRepo.findAllByCdGroupNo(groupId, pageable);
+    public Page<Detail> getDetailsGroupId(Group group, Pageable pageable) {
+        return detailRepo.findAllByCdGroupNo(group, pageable);
     }
 
     @Override
@@ -36,8 +37,8 @@ public class CodeDetailAdapter implements CodeDetailOutPort {
         return detailRepo.countAllByCdGroupNo(groupId);
     }
     @Override
-    public Optional<Detail> getDetail(String groupId, String detailId) {
-        return detailRepo.findByCdGroupNoAndId( groupId, detailId);
+    public Optional<Detail> getDetail(Group group, String detailId) {
+        return detailRepo.findByCdGroupNoAndId( group, detailId);
     }
 
     @Override

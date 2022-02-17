@@ -3,6 +3,7 @@ package com.insoft.helpdesk.application.biz.code.service;
 import com.insoft.helpdesk.application.biz.code.port.in.CodeDetailInPort;
 import com.insoft.helpdesk.application.biz.code.port.out.CodeDetailOutPort;
 import com.insoft.helpdesk.application.domain.jpa.entity.code.Detail;
+import com.insoft.helpdesk.application.domain.jpa.entity.code.Group;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,8 +28,8 @@ public class CodeDetailService implements CodeDetailInPort {
     }
 
     @Override
-    public Page<Detail> getDetailsGroupId(String groupId, Pageable pageable) {
-        return codeDetailOutPort.getDetailsGroupId(groupId, pageable);
+    public Page<Detail> getDetailsGroupId(Group group, Pageable pageable) {
+        return codeDetailOutPort.getDetailsGroupId(group, pageable);
     }
 
     @Override
@@ -37,8 +38,8 @@ public class CodeDetailService implements CodeDetailInPort {
     }
 
     @Override
-    public Optional<Detail> getDetail(String groupId, String detailId) {
-        return codeDetailOutPort.getDetail(groupId, detailId);
+    public Optional<Detail> getDetail(Group group, String detailId) {
+        return codeDetailOutPort.getDetail(group, detailId);
     }
 
     @Override

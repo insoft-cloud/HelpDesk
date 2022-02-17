@@ -58,8 +58,8 @@ public class LoginController {
             String token = jwtTokenProvider.createToken(result.getUserId(), roleList);
             long tokenExpiredTime = jwtTokenProvider.getTokenExpiredTime(token);
             long refreshTokenExpiredTime = jwtTokenProvider.getRefreshTokenExpiredTime(refreshToken);
-            redisTemplate.opsForValue()
-                    .set(refreshToken, result.getUserId(),  tokenExpiredTime - new Timestamp(System.currentTimeMillis()).getTime(), TimeUnit.MILLISECONDS);
+//            redisTemplate.opsForValue()
+//                    .set(refreshToken, result.getUserId(),  tokenExpiredTime - new Timestamp(System.currentTimeMillis()).getTime(), TimeUnit.MILLISECONDS);
             return ResponseEntity.ok(
                     HelpDeskToken
                             .builder()
