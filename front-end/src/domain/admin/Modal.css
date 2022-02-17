@@ -12,10 +12,17 @@
     outline: none;
     cursor: pointer;
     border: 0;
-  }
-  .modal > section {
+  } 
+  .modal > .md-lg {
     width: 90%;
-    max-width: 600px;
+    max-width: 65%;
+  }
+  .modal > .md-sm {
+    width: 90%;
+    max-width: 40%;
+  }
+ 
+  .modal > section {
     margin: 0 auto;
     padding:15px;
     border-radius: 0.3rem;

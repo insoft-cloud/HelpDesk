@@ -14,7 +14,7 @@ import Modal from "./Modal";
  * @description : 서비스운영자 리스트 컴포넌트
  */
 
-function AdminManagerListComponent(){
+function ServiceManagerListComponent(){
 
     let dispatch = useTokenDispatch();
     const state = useTokenState();
@@ -22,7 +22,7 @@ function AdminManagerListComponent(){
     const [chkNums, setChkNums] = useState<Array<number>>(new Array());
     //체크박스
     const [chkArr, setChkArr] = useState<Array<number>>(new Array()); 
-    const [isModalOpen,setIsModalOpen] = useState(false);//전체체크
+    const [isModalOpen,setIsModalOpen] = useState(false);
     const allCheck = (e) =>{ 
         if(e){
             const checkedArray:number[] = [];
@@ -80,10 +80,10 @@ function AdminManagerListComponent(){
                 <AdminButtonComponent btnClassName="btn btn-xs btn-outline-dark rounded-1 ms-2 lift ml-3 mb-3" btnName="추가" onEventHandler={openModal} url={"null"} />
                 </div>
             <div>
-            <CheckTableComponent data={tableData} columns={columns} limitCnt="10" word="" changeHandler={changeHandler} allCheck={allCheck} chkArr={chkArr}/>
+            <CheckTableComponent data={tableData} columns={columns} limitCnt="10" word="" changeHandler={changeHandler} allCheck={allCheck} chkArr={chkArr} isSelected={null}/>
             </div>
-            <div  >
-                {isModalOpen && (<Modal open={isModalOpen} close={closeModal} header="운영자 추가" />)}
+            <div>
+                {isModalOpen && (<Modal open={isModalOpen} close={closeModal} header="운영자 추가" modalSize="md-sm"/>)}
             </div>
         </div>
     )
@@ -102,4 +102,4 @@ function AdminManagerListComponent(){
 
  
 
-export default AdminManagerListComponent;
+export default ServiceManagerListComponent;

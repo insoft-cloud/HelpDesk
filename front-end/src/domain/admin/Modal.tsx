@@ -3,7 +3,7 @@ import CheckTableComponent from "component/table/CheckTableComponent";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTokenDispatch, useTokenState } from "utils/TokenContext";
 import "./Modal.css"
-function Modal({open, close, header}){
+function Modal({open, close, header,modalSize}){
     let dispatch = useTokenDispatch();
     const state = useTokenState();
     const [tableData, setTableData] = useState([]);
@@ -77,7 +77,7 @@ function Modal({open, close, header}){
     return(
         <div className={open?'openModal modal' : 'modal'}>
             {open?(
-                <section>
+                <section className={modalSize}>
                     <header>
                         <span>{header}</span>
                         <button className="close" onClick={close}>
@@ -102,7 +102,7 @@ function Modal({open, close, header}){
                         <li className="list-unstyled"><input type="radio" name="inst" value="week" checked={chkValue==="week"} onChange={e=>{setValue(e.target.value); setTestDays(e.target.value)}}/>중소벤처기업부</li>
                     </div>
                     <div className="memBox">
-                        <CheckTableComponent columns={columns} data={tableData}  limitCnt="3" word={word} changeHandler={changeHandler} allCheck={allCheck} chkArr={chkArr}/>
+                        <CheckTableComponent columns={columns} data={tableData}  limitCnt="3" word={word} changeHandler={changeHandler} allCheck={allCheck} chkArr={chkArr} isSelected={null}/>
                     </div>
                     <footer className="d-flex justify-content-center">
                         <button className="btn btn-xs ms-2" onClick={close}>닫기</button>

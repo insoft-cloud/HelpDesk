@@ -23,7 +23,9 @@ function AdminCodeGroupComponent() {
   // const [tableData,setTableData] = useState<Object>([]);
   const [tableData, setTableData] = useState([]);
   const [contentType] = useState("application/json");
-  const [url] = useState("/user/service/requests/test?day=all");
+  // const [url] = useState("/user/service/requests/test?day=all");
+  // const [url] = useState("/admin/groups/test");
+  const [url] = useState("/admin/groups");
   const [chkNums, setChkNums] = useState<Array<number>>(new Array());
   const navigate = useNavigate();
   const [path] = useState('null');
@@ -58,16 +60,19 @@ function AdminCodeGroupComponent() {
 
     function getData(data) {
       setTableData(data.content)
+      
     }
-
+ 
     const columns = useMemo(
       () => [
         {Header : "코드",accessor: "id"},
-        {Header : "항목",accessor: "sysCd"},
-        {Header : "등록자",accessor: "ttl"},
+        {Header : "항목",accessor: "name"},
+        {Header : "등록자",accessor: "userId"},
         {Header : "등록일",accessor: "registDt"},
       ],[])
+      
 
+      console.log(tableData)
   return (
         <div className="container">
           <div className="card-body">
@@ -77,7 +82,7 @@ function AdminCodeGroupComponent() {
                   <AdminButtonComponent btnClassName="btn btn-xs btn-outline-dark rounded-1 ms-2 ml-3 mb-3" btnName="추가" path={path} onEventHandler={add} url={"null"} />
                 </div>
                 <div>
-                  <CheckTableComponent data={tableData} columns={columns} limitCnt="5" word="" changeHandler={changeHandler} allCheck={allCheck} chkArr={chkArr}/>
+                  <CheckTableComponent data={tableData} columns={columns} limitCnt="5" word="" changeHandler={changeHandler} allCheck={allCheck} chkArr={chkArr} isSelected={null}/>
                 </div>
           </div>
         </div>
@@ -100,9 +105,9 @@ function AdminCodeGroupComponent() {
     if(chkNums.length!==1){
       alert('하나 선택');
     }else{
-      let ttl:string = tableData[chkNums[0]]['ttl']
+      let id:string = tableData[chkNums[0]]['id']
       navigate(ContextPath(API_ADMIN_PATH.codeDetail),{
-        state: {cdNM : ""+ttl},
+        state: {cdNM : ""+id},
       });
     }
   }

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTable } from "react-table";
 
 /**
@@ -10,7 +10,7 @@ import { useTable } from "react-table";
  */
 
 
-const AddRowTableComponent = ({columns,data,limitCnt,delEvent,add} : any) => {            
+const AddRowTableComponent = ({columns,data,limitCnt,delEvent,add,test,setTest,cdExplntTest,setCdExplntTest} : any) => {            
     
     //페이징
     const limit = parseInt(limitCnt); 
@@ -28,9 +28,12 @@ const AddRowTableComponent = ({columns,data,limitCnt,delEvent,add} : any) => {
         columns,
         data,
     });
-
+    useEffect(() => {
+        setTest(test)
+    },[test]);
     return(
     <div className="table-responsive fs-sm">
+        <form>
         <table className="table table-striped border-top border" {...getTableProps()}>
             <thead>
                 {headerGroups.map(headerGroup => (
@@ -50,9 +53,13 @@ const AddRowTableComponent = ({columns,data,limitCnt,delEvent,add} : any) => {
                     return (
                         <tr {...row.getRowProps()}>
                             {row.cells.map(cell => {
+                                return <td  className="align-middle text-center" {...cell.getCellProps()}>
+                                    {cell.column.Header==='명칭'?
+                                    <input className="form-control" value={test[i]===""?row.original['name']:test[i]} onChange={(event)=>setTest(test.splice(i,1,event.target.value))}/>:
+                                    cell.column.Header==='설명'?
+                                    <input className="form-control" value={cdExplntTest[i]===""?row.original['cdExplnt']:cdExplntTest[i]} onChange={(event)=>setCdExplntTest(cdExplntTest.splice(i,1,event.target.value))}/>:cell.render('Cell')
+                                }
                                 
-                                return <td  className="align-middle" {...cell.getCellProps()}>
-                                    {cell.render('Cell')}
                                 </td>
                             })}
                         <td><button className="btn btn-sm" onClick={e=>delEvent(row.original['id'])}>삭제</button></td>
@@ -62,6 +69,7 @@ const AddRowTableComponent = ({columns,data,limitCnt,delEvent,add} : any) => {
                 <tr><td colSpan={6} className="text-center" onClick={add}>+</td></tr>
             </tbody>
         </table>
+        </form>
 
         {/* 페이징처리 */}
         {/* <div className="d-flex justify-content-center">
