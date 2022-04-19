@@ -1,11 +1,11 @@
-import {useEffect} from 'react'
+import {useEffect, useState} from 'react'
 import mainImage from "assets/img/new_img/main_visual.png";
 import './HomeComponent.css'
 import 'assets/css/libs.bundle.css';
 import { ButtonComponent } from 'component/button/ButtonComponent';
 import {useTokenDispatch} from "../../utils/TokenContext";
-import { API_DOMAIN_PATH, ContextPath } from 'utils/ContextPath';
-
+import {API_ADMIN_PATH, API_DOMAIN_PATH, ContextPath} from 'utils/ContextPath';
+import { AuthCode } from 'utils/AdminCode';
 
 /**
  * @Project     : HelpDesk
@@ -18,11 +18,13 @@ import { API_DOMAIN_PATH, ContextPath } from 'utils/ContextPath';
 function HomeComponent() {
 
     let dispatch = useTokenDispatch()
+    const auth = sessionStorage.getItem("auth");
 
     useEffect(() => {
         dispatch({ type: 'SET_PAGE', page: "HOME"})
-    }, []);
 
+    }, []);
+    
 
     return(
     <section className='pt-4 pt-md-11'>
@@ -50,10 +52,21 @@ function HomeComponent() {
                     <ButtonComponent btnName='신규 서비스 요청 작성' url={ContextPath(API_DOMAIN_PATH.serviceRequest)} btnClassName="btn btn-primary shadow lift" />
                 </p>
                 <p>
-                    <ButtonComponent btnName='서비스 요청 진행사항 확인' url={ContextPath(API_DOMAIN_PATH.myWork)} btnClassName="btn btn-primary-soft lift" />
+                    <ButtonComponent btnName='서비스 요청 진행사항 확인' url={ContextPath(API_DOMAIN_PATH.myRequest)} btnClassName="btn btn-primary-soft lift" />
                 </p>
+                {auth === AuthCode.superAdmin 
+                ?
+                <p>
+                    <ButtonComponent btnName='서비스관리' url={ContextPath(API_ADMIN_PATH.codeGroup)} btnClassName="btn btn-dark-soft lift" />
+                </p>
+                : <></>
+                }
             </div>
         </div>
+      </div>
+      <div className="row mt-11 mb-11 main_notice">
+        {/* 
+        <ListComponent listName="공지사항"/> */}
       </div>
     </div>
   </section>

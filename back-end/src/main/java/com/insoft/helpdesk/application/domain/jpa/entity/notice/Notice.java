@@ -1,16 +1,15 @@
 package com.insoft.helpdesk.application.domain.jpa.entity.notice;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.insoft.helpdesk.util.content.HelpDeskYNConverter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Comment;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.*;
 
-import javax.persistence.Column;
+import javax.persistence.*;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
@@ -21,11 +20,15 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@DynamicUpdate
+@Where(clause = "del_yn='N'")
 public class Notice {
 
     @Id
     @Column(name = "NTC_NO", length = 36, nullable = false, updatable = false)
+    @GenericGenerator(name = "uuid2", strategy = "uuid2")
+    @GeneratedValue(generator = "uuid2")
     @Comment("공지사항번호")
     @Size(max = 36)
     private String id;
@@ -60,8 +63,8 @@ public class Notice {
 
     @Column(name = "DEL_YN", length = 1, nullable = false)
     @Comment("삭제여부(Y,N)")
-    @Size(max = 1)
-    private String delYn;
+    @Convert(converter = HelpDeskYNConverter.class)
+    private Boolean delYn;
 
     @Column(name = "REGIST_DT", nullable = false)
     @Comment("등록일시")
@@ -78,14 +81,15 @@ public class Notice {
     @Size(max = 1)
     private String ntcregistyn;
 
-    @Column(name = "USE_YN", length = 1, nullable = false)
-    @Comment("사용여부")
-    @Size(max = 1)
-    private String useyn;
 
-    @Column(name = "RSVTN_DT")
-    @Comment("예약일시")
-    @CreationTimestamp
-    private LocalDateTime rsvtnDt;
+    public Notice updateNotice(Notice notice){
+        this.ctgrycd = notice.ctgrycd == null ? this.ctgrycd : notice.ctgrycd;
+        this.ttl = notice.ttl == null ? this.ttl : notice.ttl;
+        this.cnts = notice.cnts == null ? this.cnts : notice.cnts;
+        this.delYn = notice.delYn == null ? this.delYn : notice.delYn;
+        this.ntcregistyn = notice.ntcregistyn == null ? this.ntcregistyn : notice.ntcregistyn;
+        this.rdcnt = notice.rdcnt == null ? this.rdcnt : notice.rdcnt;
+        return this;
+    }
 
 }

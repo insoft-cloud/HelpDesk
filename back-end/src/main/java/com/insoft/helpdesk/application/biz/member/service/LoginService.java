@@ -18,7 +18,6 @@ public class LoginService implements UserDetailsService, LoginInPort {
 
     @Override
     public Member SignIn(Member member) {
-        System.out.println("여기옴");
         return loginOutPort.getMemberId(member.getUserId());
     }
 

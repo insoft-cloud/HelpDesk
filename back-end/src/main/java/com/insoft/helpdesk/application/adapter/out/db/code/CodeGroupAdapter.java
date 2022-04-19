@@ -17,46 +17,34 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CodeGroupAdapter implements CodeGroupOutPort {
 
-    final GroupRepo groupRepo;
-
 
     @Override
-    public Page<Group> getCodeGroups(Pageable pageable) {
-        return groupRepo.findAll(pageable);
+    public Page<Group> getCodeGroups(Page<Group> groups) {
+        return groups;
     }
 
     @Override
-    public Page<Group> getCodeGroupsUserId(String userId, Pageable pageable) {
-        return groupRepo.findAllByUserId(userId, pageable);
+    public Optional<Group> getCodeGroup(Optional<Group> group) {
+        return group;
     }
 
     @Override
-    public Optional getCodeGroup(String id) {
-        return groupRepo.findById(id);
+    public Long countCodeGroups(Long count) {
+        return count;
     }
 
     @Override
-    public Long countCodeGroups() {
-        return groupRepo.count();
+    public Group createCodeGroup(Group group) {
+        return group;
     }
 
     @Override
-    public Long countCodeGroupsUserId(String userId) {
-        return groupRepo.countAllByUserId(userId);
+    public Group updateCodeGroup(Group group) {
+        return group;
     }
 
     @Override
-    public void createCodeGroup(Group group) {
-        groupRepo.save(group);
-    }
-
-    @Override
-    public void updateCodeGroup(Group group) {
-        groupRepo.save(group);
-    }
-
-    @Override
-    public void deleteCodeGroup(Group group) {
-        groupRepo.delete(group);
+    public Group deleteCodeGroup(Group group) {
+        return group;
     }
 }

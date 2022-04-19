@@ -23,8 +23,14 @@ public class S3MinioConfiguration {
     @Value("${amazone.s3.minio.password}")
     String password;
 
-    @Value("${amazone.s3.minio.bucket}")
+    @Value("${amazone.s3.minio.request.bucket}")
     String bucket;
+
+    @Value("${amazone.s3.minio.request.history.bucket}")
+    String bucket2;
+
+    @Value("${amazone.s3.minio.notice.bucket}")
+    String bucket3;
 
     @Bean
     MinioClient  s3Client(){
@@ -32,6 +38,12 @@ public class S3MinioConfiguration {
         try {
             if(!minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucket).build())) {
                 minioClient.makeBucket(MakeBucketArgs.builder().bucket(bucket).objectLock(false).build());
+            }
+            if(!minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucket2).build())) {
+                minioClient.makeBucket(MakeBucketArgs.builder().bucket(bucket2).objectLock(false).build());
+            }
+            if(!minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucket3).build())) {
+                minioClient.makeBucket(MakeBucketArgs.builder().bucket(bucket3).objectLock(false).build());
             }
         } catch (ErrorResponseException e) {
             e.printStackTrace();

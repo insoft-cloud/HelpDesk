@@ -1,85 +1,84 @@
 package com.insoft.helpdesk.application.adapter.in.controller.service;
 
+import com.insoft.helpdesk.application.biz.member.port.in.LoginInPort;
+import com.insoft.helpdesk.application.biz.member.port.in.MemberInPort;
 import com.insoft.helpdesk.application.biz.service.port.in.RequestHistoryInPort;
-import com.insoft.helpdesk.application.domain.jpa.entity.service.Request;
+import com.insoft.helpdesk.application.biz.service.port.in.RequestInPort;
+import com.insoft.helpdesk.application.domain.common.JwtTokenProvider;
+import com.insoft.helpdesk.application.domain.jpa.entity.Member;
 import com.insoft.helpdesk.application.domain.jpa.entity.service.RequestHistory;
-import com.insoft.helpdesk.util.annotation.HelpdeskRestController;
+import com.insoft.helpdesk.application.domain.jpa.repo.member.MemberRepo;
+import com.insoft.helpdesk.util.annotation.HelpDeskRestController;
+import com.insoft.helpdesk.util.content.HelpDeskMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Tag(name = "RequestHistory", description = "서비스 히스토리 API")
-@HelpdeskRestController
+@HelpDeskRestController
 @RequiredArgsConstructor
 public class RequestHistoryController {
 
-    RequestHistoryInPort requestHistoryInPort;
+    final RequestHistoryInPort requestHistoryInPort;
+    final RequestInPort requestInPort;
 
     @Tag(name = "RequestHistory")
     @Operation(summary  = "해당 유저의 리퀘스트 조회", description  = "해당 유저의 리퀘스트 조회")
-    @GetMapping("/service/request/{reqId}/history/{historyId}")
-    public ResponseEntity getRequestHistory(@PathVariable String reqId, @PathVariable String id){
-        RequestHistory requestHistory = requestHistoryInPort.getRequestHistory(id).orElseThrow(null);
-        return ResponseEntity.ok(requestHistory);
+    @GetMapping("/service/request/history/{id}")
+    public RequestHistory getRequestHistory(@PathVariable String id){
+        return requestHistoryInPort.getRequestHistory(id).orElseThrow(null);
     }
 
     @Tag(name = "RequestHistory")
     @Operation(summary  = "해당 유저의 리퀘스트 조회", description  = "해당 유저의 리퀘스트 조회")
-    @GetMapping("/service/request/{reqId}/histories")
-    public ResponseEntity getRequestHistoriesAll(Pageable pageable){
-        return ResponseEntity.ok(requestHistoryInPort.getRequestHistories(pageable));
+    @GetMapping("/service/request/histories")
+    public Page<RequestHistory> getRequestHistories(@RequestParam(value = "key", required = false) String keyParams, @RequestParam(value = "search", required = false) String searchParams, Pageable pageable){
+        return requestHistoryInPort.getRequestHistories(HelpDeskMapper.mapToJson(searchParams), HelpDeskMapper.mapToJson(keyParams), pageable);
     }
 
     @Tag(name = "RequestHistory")
     @Operation(summary  = "해당 유저의 리퀘스트 조회", description  = "해당 유저의 리퀘스트 조회")
-    @GetMapping("/service/request/{reqId}/history/count")
-    public ResponseEntity getRequestHistories(){
-        return ResponseEntity.ok(requestHistoryInPort.getRequestsCount());
+    @GetMapping("/service/request/{id}/histories")
+    public Page<RequestHistory> getRequestHistories(@PathVariable String id, @RequestParam(value = "key", required = false) String keyParams, @RequestParam(value = "search", required = false) String searchParams, Pageable pageable){
+        return requestHistoryInPort.getRequestHistories(id, HelpDeskMapper.mapToJson(searchParams), HelpDeskMapper.mapToJson(keyParams), pageable);
     }
 
     @Tag(name = "RequestHistory")
     @Operation(summary  = "해당 유저의 리퀘스트 조회", description  = "해당 유저의 리퀘스트 조회")
-    @GetMapping("/service/request/{reqId}/{userId}/history")
-    public ResponseEntity getRequestHistories(@PathVariable String userId, Pageable pageable){
-        return ResponseEntity.ok(requestHistoryInPort.getRequestHistories(userId, pageable));
-    }
-
-    @Tag(name = "RequestHistory")
-    @Operation(summary  = "해당 유저의 리퀘스트 조회", description  = "해당 유저의 리퀘스트 조회")
-    @GetMapping("/service/request/{reqId}/{userId}/history/count")
-    public ResponseEntity getRequestHistories(@PathVariable String userId){
-        return ResponseEntity.ok(requestHistoryInPort.getRequestsCount(userId));
+    @GetMapping("/service/request/{id}/histories/count")
+    public Long getRequestHistoriesCount(@PathVariable String id, @RequestParam(value = "key", required = false) String keyParams, @RequestParam(value = "search", required = false) String searchParams){
+        return requestHistoryInPort.getRequestsCount(id, HelpDeskMapper.mapToJson(searchParams), HelpDeskMapper.mapToJson(keyParams));
     }
 
     @Tag(name = "Request")
     @Operation(summary  = "해당 유저의 리퀘스트 생성", description  = "해당 유저의 리퀘스트 생성")
-    @PostMapping("/service/request/{reqId}/history")
-    public ResponseEntity createRequestHistory(@RequestBody RequestHistory requestHistory){
-        requestHistoryInPort.createRequestHistory(requestHistory);
-        return ResponseEntity.status(HttpStatus.CREATED).body(null);
+    @PostMapping("/service/request/{id}/history")
+    public RequestHistory createRequestHistory(@PathVariable String id, @RequestBody RequestHistory requestHistory){
+        requestHistory.setSvcReqNo(requestInPort.getRequest(id).orElse(null));
+        return requestHistoryInPort.createRequestHistory(requestHistory);
+
     }
 
     @Tag(name = "Request")
     @Operation(summary  = "해당 유저의 리퀘스트 수정", description  = "해당 유저의 리퀘스트 수정")
-    @PatchMapping("/service/request/{reqId}/history/{historyId}")
-    public ResponseEntity updateRequestHistory(@PathVariable String id, @RequestBody RequestHistory requestHistory){
+    @PostMapping("/service/request/history/{id}")
+    public RequestHistory updateRequestHistory(@PathVariable String id, @RequestBody RequestHistory requestHistory){
         RequestHistory _requestHistory = requestHistoryInPort.getRequestHistory(id).orElseThrow(null);
         _requestHistory = _requestHistory.updateRequestHistory(requestHistory);
-        requestHistoryInPort.updateRequestHistory(_requestHistory);
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
+        return requestHistoryInPort.updateRequestHistory(_requestHistory);
     }
 
     @Tag(name = "Request")
     @Operation(summary  = "해당 유저의 리퀘스트 삭제", description  = "해당 유저의 리퀘스트 삭제")
-    @DeleteMapping("/service/request/{reqId}/history/{historyId}")
-    public ResponseEntity deleteRequestHistory(@PathVariable String id){
+    @DeleteMapping("/service/request/history/{id}")
+    public RequestHistory deleteRequestHistory(@PathVariable String id){
         RequestHistory requestHistory = requestHistoryInPort.getRequestHistory(id).orElseThrow(null);
-        requestHistoryInPort.deleteRequestHistory(requestHistory);
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
+        return requestHistoryInPort.deleteRequestHistory(requestHistory);
     }
 }

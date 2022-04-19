@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useTable } from "react-table";
+import TrComponent from "./TrComponent";
 
 /**
  * @Project     : HelpDesk
@@ -9,14 +10,12 @@ import { useTable } from "react-table";
  * @description : 행추가 테이블
  */
 
-
-const AddRowTableComponent = ({columns,data,limitCnt,delEvent,add,test,setTest,cdExplntTest,setCdExplntTest} : any) => {            
-    
-    //페이징
-    const limit = parseInt(limitCnt); 
-    const [page, setPage] = useState(1);
-    // const offset = (page - 1) * limit;
-  
+const AddRowTableComponent = ({ columns, data, limit, offset, add, addData, delEvent, delList,editStat }) => {
+    const [trCnt, setTrCnt] = useState(0);
+    let arr: any[] = [];
+    delList.map(e => {
+        arr.push(e['id']);
+    })
     //테이블
     const {
         getTableProps,
@@ -28,56 +27,53 @@ const AddRowTableComponent = ({columns,data,limitCnt,delEvent,add,test,setTest,c
         columns,
         data,
     });
-    useEffect(() => {
-        setTest(test)
-    },[test]);
-    return(
-    <div className="table-responsive fs-sm">
-        <form>
-        <table className="table table-striped border-top border" {...getTableProps()}>
-            <thead>
+    const addRender = () => {
+        for (let i = 0; i < addData; i++) {
+            return <TrComponent key={i} />
+        }
+    }
+    const addEvent = () => {
+        add();
+        setTrCnt(trCnt + 1)
+    }
+    return (
+        <table className="table border-top" {...getTableProps()}>
+            <thead className="table-secondary">
                 {headerGroups.map(headerGroup => (
                     <tr {...headerGroup.getHeaderGroupProps()}>
                         {headerGroup.headers.map(column => (
-                            <th {...column.getHeaderProps()}>
+                            <th scope="col" {...column.getHeaderProps()}>
                                 {column.render('Header')}
                             </th>
                         ))}
-                        <th>삭제</th>
+                        {editStat?null:<th>삭제</th>}
                     </tr>
                 ))}
             </thead>
             <tbody {...getTableBodyProps()}>
-                {rows.map((row,i) => {
+                {rows.map((row) => {
                     prepareRow(row)
                     return (
-                        <tr {...row.getRowProps()}>
+                        <tr className={arr.includes(row.original['id']) ? "table-danger" : ""} {...row.getRowProps()}>
                             {row.cells.map(cell => {
-                                return <td  className="align-middle text-center" {...cell.getCellProps()}>
-                                    {cell.column.Header==='명칭'?
-                                    <input className="form-control" value={test[i]===""?row.original['name']:test[i]} onChange={(event)=>setTest(test.splice(i,1,event.target.value))}/>:
-                                    cell.column.Header==='설명'?
-                                    <input className="form-control" value={cdExplntTest[i]===""?row.original['cdExplnt']:cdExplntTest[i]} onChange={(event)=>setCdExplntTest(cdExplntTest.splice(i,1,event.target.value))}/>:cell.render('Cell')
-                                }
-                                
+                                return <td className={cell.column['className']} {...cell.getCellProps()}>
+                                    {cell.render('Cell')}
                                 </td>
                             })}
-                        <td><button className="btn btn-sm" onClick={e=>delEvent(row.original['id'])}>삭제</button></td>
+                            {editStat?null:<td className="align-middle text-center col-md-1">{row.original['id'] !== "new" ? <button className="btn btn-sm" onClick={e => delEvent(row.original)}>삭제</button> : ""}</td>}
                         </tr>
                     )
                 })}
-                <tr><td colSpan={6} className="text-center" onClick={add}>+</td></tr>
+                {/* .slice(offset,offset+limit) */}
+                {addRender}
+                {editStat?null:<tr><td colSpan={6} className="text-center" onClick={addEvent}>
+                    <button className="btn btn-success-soft btn-rounded-circle btn-sm">
+                        <i className="fe fe-plus"></i>
+                    </button>
+                </td></tr>
+                }
             </tbody>
         </table>
-        </form>
-
-        {/* 페이징처리 */}
-        {/* <div className="d-flex justify-content-center">
-            <nav aria-label="Page navigation example">
-                <Pagination total={data.length} limit={limit} page={page} setPage={setPage} chkArr={null} setChkArr={null} />
-            </nav>
-        </div> */}
-    </div>
-)
+    )
 }
 export default AddRowTableComponent;

@@ -1,10 +1,10 @@
-import React, {ChangeEvent, useEffect, useState} from "react";
+import React, {ChangeEvent, useEffect, useRef, useState} from "react";
 import LoginModel from "../../interface/Login/LoginModel";
 import {procPostAxios, procPostAxiosHeader} from "../../axios/Axios";
 import {useTokenDispatch} from "../../utils/TokenContext";
 import {Link, useNavigate} from "react-router-dom";
 import {AxiosRequestHeaders} from "axios";
-import {API_LOGIN, API_SIGN_PATH, ContextPath} from "../../utils/ContextPath";
+import {API_DOMAIN_PATH, API_LOGIN, API_SIGN_PATH, ContextPath} from "../../utils/ContextPath";
 
 export default function SignInComponent({prePath : path}) {
 
@@ -48,23 +48,25 @@ export default function SignInComponent({prePath : path}) {
                         </p>
                             <div className="form-group">
                                 <label className="form-label" htmlFor="email">
-                                    이메일 주소
+                                    아이디
                                 </label>
-                                <input type="email" className="form-control" id="email" onChange={emailChange} placeholder="name@address.com"/>
+                                <input type="email" className="form-control" id="email" onChange={emailChange} placeholder="ID"  onKeyPress={e=>onKeyPress(e.key)} />
                             </div>
                             <div className="form-group mb-5">
                                 <label className="form-label" htmlFor="password">
-                                    패스워드
+                                    비밀번호
                                 </label>
                                 <input type="password" className="form-control" onChange={passwordChange} id="password"
-                                       placeholder="Enter your password"/>
+                                       placeholder="Password" onKeyPress={e=>onKeyPress(e.key)}/>
                             </div>
                             <button className="btn w-100 btn-primary" onClick={login}>
                                 Sign in
                             </button>
-                        <p className="mb-0 fs-sm text-center text-muted">
-                            회원가입을 아직 하지 않으셨나요? <Link to={ContextPath(API_LOGIN.singUp)}>회원가입</Link>.
-                        </p>
+                        <p className="mt-2 mb-0 fs-sm text-center text-muted">
+                        <Link to={ContextPath(API_LOGIN.findId)} className='btn btn-outline-secondary btn-pill btn-xs' >아이디찾기</Link>
+                        <Link to={ContextPath(API_LOGIN.findPw)} className='btn btn-outline-secondary btn-pill btn-xs m-1' >비밀번호찾기</Link>
+                        <Link to={ContextPath(API_LOGIN.singUp)} className='btn btn-outline-primary btn-pill btn-xs'>회원가입</Link>
+                        </p>                        
 
                     </div>
                 </div>
@@ -89,13 +91,22 @@ export default function SignInComponent({prePath : path}) {
         procPostAxios(API_SIGN_PATH+"/signin","","application/json", loginModel, ok, error);
     }
 
+    function onKeyPress(e) {
+        if(e==='Enter'){
+            login();
+        }
+    }
+
     function ok(data : any){
         dispatch({ type: 'SET_TOKEN', token: data['accessToken'],
-            tokenExpired: data['tokenExpired'], user: data['userName'] });
+            tokenExpired: data['tokenExpired'], user: data['userId'], name : data['userName'] });
         sessionStorage.setItem("refreshToken", data['refreshToken']);
         sessionStorage.setItem("refreshTokenExpired", data['refreshTokenExpired']);
+        if(data['auth']){
+            sessionStorage.setItem("auth",data['auth']['cdId']);
+        }
         if(path.toString().toLowerCase().indexOf("sign") > 0){
-            navigate(ContextPath("/"));
+            navigate(ContextPath(API_DOMAIN_PATH.main));
         }else {
             navigate(ContextPath(path));
         }

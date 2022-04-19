@@ -16,12 +16,10 @@ import java.util.Optional;
  */
 public interface CodeGroupOutPort {
 
-    Page<Group> getCodeGroups(Pageable pageable);
-    Page<Group> getCodeGroupsUserId(String userId, Pageable pageable);
-    Optional<Group>  getCodeGroup(String id);
-    Long countCodeGroups();
-    Long countCodeGroupsUserId(String userId);
-    void createCodeGroup(Group group);
-    void updateCodeGroup(Group group);
-    void deleteCodeGroup(Group group);
+    Page<Group> getCodeGroups(Page<Group> groups);
+    Optional<Group>  getCodeGroup(Optional<Group> group);
+    Long countCodeGroups(Long count);
+    Group createCodeGroup(Group group);
+    Group updateCodeGroup(Group group);
+    Group deleteCodeGroup(Group group);
 }

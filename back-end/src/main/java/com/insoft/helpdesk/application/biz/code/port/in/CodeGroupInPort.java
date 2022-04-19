@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -19,12 +20,10 @@ import java.util.Optional;
 public interface CodeGroupInPort {
 
 
-    Page<Group> getCodeGroups(Pageable pageable);
-    Page<Group> getCodeGroupsUserId(String userId, Pageable pageable);
+    Page<Group> getCodeGroups(Map<String,String> keyParams, Map<String,String> searchParams, Pageable pageable);
     Optional<Group> getCodeGroup(String id);
-    Long countCodeGroups();
-    Long countCodeGroupsUserId(String userId);
-    void createCodeGroup(Group group);
-    void updateCodeGroup(Group group);
-    void deleteCodeGroup(Group group);
+    Long countCodeGroups(Map<String,String> keyParams, Map<String,String> searchParams);
+    Group createCodeGroup(Group group);
+    Group updateCodeGroup(Group group);
+    Group deleteCodeGroup(Group group);
 }

@@ -4,13 +4,17 @@ import com.insoft.helpdesk.application.biz.code.port.in.CodeGroupInPort;
 import com.insoft.helpdesk.application.biz.code.port.out.CodeGroupOutPort;
 import com.insoft.helpdesk.application.domain.common.ResponseMessage;
 import com.insoft.helpdesk.application.domain.jpa.entity.code.Group;
+import com.insoft.helpdesk.application.domain.jpa.repo.code.GroupRepo;
+import com.insoft.helpdesk.util.content.HelpDeskSearchExecutor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -19,44 +23,39 @@ public class CodeGroupService implements CodeGroupInPort {
 
     final CodeGroupOutPort codeGroupOutPort;
 
+    final GroupRepo groupRepo;
+
+    final HelpDeskSearchExecutor helpDeskSearchExecutor;
 
     @Override
-    public Page<Group> getCodeGroups(Pageable pageable) {
-        return codeGroupOutPort.getCodeGroups(pageable);
+    public Page<Group> getCodeGroups(Map<String,String> keyParams, Map<String,String> searchParams, Pageable pageable) {
+//        return codeGroupOutPort.getCodeGroups(groupRepo.findAll(helpDeskSearchExecutor.Search(searchParams, keyParams), pageable));
+        return codeGroupOutPort.getCodeGroups(groupRepo.findAll(helpDeskSearchExecutor.Search(searchParams,keyParams), pageable));
     }
 
     @Override
-    public Page<Group> getCodeGroupsUserId(String userId, Pageable pageable) {
-        return codeGroupOutPort.getCodeGroupsUserId(userId, pageable);
+    public Optional<Group> getCodeGroup(String id) {
+        return codeGroupOutPort.getCodeGroup(groupRepo.findById(id));
     }
 
     @Override
-    public Optional getCodeGroup(String id) {
-        return codeGroupOutPort.getCodeGroup(id);
+    public Long countCodeGroups(Map<String,String> keyParams, Map<String,String> searchParams) {
+        return codeGroupOutPort.countCodeGroups(groupRepo.count(helpDeskSearchExecutor.Search(searchParams, keyParams)));
     }
 
     @Override
-    public Long countCodeGroups() {
-        return codeGroupOutPort.countCodeGroups();
+    public Group createCodeGroup(Group group) {
+        return codeGroupOutPort.createCodeGroup(groupRepo.save(group));
     }
 
     @Override
-    public Long countCodeGroupsUserId(String userId) {
-        return codeGroupOutPort.countCodeGroupsUserId(userId);
+    public Group updateCodeGroup(Group group) {
+        return codeGroupOutPort.updateCodeGroup(groupRepo.save(group));
     }
 
     @Override
-    public void createCodeGroup(Group group) {
-        codeGroupOutPort.createCodeGroup(group);
-    }
-
-    @Override
-    public void updateCodeGroup(Group group) {
-        codeGroupOutPort.updateCodeGroup(group);
-    }
-
-    @Override
-    public void deleteCodeGroup(Group group) {
-        codeGroupOutPort.deleteCodeGroup(group);
+    public Group deleteCodeGroup(Group group) {
+        groupRepo.delete(group);
+        return codeGroupOutPort.deleteCodeGroup(group);
     }
 }

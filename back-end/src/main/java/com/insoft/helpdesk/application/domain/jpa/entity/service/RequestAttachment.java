@@ -82,7 +82,7 @@ public class RequestAttachment {
     @UpdateTimestamp
     private LocalDateTime updateDt;
 
-    public RequestAttachment getRequestAttachment(RequestAttachment requestAttachment){
+    public RequestAttachment updateRequestAttachment(RequestAttachment requestAttachment){
         this.svcReqNo = requestAttachment.svcReqNo == null ? this.svcReqNo : requestAttachment.svcReqNo;
         this.fileNm = requestAttachment.fileNm == null ? this.fileNm : requestAttachment.fileNm;
         this.filePath = requestAttachment.filePath == null ? this.filePath : requestAttachment.filePath;

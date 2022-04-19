@@ -1,14 +1,19 @@
 import React, {createContext, Dispatch, useContext, useReducer} from "react";
+import {Navigate, useNavigate} from "react-router-dom";
+import {API_DOMAIN_PATH, API_LOGIN, ContextPath} from "./ContextPath";
+import privateRoute from "../component/route/PrivateRoute";
+import ServiceRequestComponent from "../domain/service/ServiceRequestComponent";
 
 export type TokenContext = {
     token : string | undefined;
     tokenExpired : number;
     page : string;
     user : string | undefined;
+    name : string | undefined;
 };
 
 type Action =
-    | { type: 'SET_TOKEN'; token: string, tokenExpired : number , user: string}
+    | { type: 'SET_TOKEN'; token: string, tokenExpired : number , user: string, name : string}
     | { type: 'SET_PAGE'; page: string}
 
 
@@ -24,7 +29,8 @@ function reducer(state: TokenContext, action: Action): TokenContext {
                 ...state,
                 token: action.token,
                 tokenExpired: action.tokenExpired,
-                user: action.user
+                user: action.user,
+                name : action.name
             };
         case 'SET_PAGE':
             return {
@@ -42,6 +48,7 @@ export function TokenProvider({ children }: { children: React.ReactNode }) {
         tokenExpired: 0,
         page: "HOME",
         user: undefined,
+        name : undefined,
     });
 
     return (
@@ -63,4 +70,10 @@ export function useTokenDispatch() {
     const dispatch = useContext(TokenDispatchContext);
     if (!dispatch) throw new Error('Cannot find TokenDispatchContext');
     return dispatch;
+}
+
+export function useTokenStateExpired(tokenExpired){
+    if(Number(tokenExpired) < new Date().getTime()){
+        sessionStorage.clear();
+    }
 }

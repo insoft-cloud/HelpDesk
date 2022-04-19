@@ -2,7 +2,7 @@ package com.insoft.helpdesk.configuration;
 
 import com.insoft.helpdesk.util.filter.JwtAuthFilter;
 import com.insoft.helpdesk.application.domain.common.JwtTokenProvider;
-import com.insoft.helpdesk.util.filter.HelpdeskFilter;
+import com.insoft.helpdesk.util.filter.HelpDeskFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -61,10 +61,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/v1/sign/**").permitAll()
                 .antMatchers("/swagger-ui/**").permitAll()
                 .antMatchers("/swagger-resources/**").permitAll()
+                .antMatchers("/api/v1/admin/group/*/details").permitAll()
+                .antMatchers("/api/v1/user/service/request/*/attach/download").permitAll()
+                .antMatchers("/api/v1/user/service/request/charge/history/*/attache/download").permitAll()
+                .antMatchers("/api/v1/user/notice/*/attach/download").permitAll()
                 .anyRequest().hasAuthority("USER")
                 .and()
                 .addFilterBefore(new JwtAuthFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
-                .addFilterAfter(new HelpdeskFilter(jwtTokenProvider),  WebAsyncManagerIntegrationFilter.class);
+                .addFilterAfter(new HelpDeskFilter(jwtTokenProvider),  WebAsyncManagerIntegrationFilter.class);
     }
 
     @Override

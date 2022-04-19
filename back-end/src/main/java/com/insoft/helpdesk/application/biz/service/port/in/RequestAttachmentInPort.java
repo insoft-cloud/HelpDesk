@@ -6,16 +6,17 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface RequestAttachmentInPort {
 
-    Page<RequestAttachment> getRequestAttachments(Pageable pageable);
-    Optional<RequestAttachment> getRequestAttachmentId(String id);
-    Page<RequestAttachment> getRequestAttachmentsSvcReqNo(String SvcReqNo, Pageable pageable);
-    long countRequestAttachments();
-    long countRequestAttachments(String reqId);
-    void createRequestAttachment(RequestAttachment requestAttachment);
-    void updateRequestAttachment(RequestAttachment requestAttachment);
-    void deleteRequestAttachment(RequestAttachment requestAttachment);
+    Page<RequestAttachment> getRequestAttachments(Map<String,String> keyParams, Map<String,String> searchParams, Pageable pageable);
+    Page<RequestAttachment> getRequestAttachments(String reqId, Map<String,String> keyParams, Map<String,String> searchParams, Pageable pageable);
+    Optional<RequestAttachment> getRequestAttachment(String id);
+    Long countRequestAttachments(Map<String,String> keyParams, Map<String,String> searchParams);
+    Long countRequestAttachments(String reqId, Map<String,String> keyParams, Map<String,String> searchParams);
+    RequestAttachment createRequestAttachment(RequestAttachment requestAttachment);
+    RequestAttachment updateRequestAttachment(RequestAttachment requestAttachment);
+    RequestAttachment deleteRequestAttachment(RequestAttachment requestAttachment);
 }

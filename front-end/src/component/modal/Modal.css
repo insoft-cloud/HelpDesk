@@ -1,0 +1,152 @@
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 99;    
+    background-color: rgba(0, 0, 0, 0.6);
+    scroll-behavior: smooth;
+  }
+.modal-body{
+	padding: 1.5rem 2.5rem;
+  overflow-y:auto;
+  position:relative;
+  max-height: calc(100vh - 50px);
+  /* overflow-y : scroll; */
+}
+
+@media (min-width: 576px) {
+	.modal-dialog {
+		margin: 1.75rem auto;
+		max-width: 800px;
+    
+	}
+}
+  .modal button {
+    outline: none;
+    cursor: pointer;
+    border: 0;
+  } 
+  .modal-md {
+    width: 45%;
+    max-width: 60%;
+    max-height: calc(100vh - 150px);
+    position: fixed;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    overflow-y: auto;
+    /* top:10%; */
+  }
+  .modal-lg {
+    width: 60%;
+    max-width: 80%;
+    /* max-height: 550px; */
+    
+  }
+  .modal > .md-sm {
+    width: 80%;
+    max-width: 40%;
+    max-height: 450px;
+  }
+ 
+  .modal section {
+    margin: 0 auto;
+    padding:15px;
+    border-radius: 0.3rem;
+    background-color: #fff;
+    /* 팝업이 열릴때 스르륵 열리는 효과 */
+    animation: modal-show 0.3s;
+    /* overflow-y: hidden; */
+  }
+  .modal section header {
+    position: relative;
+    font-weight: 700;
+  }
+  .modal section header button {
+    position: absolute;
+    bottom: 10px;
+    right: -5px;
+    width: 30px;
+    font-size: 25px;
+    font-weight: 700;
+    text-align: center;
+    color: #999;
+    background-color: transparent;
+  }
+  .modal section > main {
+    padding: 16px;
+    border-bottom: 1px solid #dee2e6;
+    border-top: 1px solid #dee2e6;
+  }
+  .modal section > footer {
+    padding: 12px 16px;
+    text-align: right;
+  }
+  .modal section > footer button {
+    padding: 6px 12px;
+    color: #fff;
+    background-color: #6c757d;
+    border-radius: 5px;
+    font-size: 13px;
+  }
+  .modal.openModal {
+    display: block;
+    align-items: center;
+    z-index: 1030;
+
+    /* animation: modal-bg-show 0.3s; */
+  }
+  /* .modal > section select {
+    margin-right:2%;
+    padding: 1%;
+    width:15%;
+  } */
+  /* .modal > section input[type=text] {
+    width:70%;
+    box-sizing: border-box;
+  } */
+  .modal section .searchBtn {
+    font-size: 16px;
+    width:11%;
+    border:2px solid #6c757d;
+    background-color:#6c757d;
+  }
+  .modal section .instBox{
+    width:45%;
+    float: left;
+    overflow-y: auto;
+    height:300px;
+  }
+  .modal section .instBox > p {
+    background-color: #DDD;
+    font-size: 12px;
+    word-break: keep-all;
+  }
+  .modal section .instBox label {
+    font-size: 14px;
+  }
+  .modal section .memBox{
+    width: 55%;
+    float: left;
+  }
+  @keyframes modal-show {
+    from {
+      opacity: 0;
+      margin-top: -50px;
+    }
+    to {
+      opacity: 1;
+      margin-top: 0;
+    }
+  }
+  @keyframes modal-bg-show {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }

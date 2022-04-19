@@ -2,7 +2,13 @@ package com.insoft.helpdesk.application.biz.member.port.in;
 
 
 import com.insoft.helpdesk.application.domain.jpa.entity.Member;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * @Project     : HelpDesk
@@ -14,13 +20,17 @@ import org.springframework.http.ResponseEntity;
  */
 public interface MemberInPort<T> {
 
-    ResponseEntity<T> getMembers();
-    ResponseEntity<T> getMemberId(String id);
-
     boolean existUserId(String userId);
     boolean existEmail(String email);
 
-    ResponseEntity<T> createMember(Member member);
-    ResponseEntity<T> updateMember(Member member);
-    ResponseEntity<T> deleteMember(Member member);
+    Page<Member> getMembers(Map<String,String> keyParams, Map<String,String> searchParams, Pageable pageable);
+    List<Member> getManagers(Map<String,String> keyParams, Map<String,String> searchParams);
+    List<Member> getUsers(Map<String,String> keyParams, Map<String,String> searchParams);
+    Optional<Member> getMember(String id);
+    Long countMembers(Map<String,String> keyParams, Map<String,String> searchParams);
+    Member createMember(Member member);
+    Member updateMember(Member member);
+    Member deleteMember(Member member);
+
+    String getMemberFindId(String email);
 }

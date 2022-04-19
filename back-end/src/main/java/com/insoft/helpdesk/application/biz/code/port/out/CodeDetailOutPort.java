@@ -1,20 +1,23 @@
 package com.insoft.helpdesk.application.biz.code.port.out;
 
+import com.insoft.helpdesk.application.domain.entity.code.CodeDetailList;
 import com.insoft.helpdesk.application.domain.jpa.entity.code.Detail;
 import com.insoft.helpdesk.application.domain.jpa.entity.code.Group;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface CodeDetailOutPort {
 
-    Page<Detail> getDetails(Pageable pageable);
-    Long getDetailsCount();
-    Page<Detail> getDetailsGroupId(Group groupId, Pageable pageable);
-    Long getDetailsGroupIdCount(String groupId);
-    Optional<Detail> getDetail(Group groupId, String detailId);
-    void createDetail(Detail detail);
-    void updateDetail(Detail detail);
-    void deleteDetail(Detail detail);
+    Page<Detail> getDetails(Page<Detail> details);
+
+    Long getDetailsCount(Long count);
+
+    Optional<Detail> getDetail(Optional<Detail> detail);
+    Detail createDetail(Detail detail);
+    Detail updateDetail(Detail detail);
+    List updateDetail(List<Detail> details);
+    Detail deleteDetail(Detail detail);
 }

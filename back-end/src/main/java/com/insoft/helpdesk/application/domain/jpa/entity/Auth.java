@@ -37,6 +37,11 @@ public class Auth {
     @Size(max = 255)
     private String name;
 
+    @Column(name = "AUTH_CD", length = 256, nullable = false)
+    @Comment("권한명")
+    @Size(max = 256)
+    private String cdId;
+
     @Column(name = "ADMIN_YN", length = 1)
     @Comment("관리자여부(Y,N)")
     @Size(max = 1)
@@ -56,5 +61,14 @@ public class Auth {
     @Comment("수정일시")
     @UpdateTimestamp
     private LocalDateTime updateDt;
+
+    public Auth updateAuth(Auth auth){
+        this.id = auth.id == null ? this.id : auth.id;
+        this.name = auth.name == null ? this.name : auth.name;
+        this.cdId = auth.cdId == null ? this.cdId : auth.cdId;
+        this.adminYn = auth.adminYn == null ? this.adminYn : auth.adminYn;
+        this.updAuthYn = auth.updAuthYn == null ? this.updAuthYn : auth.updAuthYn;
+        return this;
+    }
 
 }

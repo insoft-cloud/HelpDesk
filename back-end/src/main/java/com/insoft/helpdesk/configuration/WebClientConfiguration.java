@@ -23,14 +23,13 @@ public class WebClientConfiguration {
     public WebClient webClient() {
         HttpClient httpClient = HttpClient.create()
                 .tcpConfiguration(
-                        client -> client.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 3000) //miliseconds
+                        client -> client.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 3000)
                                 .doOnConnected(
-                                        conn -> conn.addHandlerLast(new ReadTimeoutHandler(5))  //sec
-                                                .addHandlerLast(new WriteTimeoutHandler(60)) //sec
+                                        conn -> conn.addHandlerLast(new ReadTimeoutHandler(5))
+                                                .addHandlerLast(new WriteTimeoutHandler(60))
                                 )
                 );
 
-        //Memory 조정: 2M (default 256KB)
         ExchangeStrategies exchangeStrategies = ExchangeStrategies.builder()
                 .codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(2*1024*1024))
                 .build();
@@ -46,8 +45,6 @@ public class WebClientConfiguration {
                 .filter(
                         ExchangeFilterFunction.ofRequestProcessor(
                                 clientRequest -> {
-                                    log.info(">>>>>>>>>> REQUEST <<<<<<<<<<");
-                                    log.info("Request: {} {}", clientRequest.method(), clientRequest.url());
                                     clientRequest.headers().forEach(
                                             (name, values) -> values.forEach(value -> log.info("{} : {}", name, value))
                                     );
@@ -58,7 +55,6 @@ public class WebClientConfiguration {
                 .filter(
                         ExchangeFilterFunction.ofResponseProcessor(
                                 clientResponse -> {
-                                    log.info(">>>>>>>>>> RESPONSE <<<<<<<<<<");
                                     clientResponse.headers().asHttpHeaders().forEach((name, values) -> values.forEach(value -> log.info("{} : {}", name, value)));
                                     return Mono.just(clientResponse);
                                 }

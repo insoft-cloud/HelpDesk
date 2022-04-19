@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.Where;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,6 +27,7 @@ import java.util.Collection;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Where(clause = "del_yn='N'")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Member implements UserDetails {
 
@@ -57,7 +59,7 @@ public class Member implements UserDetails {
 
     @Column(name = "JOB_CD", length = 16)
     @Comment("업무코드")
-    @Size(max = 16)
+    @Size(max = 32)
     private String jobCode;
 
     @Column(name = "RNK_CD", length = 16, nullable = false)
@@ -79,6 +81,11 @@ public class Member implements UserDetails {
     @Comment("휴대폰번호")
     @Size(max = 11)
     private String phoneNumber;
+
+    @Column(name = "TLNUM", length = 11, nullable = false)
+    @Comment("휴대폰번호")
+    @Size(max = 11)
+    private String telNumber;
 
     @Column(name = "INDVL_INFO_COLCT_YN", length = 1, nullable = false)
     @Comment("개인정보 수집 여부")
@@ -109,6 +116,35 @@ public class Member implements UserDetails {
     @Comment("수정일시")
     @UpdateTimestamp
     private LocalDateTime updateDt;
+
+    @Column(name = "DEL_YN", length = 1)
+    @Comment("삭제 여부")
+    @Size(max = 1)
+    private String delYn;
+
+//    @Column(name = "AUTH", length = 36)
+//    @Comment("권한")
+//    @Size(max = 36)
+//    private String authNo;
+
+    public Member updateMember(Member member){
+        this.userId = member.userId == null ? this.userId : member.userId;
+        this.password = member.password == null ? this.password : member.password;
+        this.agencyCode = member.agencyCode == null ? this.agencyCode : member.agencyCode;
+        this.departmentName = member.departmentName == null ? this.departmentName : member.departmentName;
+        this.jobCode = member.jobCode == null ? "" : member.jobCode;
+        this.rankCode = member.rankCode == null ? this.rankCode : member.rankCode;
+        this.username = member.username == null ? this.username : member.username;
+        this.email = member.email == null ? this.email : member.email;
+        this.telNumber = member.telNumber == null ? this.telNumber : member.telNumber;
+        this.phoneNumber = member.phoneNumber == null ? this.phoneNumber : member.phoneNumber;
+        this.updateDt = member.updateDt == null ? this.updateDt : member.updateDt;
+        this.joinConfirmYN = member.joinConfirmYN == null ? this.joinConfirmYN : member.joinConfirmYN;
+        this.auth = member.auth == null ? this.auth : member.auth;
+        this.delYn = member.delYn == null ? this.delYn : member.delYn;
+        this.smsRcptYN = member.smsRcptYN == null ? this.smsRcptYN : member.smsRcptYN;
+        return this;
+    }
 
     @Transient
     @JsonIgnore

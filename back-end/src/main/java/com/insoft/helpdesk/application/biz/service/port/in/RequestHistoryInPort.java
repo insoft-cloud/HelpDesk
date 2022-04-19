@@ -5,16 +5,17 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface RequestHistoryInPort {
 
-    Page<RequestHistory> getRequestHistories(Pageable pageable);
-    Long getRequestsCount();
-    Page<RequestHistory> getRequestHistories(String userId, Pageable pageable);
-    Long getRequestsCount(String userId);
+    Page<RequestHistory> getRequestHistories(Map<String,String> keyParams, Map<String,String> searchParams, Pageable pageable);
+    Long getRequestsCount(Map<String,String> keyParams, Map<String,String> searchParams);
+    Long getRequestsCount(String requestChargeId, Map<String,String> keyParams, Map<String,String> searchParams);
+    Page<RequestHistory> getRequestHistories(String requestChargeId, Map<String,String> keyParams, Map<String,String> searchParams, Pageable pageable);
     Optional<RequestHistory> getRequestHistory(String id);
-    void createRequestHistory(RequestHistory requestHistory);
-    void updateRequestHistory(RequestHistory requestHistory);
-    void deleteRequestHistory(RequestHistory requestHistory);
+    RequestHistory createRequestHistory(RequestHistory requestHistory);
+    RequestHistory updateRequestHistory(RequestHistory requestHistory);
+    RequestHistory deleteRequestHistory(RequestHistory requestHistory);
 }

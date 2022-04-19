@@ -1,8 +1,10 @@
 
 
-import Pagination from 'component/list/Pagination';
+import PageComponent from 'component/list/PageComponent';
+
 import { useState } from 'react';
-import { useSortBy, useTable } from 'react-table';
+import { usePagination, useTable } from 'react-table';
+import { txtDiv } from 'utils/CommonText';
 
 
 
@@ -15,32 +17,20 @@ import { useSortBy, useTable } from 'react-table';
  */
 
 
-function SampleComponent({ columns, data }) {
+function TableComponent({ columns, data }) {
     const {
         getTableProps,
         getTableBodyProps,
         headerGroups,
-        rows,
         prepareRow,
-      } = useTable({ columns, data }, useSortBy);
+        rows,    
+        } = useTable({ columns, data });
 
-      const limit = 7; // 표시될 컨텐츠 수
-      const [page, setPage] = useState(1);
-      const offset = (page - 1) * limit;
-    
+
       return (
-        <>
-          <div className="d-flex justify-content-between mb-2">
-            <span>
-              목록({data.length})
-            </span>
-            <div className="col-auto ms-auto">
-              <select className="form-select form-select-xs" data-choices>
-                      <option>전체</option>
-              </select>
-            </div>
-          </div>
-
+         <>
+         {data.length === 0 ? <>{txtDiv.tableData}</> 
+         : <> 
           <div className="table-responsive fs-sm">
           <table className="table table-striped border-top" {...getTableProps()} >
             <thead>
@@ -64,20 +54,20 @@ function SampleComponent({ columns, data }) {
                     ))}
                   </tr>
                 );
-              }).slice(offset,offset+limit)}
+              })}
             </tbody>
           </table>
-          </div>
-       
-              
-                    {/* 페이징처리 */}
-                    <div className="d-flex justify-content-center">
-                      <nav aria-label="Page navigation example">
-                        <Pagination total={data.length} limit={limit} page={page} setPage={setPage} chkArr={null} setChkArr={null}/>
-                      </nav>
-                    </div>
-        </>
+          </div> 
+          
+        </> 
+        } 
+        </>    
       );
     }
     
-export default SampleComponent;
+export default TableComponent;
+
+
+
+
+

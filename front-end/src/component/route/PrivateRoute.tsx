@@ -1,7 +1,7 @@
 import {Navigate, useNavigate} from 'react-router-dom'
 import React from "react";
 import {TokenContext, useTokenDispatch} from "../../utils/TokenContext";
-import {API_SIGN_PATH, ContextPath} from "../../utils/ContextPath";
+import {API_DOMAIN_PATH, API_SIGN_PATH, ContextPath} from "../../utils/ContextPath";
 import {AxiosRequestHeaders} from "axios";
 import {procPostAxiosHeader} from "../../axios/Axios";
 import SignInComponent from "../../domain/sign/SignInComponent";
@@ -42,7 +42,7 @@ const PrivateRoute: React.FC<Props> = ({ component: RouteComponent ,status  }) =
 
     function callback(data : any){
         dispatch({ type: 'SET_TOKEN', token: data['accessToken'],
-            tokenExpired: data['tokenExpired'], user: data['userName'] });
+        tokenExpired: data['tokenExpired'], user: data['userId'], name : data['userName'] });
         sessionStorage.setItem("refreshToken", data['refreshToken']);
         sessionStorage.setItem("refreshTokenExpired", data['refreshTokenExpired']);
         return <Navigate to={window.location.pathname} />
@@ -50,7 +50,9 @@ const PrivateRoute: React.FC<Props> = ({ component: RouteComponent ,status  }) =
 
     function errorCallback(error){
         alert(error);
-        return <Navigate to={ContextPath("/signin")} />
+        sessionStorage.clear()
+        navigate(ContextPath(API_DOMAIN_PATH.main));
+        return <Navigate to={ContextPath(API_DOMAIN_PATH.main)} />
     }
 }
 

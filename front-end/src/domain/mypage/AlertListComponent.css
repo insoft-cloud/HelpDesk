@@ -1,0 +1,6 @@
+.cursor-pointer{
+    cursor:pointer;
+}
+.list-group li:hover{
+    background-color: #ebf2f5;
+}

@@ -23,10 +23,11 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Where(clause = "del_yn='N'")
 public class Group {
 
     @Id
-    @Column(name = "CD_NO", length = 16, nullable = false, updatable = false)
+    @Column(name = "CD_GRP_NO", length = 16, nullable = false, updatable = false)
     @Comment("코드번호")
     @Size(max = 16)
     private String id;

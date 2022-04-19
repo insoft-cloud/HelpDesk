@@ -14,45 +14,34 @@ import java.util.Optional;
 @Service
 public class RequestHistoryAdapter implements RequestHistoryOutPort {
 
-    final RequestHistoryRepo requestHistoryRepo;
 
     @Override
-    public Page<RequestHistory> getRequestHistories(Pageable pageable) {
-        return requestHistoryRepo.findAll(pageable);
+    public Page<RequestHistory> getRequestHistories(Page<RequestHistory> requestHistories) {
+        return requestHistories;
     }
 
     @Override
-    public Long getRequestsCount() {
-        return null;
+    public Long getRequestsCount(Long count) {
+        return count;
     }
 
     @Override
-    public Page<RequestHistory> getRequestHistories(String userId, Pageable pageable) {
-        return requestHistoryRepo.findAllByUserId(userId,pageable);
+    public Optional<RequestHistory> getRequestHistory(Optional<RequestHistory> requestHistory) {
+        return requestHistory;
     }
 
     @Override
-    public Long getRequestsCount(String userId) {
-        return requestHistoryRepo.countAllByUserId(userId);
+    public RequestHistory createRequestHistory(RequestHistory requestHistory) {
+        return requestHistory;
     }
 
     @Override
-    public Optional<RequestHistory> getRequestHistory(String id) {
-        return Optional.empty();
+    public RequestHistory updateRequestHistory(RequestHistory requestHistory) {
+        return requestHistory;
     }
 
     @Override
-    public void createRequestHistory(RequestHistory requestHistory) {
-
-    }
-
-    @Override
-    public void updateRequestHistory(RequestHistory requestHistory) {
-
-    }
-
-    @Override
-    public void deleteRequestHistory(RequestHistory requestHistory) {
-
+    public RequestHistory deleteRequestHistory(RequestHistory requestHistory) {
+        return requestHistory;
     }
 }

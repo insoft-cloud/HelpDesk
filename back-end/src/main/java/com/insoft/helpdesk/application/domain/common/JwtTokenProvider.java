@@ -36,6 +36,7 @@ public class JwtTokenProvider {
     @Value("${jwt.refresh}")
     private String reFreshKey;
 
+//    private long expired = 2000L * 1 * 1; // 1시간만 토큰 유효
     private long expired = 1000L * 60 * 60; // 1시간만 토큰 유효
 
     private long refreshTokenValidMillisecond = 1000L * 60 * 60 * 24; // 24시간만 토큰 유효

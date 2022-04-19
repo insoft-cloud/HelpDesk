@@ -6,16 +6,18 @@ import org.springframework.data.domain.Pageable;
 
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface RequestOutPort {
-    Page<Request> getRequests(Pageable pageable);
-    Long getRequestsCount();
-    Page<Request> getRequests(String userId, Pageable pageable);
-    Long getRequestsCount(String userId);
-    Page<Request> getRequestsDate(String userId, LocalDateTime start,LocalDateTime end, Pageable pageable);
-    Optional<Request> getRequest(String id);
-    void createRequest(Request request);
-    void updateRequest(Request request);
-    void deleteRequest(Request request);
+    Page<Request> getRequests(Page<Request> requests);
+    Page<Request> getRequestsDate(Page<Request> requests);
+    Optional<Request> getRequest(Optional<Request> request);
+
+    Page<Request> getRequestPrcsSttsCd(Page<Request> requests);
+    Page<Request> getRequestUserId(Page<Request> requests);
+    Page<Request> getRequestChargeUserId(Page<Request> requests);
+    Request createRequest(Request request);
+    Request updateRequest(Request request);
 }

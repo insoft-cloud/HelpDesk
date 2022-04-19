@@ -1,31 +1,68 @@
+import { procGetAxios } from "axios/Axios";
+import { SelectedComponent } from "component/select/SelectComponent";
+import { useEffect, useMemo, useState } from "react";
+import { CodeDetail } from "utils/AdminCode";
+import { useTokenState } from "utils/TokenContext";
+import "./ServiceCountComponent.css";
 
-export default function ServiceCountComponent({data}) {
+/**
+ * @Project     : HelpDesk
+ * @FileName    : ServiceCountComponent.tsx
+ * @Date        : 2022-03-23
+ * @author      : 김지인
+ * @description : 상태별 서비스 요청 카운트
+ */
 
-    console.log(data)
-  return (
+
+export function CountComponent({data}) {
+    
+    const state = useTokenState();
+    const [contentType] = useState("application/json");
+    const [codeDlt, setCodeDlt] : any = useState([])
+    
+    useEffect( () => {
+        procGetAxios("/admin/group/"+CodeDetail.prcsSttsCd+"/details", state.token, contentType, SelectData)
+    }, [CodeDetail.prcsSttsCd]);
+    function SelectData(data) {
+        setCodeDlt(data.content)
+    }
+
+
+    if(data){
+        let compareCodeDlt =   codeDlt.map(a => a.cdId)
+        let comparePrcsSttsCd = data.map(a => a.prcs_stts_cd)
+
+        if(compareCodeDlt !== comparePrcsSttsCd){
+            let addData = compareCodeDlt.filter(value => !comparePrcsSttsCd.includes(value))         
+                addData.forEach(element => {
+                let pushData = {
+                    prcs_stts_cd : element,
+                    count : 0
+                }
+                data.push(pushData)
+            });
+        }
+    }
+
+    return (
     <div className="d-flex card shadow">
                         <div className="card-footer">
                             <div className="col_5 text-center">
-                            <div className="border-right cursor-pointer">
-                                <h3 className="fs-1 text-primary">{data.length}</h3>
-                                <p className="mb-0 fs-sm text-muted">전체</p>
+                            <div className="border-right cursor-default">
+                                <h3 className="fs-1 text-primary cursor-default">{data.reduce((total, value) => total = total + value.count, 0)}</h3>
+                                <p className="mb-0 fs-sm text-muted cursor-default">전체</p>
                             </div>
-                            <div className="border-right cursor-pointer">
-                                <h3 className="fs-1 text-primary-desat">0</h3>
-                                <p className="mb-0 fs-sm text-muted">신규</p>
+                            {codeDlt.map( ( (a, index)   =>
+                                <div className=" text-primary border-right cursor-default" key={index}>
+                                    { data.map( b => (a.cdId === b.prcs_stts_cd ?
+                                        <h3 key={b.prcs_stts_cd} className={b.prcs_stts_cd+" fs-1 cursor-default"}>{b.count}</h3> :
+                                       null
+                                        )
+                                    )}
+                                <p className="mb-0 fs-sm text-muted cursor-default">{a.name}</p>
                             </div>
-                            <div className="border-right cursor-pointer">
-                                <h3 className="fs-1 text-success">0</h3>
-                                <p className="mb-0 fs-sm text-muted">진행</p>
-                            </div>
-                            <div className="border-right cursor-pointer">
-                                <h3 className="fs-1 text-danger">0</h3>
-                                <p className="mb-0 fs-sm text-muted">완료</p>
-                            </div>
-                            <div className="cursor-pointer">
-                                <h3 className="fs-1 text-muted">0</h3>
-                                <p className="mb-0 fs-sm text-muted">보류</p>
-                            </div>
+                                 ))}
+                            
                             </div>
                         </div>
                         </div>

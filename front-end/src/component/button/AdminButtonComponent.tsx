@@ -8,11 +8,11 @@
 
 import { Link } from "react-router-dom";
 
-function AdminButtonComponent( {btnName,btnClassName,onEventHandler,url,path}: any) {
+function AdminButtonComponent( {btnName,btnClassName,onEventHandler,url}: any) {
         // console.log('넘어와')
         // console.log(path);
     return(
-        (url!="null")?<Link className={btnClassName} to={url} target="_self"  >
+        (url!=="null")?<Link className={btnClassName} to={url} target="_self"  >
             {btnName}
             </Link>:
         <button className={btnClassName} 

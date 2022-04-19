@@ -2,7 +2,6 @@ package com.insoft.helpdesk.util.filter;
 
 import com.insoft.helpdesk.application.domain.common.JwtTokenProvider;
 import com.insoft.helpdesk.application.domain.entity.log.HelpDeskLog;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.*;
@@ -11,7 +10,7 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 
 @Slf4j
-public class HelpdeskFilter implements Filter  {
+public class HelpDeskFilter implements Filter  {
 
 
     final JwtTokenProvider jwtTokenProvider;
@@ -21,7 +20,7 @@ public class HelpdeskFilter implements Filter  {
         Filter.super.init(filterConfig);
     }
 
-    public HelpdeskFilter (JwtTokenProvider jwtTokenProvider){
+    public HelpDeskFilter(JwtTokenProvider jwtTokenProvider){
         this.jwtTokenProvider = jwtTokenProvider;
     }
 

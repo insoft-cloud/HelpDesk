@@ -1,12 +1,13 @@
 package com.insoft.helpdesk.application.adapter.in.controller.service;
 
 
+import com.insoft.helpdesk.application.biz.minio.port.in.MinioInPort;
 import com.insoft.helpdesk.application.biz.service.port.in.RequestAttachmentInPort;
 import com.insoft.helpdesk.application.biz.service.port.in.RequestInPort;
-import com.insoft.helpdesk.application.domain.entity.service.AttachmentItem;
 import com.insoft.helpdesk.application.domain.jpa.entity.service.Request;
 import com.insoft.helpdesk.application.domain.jpa.entity.service.RequestAttachment;
-import com.insoft.helpdesk.util.annotation.HelpdeskRestController;
+import com.insoft.helpdesk.util.annotation.HelpDeskRestController;
+import com.insoft.helpdesk.util.content.HelpDeskMapper;
 import io.minio.*;
 import io.minio.errors.*;
 import io.minio.messages.Item;
@@ -20,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -28,15 +30,19 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.net.URLEncoder;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Tag(name = "RequestAttachment", description = "요청 첨부 API")
-@HelpdeskRestController
+@HelpDeskRestController
 @RequiredArgsConstructor
 @Slf4j
 public class RequestAttachmentController {
@@ -45,16 +51,16 @@ public class RequestAttachmentController {
 
     final RequestAttachmentInPort requestAttachmentInPort;
 
-    final MinioClient minioClient;
+    final MinioInPort minioInPort;
 
-    @Value("${amazone.s3.minio.bucket}")
+    @Value("${amazone.s3.minio.request.bucket}")
     String bucket;
 
     @Tag(name = "RequestAttachment")
     @Operation(summary = "요청첨부 조회", description = "요청첨부 정보 조회")
-    @GetMapping("/service/req-attach/{id}")
-    public ResponseEntity getRequestAttachment(@PathVariable String id) {
-        return ResponseEntity.ok(requestAttachmentInPort.getRequestAttachmentId(id).orElseThrow(null));
+    @GetMapping("/service/request/attach/{id}")
+    public RequestAttachment getRequestAttachment(@PathVariable String id) {
+        return requestAttachmentInPort.getRequestAttachment(id).orElseThrow(null);
     }
 
 
@@ -66,162 +72,132 @@ public class RequestAttachmentController {
     @ApiResponses(
             @io.swagger.annotations.ApiResponse(response = RequestAttachment.class, message = "ok", code = 200)
     )
-    @GetMapping("/service/req-attaches/{reqId}")
-    public ResponseEntity getRequestAttachmentReqId(@PathVariable String reqId, Pageable pageable) {
-        return ResponseEntity.ok(requestAttachmentInPort.getRequestAttachmentsSvcReqNo(reqId, pageable));
+    @GetMapping("/service/request/{id}/attach")
+    public Page<RequestAttachment> getRequestAttachments(@PathVariable String id, @RequestParam(value = "key", required = false) String keyParams, @RequestParam(value = "search", required = false) String searchParams, Pageable pageable) {
+        return requestAttachmentInPort.getRequestAttachments(id, HelpDeskMapper.mapToJson(keyParams),HelpDeskMapper.mapToJson(searchParams), pageable);
     }
 
 
-    @GetMapping("/service/req-attaches/{reqId}/files")
-    public ResponseEntity getRequestAttachmentReqId(@PathVariable String reqId) {
-        Request request = requestInPort.getRequest(reqId).orElse(null);
+    @GetMapping("/service/request/{id}/attach/files")
+    public Object getRequestAttachmentReqId(@PathVariable String id) {
+        Request request = requestInPort.getRequest(id).orElse(null);
         if(request == null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("잘못된 리퀘스트 정보입니다.");
         }
-        Iterable<Result<Item>> listObjects = minioClient.listObjects(ListObjectsArgs.builder().bucket(bucket).prefix(reqId).recursive(true).build());
-        List<String> objectResponses = new ArrayList<>();
-        listObjects.forEach(r -> {
-            try {
-                objectResponses.add(r.get().objectName());
-            } catch (ErrorResponseException e) {
-                e.printStackTrace();
-            } catch (InsufficientDataException e) {
-                e.printStackTrace();
-            } catch (InternalException e) {
-                e.printStackTrace();
-            } catch (InvalidKeyException e) {
-                e.printStackTrace();
-            } catch (InvalidResponseException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            } catch (ServerException e) {
-                e.printStackTrace();
-            } catch (XmlParserException e) {
-                e.printStackTrace();
-            }
-        });
-        return ResponseEntity.ok(objectResponses);
+        return minioInPort.getObjects(bucket,id);
     }
 
 
+    @GetMapping("/service/request/{id}/attach/download")
+    public void getRequestAttachmentReqIdFile(HttpServletRequest request, @PathVariable String id, @RequestParam(value = "fileName") String fileName, HttpServletResponse httpServletResponse) throws Exception {
+        String ori_fileName = getDisposition(fileName, getBrowser(request));
+        httpServletResponse.setContentType(MediaType.parseMediaType("application/octet-stream").toString());
+        httpServletResponse.setHeader("Content-disposition", "attachment; filename=" + ori_fileName);
+        if(!minioInPort.downloadObject(bucket, id, fileName,httpServletResponse)){
+            throw new Exception("다운로드 오류");
+        }
+    }
+
+    @GetMapping(value = "/service/request/{id}/attach/image/download", produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_GIF_VALUE})
+    public void downloadImage(@PathVariable String id, @RequestParam(value = "fileName") String fileName, HttpServletResponse httpServletResponse) throws Exception {
+        if(!minioInPort.downloadObject(bucket, id, fileName,httpServletResponse)){
+            throw new Exception("다운로드 오류");
+        }
+    }
 
     @Tag(name = "RequestAttachment")
-    @PostMapping("/service/req-attache/{reqId}")
-    public ResponseEntity createRequestAttachments(@PathVariable String reqId, @RequestParam("files") List<MultipartFile> multipartFiles) {
-        File file = null;
-        Request request = requestInPort.getRequest(reqId).orElse(null);
+    @PostMapping("/service/request/{id}/attach")
+    public Object createRequestAttachments(@PathVariable String id, @RequestParam("files") List<MultipartFile> multipartFiles) {
+        Request request = requestInPort.getRequest(id).orElse(null);
+
+        List<RequestAttachment> list = new ArrayList<>();
         if(request == null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("잘못된 리퀘스트 정보입니다.");
         }
-        try {
-            for (MultipartFile multipartFile : multipartFiles) {
-                file = new File(multipartFile.getOriginalFilename());
-                file.createNewFile();
-                FileOutputStream fileOutputStream = new FileOutputStream(file);
-                fileOutputStream.write(multipartFile.getBytes());
-                fileOutputStream.close();
-                minioClient.uploadObject(
-                        UploadObjectArgs
-                                .builder()
-                                .filename(file.getAbsolutePath())
-                                .object(reqId + "/" + file.getName())
-                                .bucket(bucket)
-                                .build());
-                requestAttachmentInPort.createRequestAttachment(
+        for (MultipartFile multipartFile : multipartFiles) {
+                if(!minioInPort.uploadObject(multipartFile,bucket ,id)){
+                    return false;
+                }
+            list.add(requestAttachmentInPort.createRequestAttachment(
                 RequestAttachment.builder()
                         .svcReqNo(request)
-                        .filePath("test")
+                        .filePath(id+"/"+multipartFile.getOriginalFilename())
                         .fileSize(multipartFile.getSize())
-                        .fileNm(file.getName())
+                        .fileNm(multipartFile.getOriginalFilename())
                         .fileExt(StringUtils.getFilenameExtension(multipartFile.getOriginalFilename()))
-                        .build());
-                if(file.exists()){
-                    file.delete();
+                        .build()));
+        }
+        return list;
+    }
+
+    @Tag(name = "RequestAttachment")
+    @PostMapping("/service/request/attach/{id}")
+    @Operation(summary = "요청첨부 수정", description = "요청첨부 파일 수정")
+    public RequestAttachment updateRequestAttachment(@PathVariable String id, @RequestParam("file") MultipartFile multipartFile) {
+        RequestAttachment requestAttachment = requestAttachmentInPort.getRequestAttachment(id).orElse(null);
+        if(requestAttachment == null){
+            return null;
+        }
+        if(!minioInPort.uploadObject(multipartFile,bucket ,id)){
+            return null;
+        }
+        requestAttachment.setFileNm(multipartFile.getOriginalFilename());
+        requestAttachment.setFilePath(requestAttachment.getSvcReqNo().getId()+"/"+multipartFile.getOriginalFilename());
+        requestAttachment.setFileSize(multipartFile.getSize());
+        requestAttachment.setFileNm(multipartFile.getOriginalFilename());
+        requestAttachment.setFileExt(StringUtils.getFilenameExtension(multipartFile.getOriginalFilename()));
+        requestAttachmentInPort.updateRequestAttachment(requestAttachment);
+        return requestAttachment;
+    }
+
+    @Tag(name = "RequestAttachment")
+    @PostMapping("/service/request/attach/{id}/delete")
+    @Operation(summary = "요청첨부 삭제", description = "요청첨부 파일 삭제")
+    public ResponseEntity deleteRequestAttachment(@PathVariable String id) {
+        RequestAttachment _requestAttachment = requestAttachmentInPort.getRequestAttachment(id).orElse(null);
+        minioInPort.deleteObject(bucket, _requestAttachment.getFilePath());
+        requestAttachmentInPort.deleteRequestAttachment(_requestAttachment);
+        return ResponseEntity.ok(null);
+    }
+
+
+    private String getDisposition(String filename, String browser) throws Exception
+    {
+        String encodedFilename = null;
+        if (browser.equals("MSIE")) {
+        encodedFilename = URLEncoder.encode(filename, "UTF-8").replaceAll("\\+", "%20");
+        } else if (browser.equals("Firefox")) {
+            encodedFilename = "\"" + new String(filename.getBytes("UTF-8"), "8859_1") + "\"";
+        } else if (browser.equals("Opera")) {
+            encodedFilename = "\"" + new String(filename.getBytes("UTF-8"), "8859_1") + "\"";
+        } else if (browser.equals("Chrome")) {
+            StringBuffer sb = new StringBuffer();
+            for (int i = 0; i < filename.length(); i++) {
+                char c = filename.charAt(i); if (c > '~') { sb.append(URLEncoder.encode("" + c, "UTF-8"));
+                } else { sb.append(c);
                 }
-            }
-        } catch (ServerException e) {
-            e.printStackTrace();
-        } catch (InsufficientDataException e) {
-            e.printStackTrace();
-        } catch (ErrorResponseException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-        } catch (InvalidResponseException e) {
-            e.printStackTrace();
-        } catch (XmlParserException e) {
-            e.printStackTrace();
-        } catch (InternalException e) {
-            e.printStackTrace();
-        }finally {
-            if(file.exists())
-                file.delete();
+            } encodedFilename = sb.toString();
+        } else { throw new RuntimeException("Not supported browser");
+        } return encodedFilename;
+    }
+
+    private String getBrowser(HttpServletRequest request) {
+        String header = request.getHeader("User-Agent");
+
+        if (header.indexOf("MSIE") > -1) {
+            return "MSIE";
+        } else if (header.indexOf("Chrome") > -1) {
+            return "Chrome";
+        } else if (header.indexOf("Opera") > -1) {
+            return "Opera";
+        } else if (header.indexOf("Trident/7.0") > -1){ //IE 11 이상
+            //IE 버전 별 체크  >>  Trident/6.0(IE 10) , Trident/5.0(IE 9) , Trident/4.0(IE 8)
+            return "MSIE";
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body(null);
+
+        return "Firefox";
     }
 
-    @GetMapping("/service/req-attaches/download")
-    public void getRequestAttachmentReqIdFile(@RequestBody AttachmentItem attachmentItem, HttpServletResponse httpServletResponse) {
-        File file = null;
-        try {
-            file = new File(attachmentItem.getFileName());
-            minioClient.downloadObject(DownloadObjectArgs.builder().filename(file.getAbsolutePath()).bucket(bucket).object(attachmentItem.getReqId() + "/" +attachmentItem.getFileName()).build());
-            httpServletResponse.setContentType(MediaType.parseMediaType("application/octet-stream").toString());
-            httpServletResponse.setHeader("Content-disposition", "attachment; filename=" + file.getName());
-            OutputStream out = httpServletResponse.getOutputStream();
-            FileInputStream in = new FileInputStream(file);
-
-            // copy from in to out
-            IOUtils.copy(in,out);
-
-            out.close();
-            in.close();
-            file.delete();
-        } catch (ErrorResponseException e) {
-            log.error(e.toString());
-        } catch (InsufficientDataException e) {
-            log.error(e.toString());
-        } catch (InternalException e) {
-            log.error(e.toString());
-        } catch (InvalidKeyException e) {
-            log.error(e.toString());
-        } catch (InvalidResponseException e) {
-            log.error(e.toString());
-        } catch (IOException e) {
-            log.error(e.toString());
-        } catch (NoSuchAlgorithmException e) {
-            log.error(e.toString());
-        } catch (ServerException e) {
-            log.error(e.toString());
-        } catch (XmlParserException e) {
-            log.error(e.toString());
-        } finally {
-            if(file.exists()){
-                file.delete();
-            }
-        }
-    }
-
-
-
-    @Tag(name = "RequestAttachment")
-    @PatchMapping("/service/req-attache/{id}")
-    public ResponseEntity createRequestAttachments(@PathVariable String id, @RequestBody RequestAttachment requestAttachment) {
-        requestAttachmentInPort.updateRequestAttachment(requestAttachmentInPort.getRequestAttachmentId(id).orElseThrow(null).getRequestAttachment(requestAttachment));
-        return ResponseEntity.ok(null);
-    }
-
-    @Tag(name = "RequestAttachment")
-    @DeleteMapping("/service/req-attache/{id}")
-    public ResponseEntity createRequestAttachments(@PathVariable String id) {
-        requestAttachmentInPort.deleteRequestAttachment(requestAttachmentInPort.getRequestAttachmentId(id).orElseThrow(null));
-        return ResponseEntity.ok(null);
-    }
 }
+
+

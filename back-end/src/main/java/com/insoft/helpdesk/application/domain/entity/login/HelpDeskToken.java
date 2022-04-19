@@ -19,6 +19,7 @@ public class HelpDeskToken {
     String refreshToken;
     long tokenExpired;
     long refreshTokenExpired;
+    String userId;
     String userName;
     Auth auth;
 }

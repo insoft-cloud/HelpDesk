@@ -8,7 +8,7 @@ import lombok.Data;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class AttachmentItem {
 
-    String reqId;
+    String id;
     String fileName;
 
 }

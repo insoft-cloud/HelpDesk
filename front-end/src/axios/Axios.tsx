@@ -52,7 +52,11 @@ export function procPostAxios(url, token, contentType : string, data : any, call
             callback(response['data']);
         })
         .catch(function (error){
-            errorCallback(error)
+            if(typeof error.response.data === "object") {
+                errorCallback("예상치 못한 문제가 발생했습니다.")
+            } else {
+                errorCallback(error.response.data)
+            }
         })
         .finally(function (){
 
@@ -67,9 +71,89 @@ export function procPostAxiosHeader(url :string, header: AxiosRequestHeaders,dat
             callback(response['data']);
         })
         .catch(function (error){
-            errorCallback(error)
+            if(typeof error.response.data === "object") {
+                errorCallback("예상치 못한 문제가 발생했습니다.")
+            } else {
+                errorCallback(error.response.data)
+            }
         })
         .finally(function (){
+
+        });
+}
+
+export function procDeleteAxios(url, token, contentType : string, callback : Function ){
+    axios.delete(url, {
+        headers: {
+            'Content-Type' : contentType,
+            'X-AUTH-TOKEN' : token
+        }
+    })
+        .then(function (response){
+            callback(response['data']);
+        })
+        .then(function (error:any){
+
+        })
+        .then(function (){
+
+        });
+}
+
+
+export function procDeleteAxiosHeader(url : string, header : AxiosRequestHeaders, callback : Function ){
+    axios.delete(url, {
+        headers: header
+    })
+        .then(function (response){
+            callback(response['data']);
+        })
+        .then(function (error:any){
+
+        })
+        .then(function (){
+
+        });
+}
+
+export function procPatchAxios(url, token, contentType : string, data : any, callback : Function, errorCallback : Function ){
+
+    axios.patch(url,data,{
+        headers: {
+            'Content-Type' : contentType,
+            'X-AUTH-TOKEN' : token
+        }
+    })
+        .then(function (response){
+            callback(response['data']);
+        })
+        .catch(function (error){
+            if(typeof error.response.data === "object") {
+                errorCallback("예상치 못한 문제가 발생했습니다.")
+            } else {
+                errorCallback(error.response.data)
+            }
+        })
+        .finally(function (){
+
+        });
+}
+
+export function procPatchAxiosHeader(url : string, header : AxiosRequestHeaders, callback : Function, errorCallback : Function ){
+    axios.patch(url, {
+        headers: header
+    })
+        .then(function (response){
+            callback(response['data']);
+        })
+        .then(function (error:any){
+            if(typeof error.response.data === "object") {
+                errorCallback("예상치 못한 문제가 발생했습니다.")
+            } else {
+                errorCallback(error.response.data)
+            }
+        })
+        .then(function (){
 
         });
 }

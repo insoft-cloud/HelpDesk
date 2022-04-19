@@ -13,5 +13,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @RestController
 @RequestMapping("/api/v1/user")
-public @interface HelpdeskRestController {
+public @interface HelpDeskRestController {
 }

@@ -3,12 +3,16 @@ package com.insoft.helpdesk.application.biz.service.service;
 import com.insoft.helpdesk.application.biz.service.port.in.RequestAttachmentHistoryInPort;
 import com.insoft.helpdesk.application.biz.service.port.out.RequestAttachmentHistoryOutPort;
 import com.insoft.helpdesk.application.domain.jpa.entity.service.RequestAttachmentHistory;
+import com.insoft.helpdesk.application.domain.jpa.entity.service.RequestHistory;
+import com.insoft.helpdesk.application.domain.jpa.repo.service.RequestAttachmentHistoryRepo;
+import com.insoft.helpdesk.util.content.HelpDeskSearchExecutor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -17,44 +21,44 @@ public class RequestAttachmentHistoryService implements RequestAttachmentHistory
 
     final RequestAttachmentHistoryOutPort requestAttachmentHistoryOutPort;
 
+    final HelpDeskSearchExecutor helpDeskSearchExecutor;
+
+    final RequestAttachmentHistoryRepo historyRepo;
+
     @Override
-    public Page<RequestAttachmentHistory> getRequestAttachmentHistories(Pageable pageable) {
-        return requestAttachmentHistoryOutPort.getRequestAttachmentHistories(pageable);
+    public Optional<RequestAttachmentHistory> getRequestAttachmentHistory(String id) {
+        return requestAttachmentHistoryOutPort.getRequestAttachmentHistory(historyRepo.findById(id));
     }
 
     @Override
-    public Optional<RequestAttachmentHistory> getRequestAttachmentHistoryId(String id) {
-        return requestAttachmentHistoryOutPort.getRequestAttachmentHistoryId(id);
+    public Page<RequestAttachmentHistory> getRequestAttachmentHistories(Map<String, String> keyParams, Map<String, String> searchParams, Pageable pageable) {
+        return requestAttachmentHistoryOutPort.getRequestAttachmentHistories(historyRepo.findAll(helpDeskSearchExecutor.Search(searchParams,keyParams),pageable));
     }
 
     @Override
-    public Page<RequestAttachmentHistory> getRequestAttachmentHistoriesReqId(String svcReqNo, Pageable pageable) {
-        return requestAttachmentHistoryOutPort.getRequestAttachmentHistoriesReqId(svcReqNo, pageable);
+    public Page<RequestAttachmentHistory> getRequestAttachmentHistories(String historyId, Map<String, String> keyParams, Map<String, String> searchParams, Pageable pageable) {
+        return requestAttachmentHistoryOutPort.getRequestAttachmentHistories(historyRepo.findAll(helpDeskSearchExecutor.Search(searchParams,keyParams, RequestHistory.class, historyId, "svcReqHistNo", "id"),pageable));
     }
 
     @Override
-    public Page<RequestAttachmentHistory> getRequestAttachmentHistoriesReqHisId(String svcReqNo, Pageable pageable) {
-        return requestAttachmentHistoryOutPort.getRequestAttachmentHistoriesReqHisId(svcReqNo, pageable);
+    public Long countRequestAttachmentHistories(Map<String, String> keyParams, Map<String, String> searchParams) {
+        return requestAttachmentHistoryOutPort.countRequestAttachmentHistories(historyRepo.count(helpDeskSearchExecutor.Search(searchParams,keyParams)));
     }
 
     @Override
-    public long countRequestAttachmentHistories() {
-        return requestAttachmentHistoryOutPort.countRequestAttachmentHistories();
+    public RequestAttachmentHistory createRequestAttachmentHistory(RequestAttachmentHistory requestAttachmentHistory) {
+        return requestAttachmentHistoryOutPort.createRequestAttachmentHistory(historyRepo.save(requestAttachmentHistory));
     }
 
     @Override
-    public void createRequestAttachment(RequestAttachmentHistory requestAttachmentHistory) {
-        requestAttachmentHistoryOutPort.createRequestAttachment(requestAttachmentHistory);
+    public RequestAttachmentHistory updateRequestAttachmentHistory(RequestAttachmentHistory requestAttachmentHistory) {
+        return requestAttachmentHistoryOutPort.updateRequestAttachmentHistory(historyRepo.save(requestAttachmentHistory));
     }
 
     @Override
-    public void updateRequestAttachment(RequestAttachmentHistory requestAttachmentHistory) {
-        requestAttachmentHistoryOutPort.updateRequestAttachment(requestAttachmentHistory);
-    }
-
-    @Override
-    public void deleteRequestAttachment(RequestAttachmentHistory requestAttachmentHistory) {
-        requestAttachmentHistoryOutPort.deleteRequestAttachment(requestAttachmentHistory);
+    public RequestAttachmentHistory deleteRequestAttachmentHistory(RequestAttachmentHistory requestAttachmentHistory) {
+        historyRepo.delete(requestAttachmentHistory);
+        return requestAttachmentHistoryOutPort.deleteRequestAttachmentHistory(requestAttachmentHistory);
     }
 }
 
