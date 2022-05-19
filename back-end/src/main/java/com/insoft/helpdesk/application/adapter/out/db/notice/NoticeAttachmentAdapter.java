@@ -2,7 +2,6 @@ package com.insoft.helpdesk.application.adapter.out.db.notice;
 
 import com.insoft.helpdesk.application.biz.notice.port.out.NoticeAttachmentOutPort;
 import com.insoft.helpdesk.application.domain.jpa.entity.notice.NoticeAttachment;
-import com.insoft.helpdesk.application.domain.jpa.entity.service.RequestAttachmentHistory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;

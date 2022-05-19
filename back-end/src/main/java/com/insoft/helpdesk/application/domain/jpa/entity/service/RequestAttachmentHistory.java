@@ -3,6 +3,7 @@ package com.insoft.helpdesk.application.domain.jpa.entity.service;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -34,17 +35,18 @@ public class RequestAttachmentHistory {
     private String id;
 
     @JsonBackReference
-    @JoinColumn(name = "SVC_RQST_HIST_NO", nullable = false)
+    @JoinColumn(name = "SVC_RQST_HIST_NO", referencedColumnName ="SVC_RQST_HIST_NO")
+    @Schema(description = "서비스 요청 이력번호")
     @Comment("서비스 요청 이력번호")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private RequestHistory svcReqHistNo;
 
-    @Column(name = "FILE_NM", nullable = false)
+    @Column(name = "FILE_NM", length = 256, nullable = false)
     @Comment("파일 이름")
-    @Size(max = 255)
+    @Size(max = 256)
     private String fileNm;
 
-    @Column(name = "FILE_PATH", length = 512)
+    @Column(name = "FILE_PATH", length = 512, nullable = false)
     @Comment("파일 경로")
     @Size(max = 512)
     private String filePath;
@@ -68,12 +70,6 @@ public class RequestAttachmentHistory {
     @UpdateTimestamp
     private LocalDateTime updateDt;
 
-    @JsonBackReference
-    @JoinColumn(name = "SVC_RQST_NO", referencedColumnName = "SVC_RQST_NO")
-    @Comment("서비스 요청번호")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Request svcReqNo;
-
 
     public RequestAttachmentHistory update(RequestAttachmentHistory requestAttachmentHistory){
         this.svcReqHistNo = requestAttachmentHistory.svcReqHistNo == null ? this.svcReqHistNo : requestAttachmentHistory.svcReqHistNo;
@@ -82,7 +78,6 @@ public class RequestAttachmentHistory {
         this.fileSize = requestAttachmentHistory.fileSize == null ? this.fileSize : requestAttachmentHistory.fileSize;
         this.fileExt = requestAttachmentHistory.fileExt == null ? this.fileExt : requestAttachmentHistory.fileExt;
         this.registDt = requestAttachmentHistory.registDt == null ? this.registDt : requestAttachmentHistory.registDt;
-        this.svcReqNo = requestAttachmentHistory.svcReqNo == null ? this.svcReqNo : requestAttachmentHistory.svcReqNo;
         return this;
     }
 }

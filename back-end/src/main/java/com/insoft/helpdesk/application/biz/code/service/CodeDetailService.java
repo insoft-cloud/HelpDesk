@@ -12,7 +12,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,27 +25,34 @@ public class CodeDetailService implements CodeDetailInPort {
     final CodeDetailOutPort codeDetailOutPort;
 
     final DetailRepo detailRepo;
+    final CodeGroupService codeGroupService;
 
     final HelpDeskSearchExecutor helpDeskSearchExecutor;
 
     @Override
     public Page<Detail> getDetails(Map<String, String> keyParams, Map<String, String> searchParams, Pageable pageable) {
-        return codeDetailOutPort.getDetails(detailRepo.findAll(helpDeskSearchExecutor.Search(searchParams, keyParams), pageable));
+        return codeDetailOutPort.getDetails(detailRepo.findAll(helpDeskSearchExecutor.search(searchParams, keyParams), pageable));
+    }
+
+    @Override
+    public List<Detail> getDetailsList(String id) {
+        System.out.println(detailRepo.findAllByCdGroupNo(codeGroupService.getCodeGroup(id).get()));
+        return codeDetailOutPort.getDetailsList(detailRepo.findAllByCdGroupNo(codeGroupService.getCodeGroup(id).get()));
     }
 
     @Override
     public Long getDetailsCount(Map<String, String> keyParams, Map<String, String> searchParams) {
-        return codeDetailOutPort.getDetailsCount(detailRepo.count(helpDeskSearchExecutor.Search(searchParams, keyParams)));
+        return codeDetailOutPort.getDetailsCount(detailRepo.count(helpDeskSearchExecutor.search(searchParams, keyParams)));
     }
 
     @Override
     public Page<Detail> getDetails(String groupId, Map<String, String> keyParams, Map<String, String> searchParams, Pageable pageable) {
-        return codeDetailOutPort.getDetails(detailRepo.findAll(helpDeskSearchExecutor.Search(searchParams, keyParams, Group.class, groupId, "cdGroupNo", "id"), pageable));
+        return codeDetailOutPort.getDetails(detailRepo.findAll(helpDeskSearchExecutor.search(searchParams, keyParams, Group.class, groupId, "cdGroupNo", "id"), pageable));
     }
 
     @Override
     public Long getDetailsCount(String groupId, Map<String, String> keyParams, Map<String, String> searchParams) {
-        return codeDetailOutPort.getDetailsCount(detailRepo.count(helpDeskSearchExecutor.Search(searchParams, keyParams, Group.class, groupId, "cdGroupNo", "id")));
+        return codeDetailOutPort.getDetailsCount(detailRepo.count(helpDeskSearchExecutor.search(searchParams, keyParams, Group.class, groupId, "cdGroupNo", "id")));
     }
 
     @Override

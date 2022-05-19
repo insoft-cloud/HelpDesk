@@ -7,6 +7,10 @@ import TittleComponent from "component/div/TittleComponent";
 import ManagerModalComponent from "component/modal/ManagerModalComponent";
 import moment from "moment";
 import CheckPagingComponent from "../../component/list/CheckPagingComponent";
+import {AuthCode} from "../../utils/AdminCode";
+import {API_DOMAIN_PATH, ContextPath} from "../../utils/ContextPath";
+import {useNavigate} from "react-router-dom";
+import {txtAlert, txtBlock, txtConfirm} from "../../utils/CommonText";
 
 /**
  * @Project     : HelpDesk
@@ -20,6 +24,7 @@ function ServiceManagerListComponent() {
 
   let dispatch = useTokenDispatch();
   const state = useTokenState();
+  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [contentType] = useState("application/json");
   const [auth,setAuth] = useState([]);
@@ -34,7 +39,6 @@ function ServiceManagerListComponent() {
   const [chkArr, setChkArr] = useState<Array<number>>(new Array());
   const checkedArray: number[] = [];
   const [chkNums, setChkNums] = useState<Array<number>>(new Array());
-  const [remain,setRemain] = useState(pageSize);
   let offsetRemain = pageSize;
   //전체체크
   const allCheck = (e) =>{
@@ -62,7 +66,11 @@ function ServiceManagerListComponent() {
     }
   },[chkArr])
   useEffect(() => {
-    dispatch({ type: 'SET_PAGE', page: "serviceManager" })
+    if(state.auth!==AuthCode.Admin){
+      alert(txtBlock.authBlock);
+      navigate(ContextPath(API_DOMAIN_PATH.main));
+    }
+    dispatch({ type: 'SET_PAGE', page: "serviceManager", actTime: new Date().getTime().toString() })
     getData();
     setChkNums(chkArr)
   }, [state.token, chkArr,page]);
@@ -166,7 +174,7 @@ function setSys(data){
                       </nav>
                     </div>
                     <div>
-                      {isModalOpen && (<ManagerModalComponent open={isModalOpen} close={closeModal} header="운영자 추가" modalSize="modal-md" />)}
+                      {isModalOpen && (<ManagerModalComponent open={isModalOpen} close={closeModal} header="담당자 추가" modalSize="modal-md" />)}
                     </div>      
                   </div>  
                 </div>
@@ -179,7 +187,7 @@ function setSys(data){
   //delete
   function del() {
       if (chkNums.length >= 1) {
-        if (window.confirm("삭제하시겠습니까?")) {
+        if (window.confirm(txtConfirm.delete)) {
           if (offsetRemain === 0) { offsetRemain = pageSize }
         chkNums.forEach((index) => {
           let delId = tableData[index]['userId'];
@@ -195,7 +203,7 @@ function setSys(data){
           setPage(page - 1)
         }
 
-      alert('삭제되었습니다');
+      alert(txtAlert.delete);
       setChkNums([]);
       allCheck(false);
     }

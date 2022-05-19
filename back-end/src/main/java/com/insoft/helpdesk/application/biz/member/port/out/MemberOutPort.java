@@ -13,6 +13,7 @@ public interface MemberOutPort {
     boolean existEmail(String email);
     boolean existMobilePhone(String phone);
     Page<Member> getMembers(Page<Member> members);
+    Page<Member> getAdmins(Page<Member> members);
     List<Member> getManagers(List<Member> members);
     List<Member> getUsers(List<Member> members);
     List<Member> getMembers();
@@ -23,4 +24,8 @@ public interface MemberOutPort {
     Member deleteMember(Member member);
 
     String getMemberFindId(String email);
+    List<Map>getMentionMember(List<Map> member);
+    List<Map>getMention(List<Map> member);
+
+    String getTokenForFindId(String email);
 }

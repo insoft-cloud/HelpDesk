@@ -52,7 +52,7 @@ public class RequestCharge {
     @Size(max = 16)
     private String userNm;
 
-    @Column(name = "DEL_YN", length = 1)
+    @Column(name = "DEL_YN", length = 1, nullable = false)
     @Comment("삭제여부")
     @Convert(converter = HelpDeskYNConverter.class)
     private Boolean delYn;
@@ -84,7 +84,7 @@ public class RequestCharge {
     public RequestCharge updateRequestCharge(RequestCharge requestCharge){
         this.userId = requestCharge.userId == null ? this.userId : requestCharge.userId;
         this.userNm = requestCharge.userNm == null ? this.userNm : requestCharge.userNm;
-        this.delYn = requestCharge.delYn == null ? this.delYn : requestCharge.delYn;;
+        this.delYn = requestCharge.delYn == null ? this.delYn : requestCharge.delYn;
         this.agencyCode = requestCharge.agencyCode == null ? this.agencyCode : requestCharge.agencyCode;
         this.departmentName = requestCharge.departmentName == null ? this.departmentName : requestCharge.departmentName;
         return this;

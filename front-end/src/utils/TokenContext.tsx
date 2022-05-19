@@ -1,8 +1,4 @@
 import React, {createContext, Dispatch, useContext, useReducer} from "react";
-import {Navigate, useNavigate} from "react-router-dom";
-import {API_DOMAIN_PATH, API_LOGIN, ContextPath} from "./ContextPath";
-import privateRoute from "../component/route/PrivateRoute";
-import ServiceRequestComponent from "../domain/service/ServiceRequestComponent";
 
 export type TokenContext = {
     token : string | undefined;
@@ -10,11 +6,13 @@ export type TokenContext = {
     page : string;
     user : string | undefined;
     name : string | undefined;
+    auth : string | undefined;
+    actTime : string | undefined;
 };
 
 type Action =
-    | { type: 'SET_TOKEN'; token: string, tokenExpired : number , user: string, name : string}
-    | { type: 'SET_PAGE'; page: string}
+    | { type: 'SET_TOKEN'; token: string, tokenExpired : number , user: string, name : string, auth : string, actTime : string }
+    | { type: 'SET_PAGE'; page: string, actTime : string }
 
 
 type TokenDispatch = Dispatch<Action>;
@@ -30,12 +28,15 @@ function reducer(state: TokenContext, action: Action): TokenContext {
                 token: action.token,
                 tokenExpired: action.tokenExpired,
                 user: action.user,
-                name : action.name
+                name : action.name,
+                auth : action.auth,
+                actTime : new Date().getTime().toString()
             };
         case 'SET_PAGE':
             return {
                 ...state,
                 page: action.page,
+                actTime : new Date().getTime().toString()
             };
         default:
             throw new Error('Unhandled action');
@@ -49,6 +50,8 @@ export function TokenProvider({ children }: { children: React.ReactNode }) {
         page: "HOME",
         user: undefined,
         name : undefined,
+        auth : undefined,
+        actTime : undefined,
     });
 
     return (
@@ -70,10 +73,4 @@ export function useTokenDispatch() {
     const dispatch = useContext(TokenDispatchContext);
     if (!dispatch) throw new Error('Cannot find TokenDispatchContext');
     return dispatch;
-}
-
-export function useTokenStateExpired(tokenExpired){
-    if(Number(tokenExpired) < new Date().getTime()){
-        sessionStorage.clear();
-    }
 }

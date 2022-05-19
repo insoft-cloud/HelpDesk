@@ -3,13 +3,14 @@ package com.insoft.helpdesk.application.domain.jpa.entity.sms;
 import lombok.Data;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Data
 public class EmsInfo {
     // 필수 전달 정보 (메일 유형, 사용자 이름, 이메일, 유형 코드, 요청 제목)
     private String mailType; // 메일 유형 (mailType : charge, pwdReset, auth, stats, comment)
     private String userName;
-    private ArrayList<String> idList;
+    private List<String> idList;
     private String reqTyCd;
     private String reqTitle;
 

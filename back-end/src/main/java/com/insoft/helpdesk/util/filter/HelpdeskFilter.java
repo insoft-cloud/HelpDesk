@@ -6,14 +6,13 @@ import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
-import java.io.*;
-import java.nio.charset.StandardCharsets;
+import java.io.IOException;
 
 @Slf4j
 public class HelpDeskFilter implements Filter  {
 
 
-    final JwtTokenProvider jwtTokenProvider;
+    final transient JwtTokenProvider jwtTokenProvider;
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -35,24 +34,13 @@ public class HelpDeskFilter implements Filter  {
             try {
                 helpDeskLog.setUser(jwtTokenProvider.getUserPk(token));
             } catch (Exception e) {
-
+                e.printStackTrace();
             }
         }
         helpDeskLog.setMethod(httpServletRequest.getMethod());
         helpDeskLog.setRequestUrl(httpServletRequest.getRequestURI());
-        log.info(helpDeskLog.toString());
-    }
-
-
-    private String getServletInputStream(InputStream inputStream)  {
-        String body = "";
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-        try {
-            body = new String(bufferedInputStream.readAllBytes(), StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            return body;
+        if(log.isInfoEnabled()) {
+            log.info(helpDeskLog.toString());
         }
     }
 

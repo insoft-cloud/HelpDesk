@@ -4,6 +4,15 @@ import { useNavigate } from 'react-router-dom';
 import { API_LOGIN, API_SIGN_PATH, ContextPath } from 'utils/ContextPath';
 import { useTokenDispatch } from 'utils/TokenContext';
 
+
+/**
+ * @Project     : HelpDesk
+ * @FileName    : FindIdComponent.tsx
+ * @Date        : 2022-05-16
+ * @author      : 김지인
+ * @description : 아이디 찾기 화면 컴포넌트
+ */
+
 export default function FindIdComponent() {
 
   const navigate = useNavigate();
@@ -13,7 +22,7 @@ export default function FindIdComponent() {
   const [id, setId] = useState(null);
 
   useEffect(() => {
-        dispatch({ type: 'SET_PAGE', page: "LOGIN"});
+        dispatch({ type: 'SET_PAGE', page: "LOGIN", actTime: new Date().getTime().toString()});
     }, []);
 
   function onKeyPress(e) {
@@ -71,7 +80,6 @@ export default function FindIdComponent() {
                         확인
                     </button>
                 </p>                        
-
             </div>
         </div>
 

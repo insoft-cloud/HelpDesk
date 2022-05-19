@@ -1,5 +1,4 @@
-import axios from "axios";
-import { procGetAxios, procPostAxios } from "axios/Axios";
+import { procPostAxios } from "axios/Axios";
 import SystemNameComponent from "component/select/SelectComponent";
 import TittleComponent from "component/div/TittleComponent";
 import QuillEditorComponent from "component/qill/QuillEditorComponent";
@@ -9,7 +8,8 @@ import { useNavigate } from "react-router-dom";
 import { API_DOMAIN_PATH, ContextPath } from "utils/ContextPath";
 import { useTokenDispatch, useTokenState } from "utils/TokenContext";
 import SelectComponent from "component/select/SelectComponent";
-import { CodeDetail } from "utils/AdminCode";
+import {AuthCode, CodeDetail} from "utils/AdminCode";
+import {txtAlert, txtBlock} from "utils/CommonText";
 
 
 /**
@@ -33,37 +33,53 @@ function ServiceRequestComponent () {
 
     const [file, setFile] : any = useState([]);
 
-    const [fileNm, setFileNm] :any = useState([]);
-
     const tyCdChange = (e) => {
-        const value = e.target.value;
+        const value = e.value;
         setTyCd(value)
     }
     const sysCdChange = (e) => {
-        const value = e.target.value;
+        const value = e.value;
         setSysCd(value)
     }
 
     useEffect(() => {
-                dispatch({ type: 'SET_PAGE', page: "ServiceRequest"}); 
-              
+                dispatch({ type: 'SET_PAGE', page: "ServiceRequest", actTime: new Date().getTime().toString()});
+        if(state.auth===AuthCode.superAdmin){
+            alert(txtBlock.authBlock);
+            navigate(ContextPath(API_DOMAIN_PATH.main));
+        }
             }, []);
 
     const quillRef = useRef<ReactQuill>();
 
   const handleFileSelect = (e) => {
-      
-        if(file.length < 5){
-                    setFile(file.concat(e.target.files[0]))
-                    // setFileNm(fileNm.concat(e.target.files[0].name))
 
+    let str = e.target.files[0].name
+    let pattern =   /[\{\}\/?,;:|*~`!^\+<>@\#$%&\\\=\'\"]/gi;
+
+    if(pattern.test(str) ){
+        alert("파일명에 허용된 특수문자는 '-', '_', '(', ')', '[', ']', '.' 입니다.");
+        return
+    }
+
+    let ext =  str.split('.').pop().toLowerCase();
+    let extSecurity = ['asp', 'aspx', 'htm', 'html', 'asa', 'phtml', 'php', 'php3', 'php4', 'php5', 'inc', 'jsp', 'jspx', 'jsw', 'jsv', 'jspf', 'pl', 'pm', 'cgi', 'lib', 'cfm', 'cfml', 'cfc', 'dbm' ] 
+    
+    if(extSecurity.includes(ext)) {
+        alert(ext+'파일은 업로드 하실 수 없습니다.');
+        return        
+    } else {
+        if(file.length < 5){
+            if(e.target.files[0] != null){
+                    setFile(file.concat(e.target.files[0]))
+                }
         } else{
             alert('첨부파일은 최대 5개까지 첨부할 수 있습니다.')
+            return
         }
-  }    
-      const imageHandler = () => {      
- };
-
+    }       
+}    
+ 
  function close(){
     navigate(ContextPath(API_DOMAIN_PATH.main));
 }
@@ -71,22 +87,32 @@ function ServiceRequestComponent () {
 function changeHandler (e) {
     e.preventDefault();
 
+
+    let  pattern = /\s/g
+    let checkCnts = cnts?.replace(pattern, '')
+
+    
+    if(ttl === '' || ttl?.replace(pattern, '')==='' ){
+        alert(txtAlert.emptyTtl)
+        return
+    }
+    if(checkCnts?.replace(/(<([^>]+)>)/gi, '') === ''){
+        alert(txtAlert.emptyCnts)
+        return
+    }
     if(sysCd === "default"){
-        alert('시스템명을 선택해주세요')
+        alert(txtAlert.emptySysCd)
         return
     }
     if(tyCd === "default"){
-        alert('유형을 선택해주세요.')
+        alert(txtAlert.emptyTyCd)
         return
     }
-    if(ttl === null){
-        alert('제목을 채워주세요.')
+    if(ttl.length > 128){
+        alert(txtAlert.overTtl)
         return
     }
-    if(cnts === ''){
-        alert('내용을 채워주세요.')
-        return
-    }
+    
     let postData ={
         cnts : cnts,
         delYn : false,
@@ -127,34 +153,31 @@ function delectFile(name){
     setFile(file.filter(id => id.name !== name))
 }
 
-
-
     return (
         <section>
              <TittleComponent tittle={"서비스 요청 작성"} subTittle={"서비스 오류,장애,기능 개선 등의 요청 사항을 신청할 수 있습니다."}/>
         
              <div className="container d-flex flex-column">
                 <div className="row align-items-center mb-3 mt-6 justify-content-center">
-                    <div  className="d-flex card shadow">
+                    <div  className="d-flex card shadow p-5">
                     <div className="form-floating">
-             
-             <form>
-
-                <div className="mb-3">
+                <div className="mb-4">
                     <label className="form-label">요청자</label>
                     <input type='text' className="form-control" value={state.name} readOnly></input>
                 </div>
-                 <div>
+                 <div className="mb-4">
                     <SelectComponent onChange={tyCdChange} urlData={CodeDetail.tyCd} labelName="유형" />        
                  </div>
+                 <div className="mb-4">
                     <SystemNameComponent onChange={sysCdChange} urlData={CodeDetail.sysCd} labelName="시스템명" />            
-                <div className="mb-3">
-                    <label className="form-label">제목</label>
-                    <input type='text' className="form-control" name="ttl" value={ttl} onChange={e => setTtl(e.target.value)}></input>
                 </div>
-                <div className="mb-3">
+                <div className="mb-4">
+                    <label className="form-label">제목</label>
+                    <input type='text' className="form-control" placeholder="제목을 입력해주세요." name="ttl" value={ttl} onChange={e => setTtl(e.target.value)}></input>
+                </div>
+                <div className="mb-4">
                     <label className="form-label">내용</label>
-                    <QuillEditorComponent quillRef={quillRef} content={cnts} setContent={setCnts} imageHandler={imageHandler} />                 
+                    <QuillEditorComponent quillRef={quillRef} content={cnts} setContent={setCnts} />                 
                 </div>
                 <div>
                 <label className="btn-link">
@@ -171,7 +194,6 @@ function delectFile(name){
                  <button type='reset' className="btn btn-secondary btn-sm m-1" onClick={close}>취소</button>
                  <button onClick={changeHandler} className="btn btn-primary btn-sm">제출</button>
                 </div>
-             </form>
              </div>
              </div>
             </div>
@@ -179,6 +201,5 @@ function delectFile(name){
         </section>
     );
 }
-
 export default ServiceRequestComponent;
 

@@ -3,20 +3,19 @@ package com.insoft.helpdesk.application.biz.member.service;
 import com.insoft.helpdesk.application.biz.auth.port.in.AuthInPort;
 import com.insoft.helpdesk.application.biz.member.port.in.MemberInPort;
 import com.insoft.helpdesk.application.biz.member.port.out.MemberOutPort;
+import com.insoft.helpdesk.application.domain.jpa.entity.Auth;
 import com.insoft.helpdesk.application.domain.jpa.entity.Member;
-import com.insoft.helpdesk.application.domain.jpa.entity.service.Request;
+import com.insoft.helpdesk.application.domain.jpa.entity.code.Detail;
 import com.insoft.helpdesk.application.domain.jpa.repo.member.MemberRepo;
 import com.insoft.helpdesk.util.content.HelpDeskSearchExecutor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -42,31 +41,47 @@ public class MemberService implements MemberInPort {
     public  String getMemberFindId(String email){ return  memberOutPort.getMemberFindId(email);}
 
     @Override
+    public List<Map> getMentionMember(String userId){
+        return memberOutPort.getMentionMember(memberRepo.findByUserIdAndAgencyCode(userId));
+    }
+    @Override
+    public List<Map> getMention(){
+        return memberOutPort.getMention(memberRepo.findByUserIdAndAuth());
+    }
+    @Override
+    public String getTokenForFindId(String email){ return  memberOutPort.getTokenForFindId(email);}
+
+    @Override
     public Page<Member> getMembers(Map keyParams, Map searchParams, Pageable pageable) {
-        return memberOutPort.getMembers(memberRepo.findAll(helpDeskSearchExecutor.Search(searchParams,keyParams), pageable));
+        return memberOutPort.getMembers(memberRepo.findAll(helpDeskSearchExecutor.search(searchParams,keyParams), pageable));
+    }
+    @Override
+    public Page<Member> getAdmins(Map keyParams, Map searchParams, Pageable pageable) {
+
+        List<Member> members = memberRepo.findAll(helpDeskSearchExecutor.search(searchParams,keyParams));
+        List<Member> admins =members.stream().filter(r -> "PIIO".equals(r.getAgencyCode()) && "정보화지원실".equals(r.getDepartmentName())).collect(Collectors.toList());
+
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start+pageable.getPageSize()),admins.size());
+        Page<Member> pageMember = new PageImpl<>(admins.subList(start,end),pageable, admins.size());
+        return memberOutPort.getAdmins(pageMember);
     }
 
     @Override
     public List<Member> getManagers(Map keyParams, Map searchParams) {
-        List<Member> members = memberOutPort.getManagers(memberRepo.findAll(helpDeskSearchExecutor.Search(searchParams,keyParams)));
-        List<Member> managerList = new ArrayList<>();
-        for(Member mem : members){
-            if(mem.getAuth()!=null){
-                if(mem.getAuth().getCdId().equals("manager") && mem.getJoinConfirmYN().equals("Y")){
-                    managerList.add(mem);
-                }
-            }
-        }
-        return managerList;
+        List<Member> members = memberRepo.findAll(helpDeskSearchExecutor.search(searchParams,keyParams));
+        List<Member> managers =members.stream().filter(r -> r.getAuth() != null && "manager".equals(r.getAuth().getCdId()) && "Y".equals(r.getJoinConfirmYN())).collect(Collectors.toList());
+
+        return memberOutPort.getManagers(managers);
     }
 
     @Override
     public List<Member> getUsers(Map keyParams, Map searchParams) {
-        List<Member> members = memberOutPort.getUsers(memberRepo.findAll(helpDeskSearchExecutor.Search(searchParams,keyParams)));
+        List<Member> members = memberOutPort.getUsers(memberRepo.findAll(helpDeskSearchExecutor.search(searchParams,keyParams)));
         List<Member> userList = new ArrayList<>();
         for(Member mem : members){
             if(mem.getAuth()!=null){
-                if(mem.getAuth().getCdId().equals("user") && mem.getJoinConfirmYN().equals("Y")){
+                if("user".equals(mem.getAuth().getCdId()) && "Y".equals(mem.getJoinConfirmYN())){
                     userList.add(mem);
                 }
             }
@@ -79,7 +94,7 @@ public class MemberService implements MemberInPort {
     
     @Override
     public Long countMembers(Map keyParams, Map searchParams) {
-        return memberOutPort.countMembers(memberRepo.count(helpDeskSearchExecutor.Search(searchParams, keyParams)));
+        return memberOutPort.countMembers(memberRepo.count(helpDeskSearchExecutor.search(searchParams, keyParams)));
     }
 
     @Override
@@ -92,6 +107,11 @@ public class MemberService implements MemberInPort {
     public Member deleteMember(Member member) {
         memberRepo.delete(member);
         return memberOutPort.deleteMember(member);
+    }
+
+    @Override
+    public Optional<Member> getMemberByEmail(String email) {
+        return memberOutPort.getMember(memberRepo.findByEmail(email));
     }
 
 }

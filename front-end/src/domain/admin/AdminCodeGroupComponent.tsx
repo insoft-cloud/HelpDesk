@@ -1,16 +1,17 @@
 import AdminButtonComponent from 'component/button/AdminButtonComponent';
 import { useEffect, useState, useMemo, useCallback } from 'react';
-import { API_ADMIN_PATH, ContextPath } from 'utils/ContextPath';
+import {API_ADMIN_PATH, API_DOMAIN_PATH, ContextPath} from 'utils/ContextPath';
 import { useTokenDispatch, useTokenState } from 'utils/TokenContext';
 import { procGetAxios, procPostAxios } from 'axios/Axios';
 import CheckTableComponent from 'component/table/CheckTableComponent';
-import { Link } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import moment from 'moment';
 import InputEditComponent from 'component/input/InputEditComponent';
 import TittleComponent from 'component/div/TittleComponent';
 import CodeAddModalComponent from 'component/modal/CodeAddModalComponent';
 import CheckPagingComponent from "../../component/list/CheckPagingComponent";
-import {txtButton} from "../../utils/CommonText";
+import {txtBlock, txtButton} from "../../utils/CommonText";
+import {AuthCode} from "../../utils/AdminCode";
 
 
 
@@ -26,6 +27,7 @@ function AdminCodeGroupComponent() {
   let dispatch = useTokenDispatch();
   let editCdNm = "";
   const state = useTokenState();
+  const navigate = useNavigate();
   const [tableData, setTableData] = useState<any[]>([]);
   const [total, setTotal] = useState(0);
   const [contentType] = useState("application/json");
@@ -45,7 +47,11 @@ function AdminCodeGroupComponent() {
   const checkedArray: number[] = [];
   const [chkNums, setChkNums] = useState<Array<number>>(new Array());
   useEffect(() => {
-    dispatch({ type: 'SET_PAGE', page: "codeGroup" })
+    if(state.auth!==AuthCode.Admin){
+      alert(txtBlock.authBlock);
+      navigate(ContextPath(API_DOMAIN_PATH.main));
+    }
+    dispatch({ type: 'SET_PAGE', page: "codeGroup", actTime: new Date().getTime().toString() })
     getData();
     setChkNums(chkArr);
   }, [contentType, state.token,chkArr, editCdNm,page]);
@@ -143,7 +149,6 @@ function AdminCodeGroupComponent() {
             </div>
             <div className="d-flex justify-content-center">
               <nav aria-label="Page navigation example">
-                {/*<Pagination numPages={numPages} page={page} setPage={setPage} setChkArr={setChkArr} />*/}
                 <CheckPagingComponent page={page} setPage={setPage} totalPages={totalPages} setChkArr={setChkArr} />
               </nav>
             </div>
@@ -247,11 +252,7 @@ function AdminCodeGroupComponent() {
             }
             procPostAxios("/admin/group/" + tableData[index]['id'], state.token, contentType, body, getData, error);
           })
-          
   }
-
-
-
 }
 
 export default AdminCodeGroupComponent;

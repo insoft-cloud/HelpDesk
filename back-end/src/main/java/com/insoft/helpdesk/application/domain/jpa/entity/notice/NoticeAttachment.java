@@ -26,7 +26,7 @@ import java.time.LocalDateTime;
 public class NoticeAttachment {
 
     @Id
-    @Column(name = "ATCHMNFL_NO_NO", length = 36, nullable = false, updatable = false)
+    @Column(name = "ATCHMNFL_NO", length = 36, nullable = false, updatable = false)
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
     @GeneratedValue(generator = "uuid2")
     @Comment("첨부파일 번호")

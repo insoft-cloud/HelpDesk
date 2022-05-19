@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { procGetAxios } from 'axios/Axios';
 import { ButtonComponent } from 'component/button/ButtonComponent'
 import DayButtonComponent from 'component/button/DayButtonComponent';
@@ -10,11 +9,12 @@ import { CountComponent } from 'component/service/ServiceCountComponent';
 import TableComponent from 'component/table/TableComponent';
 import moment from 'moment';
 import { Fragment, useEffect, useMemo, useState } from 'react';
-import { CodeDetail } from 'utils/AdminCode';
-import { txtDiv } from 'utils/CommonText';
+import {AuthCode, CodeDetail} from 'utils/AdminCode';
+import {txtBlock, txtDiv} from 'utils/CommonText';
 import { API_DOMAIN_PATH, ContextPath } from 'utils/ContextPath';
 import { useTokenDispatch, useTokenState } from 'utils/TokenContext';
 import ServiceInfoComponent from './ServiceInfoComponent';
+import {useNavigate} from "react-router-dom";
 
 
 
@@ -23,7 +23,7 @@ import ServiceInfoComponent from './ServiceInfoComponent';
  * @FileName    : DashBoardComponent.tsx
  * @Date        : 2022-01-25
  * @author      : 김지인
- * @description : 요청 현황 > 내 업무 화면 컴포넌트
+ * @description : 요청 현황 > 담당 업무 화면 컴포넌트
  */
 
 function MyWorkComponent() {    
@@ -35,6 +35,7 @@ function MyWorkComponent() {
 
 
     const state = useTokenState();
+    const navigate = useNavigate();
     const [rqstId, setRqstId] = useState();
     const [tableData, setTableData] = useState([]);
     const [day, setDay] = useState('?day=week');
@@ -54,12 +55,16 @@ function MyWorkComponent() {
 
     useEffect(() => {
 
-        dispatch({ type: 'SET_PAGE', page: "myRequest"})
+        dispatch({ type: 'SET_PAGE', page: "myRequest", actTime: new Date().getTime().toString()})
         
         procGetAxios("/user/service/requests/" + state.user + "/charges"+day+sort+"&page="+page+"&size="+pageSize, state.token, contentType, getTableData)
         procGetAxios("user/service/request/"+state.user+"/charge/prcsSttsCd/count"+day, state.token, contentType, getPrcsSttsCdCountData)
+        if(state.auth===AuthCode.superAdmin){
+            alert(txtBlock.authBlock);
+            navigate(ContextPath(API_DOMAIN_PATH.main));
+        }
         
-    }, [state.user, day, rqstId, sort], );
+    }, [contentType,state.token,state.user, day, rqstId, sort, page, pageSize]);
 
     function getPrcsSttsCdCountData(data){
         setPrcsSttsCdCount(data)
@@ -104,8 +109,7 @@ function MyWorkComponent() {
     const columns = useMemo( () => [
         {
           Header: '번호',
-          id: 'index',
-          accessor: (_row: any, i : number) => i + 1
+          accessor: (_row: any, i : number) => (i + 1 ) + (page *pageSize) 
         },
         {
             Header: <SortButtonComponent sort={sort} setSort={setSort} sortData={'&sort=tyCd'} btnName='유형'/>, 
@@ -113,7 +117,7 @@ function MyWorkComponent() {
         },
         {
             Header: <SortButtonComponent sort={sort} setSort={setSort} sortData={'&sort=ttl'} btnName='제목'/>, id: 'ttl',
-            accessor : a => <button className="btn btn-link" onClick={() =>setRqstId(a.id) }>{a.ttl}</button>
+            accessor : a => <span className="link-primary" style={{ cursor:'pointer' }} onClick={() =>setRqstId(a.id) }>{a.ttl.length < 35 ? a.ttl : a.ttl.slice(0, 35) + '...'}</span>
 
         },
         {
@@ -132,7 +136,7 @@ function MyWorkComponent() {
             Header: <SortButtonComponent sort={sort} setSort={setSort} sortData={'&sort=prcsSttsCd'} btnName='상태'/>,
             accessor: 'prcsSttsCd'
           }
-    ], [])
+    ], [page, sort])
 
     const openModal= () => {
         setIsModalOpen(true);
@@ -169,17 +173,11 @@ function MyWorkComponent() {
                             </svg>
                         </span>
                         </button>
-                        
                         {isModalOpen && (<StatsModalComponent day={day} setDay={setDay} url={'myWork'} rqstId={rqstId} open={isModalOpen} close={closeModal}  />)}
-
-
                     </div>
                 </div>
-
                 <div className="row mt-7 help_desk">
-
                     <div className="col-12 col-md-6 border-right">
-            
                         <div className="row mb-3 align-items-center">
                          <div className="col-auto">
                             <div className="icon-circle bg-primary text-white">
@@ -190,30 +188,27 @@ function MyWorkComponent() {
                                 <h3 className="mb-0">담당 업무 현황</h3>
                             </div>
                         </div> 
-
                         <CountComponent data={prcsSttsCdCount}/>
-                    
-                    <div className="card mt-3">
-                        <div className="card-body">
-                            <div className="d-flex justify-content-between mb-2">                                                                        
-                                <span>
-                                    목록({totaldata})
-                                </span>                         
-                                <div className="col-auto ms-auto">
+                        <div className="card mt-3">
+                            <div className="card-body">
+                                <div className="d-flex justify-content-between mb-2">                                                                        
+                                    <span>
+                                        목록({totaldata})
+                                    </span>                         
+                                    <div className="col-auto ms-auto">
+                                    </div>
                                 </div>
+                                {tableData.length === 0 ? txtDiv.tableData :
+                                <>
+                                <TableComponent data={tableData} columns={columns} /> 
+                                <div className="d-flex justify-content-center">
+                                    <PagingComponent page={page} setPage={setPage} totalPages={totalPages} />
+                                </div>
+                                </>
+                                }
                             </div>
-
-                            {tableData.length === 0 ? txtDiv.tableData :
-                            <>
-                            <TableComponent data={tableData} columns={columns} /> 
-                            <div className="d-flex justify-content-center">
-                                <PagingComponent page={page} setPage={setPage} totalPages={totalPages} />
-                            </div>
-                            </>
-                            }
                         </div>
                     </div>
-                </div>
                     <div  className="col-12 col-md-6 pl00">
                         <div className="row mb-3 align-items-center pl30">
                             <div className="col-auto">

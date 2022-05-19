@@ -3,6 +3,9 @@ import {useState} from "react";
 import React from "react";
 import ServiceDetailComponent from "../service/detail/ServiceDetailComponent";
 import ServiceComentComponent from "../service/detail/ServiceComentComponent";
+import moment from "moment";
+import QuillEditorComponent from "../../component/qill/QuillEditorComponent";
+import AttachServiceComponent from "../../component/attach/AttachServiceComponent";
 
 function AlertListComponent({data, condition}) {
     const [modalOpen, setModalOpen] = useState(false)
@@ -11,10 +14,32 @@ function AlertListComponent({data, condition}) {
 
     function openModal(i) {
         if(condition.linkColumn !== '') {
+
             setModalData(
                 <>
-                    <ServiceDetailComponent rqstId={i}/>
-                    <ServiceComentComponent rqstId={i}/>
+                    {data.map(e=>{
+                        return(
+                        e.id===i?
+                            <>
+                                <h5>{e.ttl}</h5>
+                                <hr/>
+                                <div className="fs-sm">
+                                    <dl className="row mb-0">
+                                        <dt className="col-auto">요청자</dt>
+                                        <dd className="col-6 ms-n5"> {e.reqNm} </dd>
+                                    </dl>
+                                    <dl className="row mb-0">
+                                        <dt className="col-auto">요청일</dt>
+                                        <dd className="col-6 ms-n5"> {moment(e.registDt).format("YYYY/MM/DD HH:MM")} </dd>
+                                    </dl>
+                                    <hr className="card-meta-divider"/>
+                                    <div className="border-white ql-editor bg-gray-200 border-light border border-4"
+                                         dangerouslySetInnerHTML={{__html: e.cnts}}/>
+                                </div>
+                            </>
+                            :null
+                        )
+                    })}
                 </>
             )
             setModalOpen(true)
@@ -57,7 +82,7 @@ function AlertListComponent({data, condition}) {
                 return (
                     condition.conditionNmList.indexOf(e[condition.conditionColNm]) !== -1
                     ?
-                        <li key={index} className="d-flex justify-content-between list-group-item cursor-pointer" onClick={ () => {openModal(e[condition.linkColumn])}}>
+                        <li key={index} className="d-flex justify-content-between list-group-item" onClick={ () => {openModal(e[condition.linkColumn])}}>
                             <div className="col-1 align-self-center">
                                 {condition.conditionNmList.map((aa, index) => {
                                     return e[condition.conditionColNm] === aa

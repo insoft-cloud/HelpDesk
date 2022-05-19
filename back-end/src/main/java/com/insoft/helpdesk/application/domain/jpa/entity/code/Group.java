@@ -1,21 +1,20 @@
 package com.insoft.helpdesk.application.domain.jpa.entity.code;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.insoft.helpdesk.application.domain.enumerated.Status;
-import com.insoft.helpdesk.application.domain.jpa.entity.service.RequestHistory;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.Comment;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.Where;
 
-import javax.persistence.*;
-import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Table(name = "TB_HELP_CD_GRP")
@@ -57,11 +56,6 @@ public class Group {
     @Comment("수정일시")
     @UpdateTimestamp
     private LocalDateTime updateDt;
-
-//    @JsonManagedReference
-//    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-//    @JoinColumn(name = "CD_GRP_NO", referencedColumnName = "CD_NO")
-//    private List<Detail> details;
 
 
 

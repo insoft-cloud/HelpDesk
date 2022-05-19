@@ -1,6 +1,5 @@
 import { procGetAxios } from "axios/Axios";
-import { SelectedComponent } from "component/select/SelectComponent";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { CodeDetail } from "utils/AdminCode";
 import { useTokenState } from "utils/TokenContext";
 import "./ServiceCountComponent.css";
@@ -27,16 +26,15 @@ export function CountComponent({data}) {
         setCodeDlt(data.content)
     }
 
-
     if(data){
         let compareCodeDlt =   codeDlt.map(a => a.cdId)
-        let comparePrcsSttsCd = data.map(a => a.prcs_stts_cd)
+        let comparePrcsSttsCd = data.map(a => a.procs_stts_cd)
 
         if(compareCodeDlt !== comparePrcsSttsCd){
             let addData = compareCodeDlt.filter(value => !comparePrcsSttsCd.includes(value))         
                 addData.forEach(element => {
                 let pushData = {
-                    prcs_stts_cd : element,
+                    procs_stts_cd : element,
                     count : 0
                 }
                 data.push(pushData)
@@ -54,8 +52,8 @@ export function CountComponent({data}) {
                             </div>
                             {codeDlt.map( ( (a, index)   =>
                                 <div className=" text-primary border-right cursor-default" key={index}>
-                                    { data.map( b => (a.cdId === b.prcs_stts_cd ?
-                                        <h3 key={b.prcs_stts_cd} className={b.prcs_stts_cd+" fs-1 cursor-default"}>{b.count}</h3> :
+                                    { data.map( b => (a.cdId === b.procs_stts_cd ?
+                                        <h3 key={b.procs_stts_cd} className={b.procs_stts_cd+" fs-1 cursor-default"}>{b.count}</h3> :
                                        null
                                         )
                                     )}

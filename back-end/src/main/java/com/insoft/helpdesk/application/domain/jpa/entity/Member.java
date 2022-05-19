@@ -30,6 +30,7 @@ import java.util.Collection;
 @Where(clause = "del_yn='N'")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Member implements UserDetails {
+    private static final long serialVersionUID = -2754626867368119664L;
 
     @Id
     @Column(name = "USER_ID", length = 32, nullable = false)
@@ -77,13 +78,13 @@ public class Member implements UserDetails {
     @Size(max = 64)
     private String email;
 
-    @Column(name = "MBTLNUM", length = 11, nullable = false)
+    @Column(name = "MBPHNO", length = 20, nullable = false)
     @Comment("휴대폰번호")
-    @Size(max = 11)
+    @Size(max = 20)
     private String phoneNumber;
 
-    @Column(name = "TLNUM", length = 11, nullable = false)
-    @Comment("휴대폰번호")
+    @Column(name = "TELNO", length = 11, nullable = false)
+    @Comment("내선번호")
     @Size(max = 11)
     private String telNumber;
 
@@ -117,15 +118,10 @@ public class Member implements UserDetails {
     @UpdateTimestamp
     private LocalDateTime updateDt;
 
-    @Column(name = "DEL_YN", length = 1)
+    @Column(name = "DEL_YN", length = 1, nullable = false)
     @Comment("삭제 여부")
     @Size(max = 1)
     private String delYn;
-
-//    @Column(name = "AUTH", length = 36)
-//    @Comment("권한")
-//    @Size(max = 36)
-//    private String authNo;
 
     public Member updateMember(Member member){
         this.userId = member.userId == null ? this.userId : member.userId;
@@ -156,14 +152,14 @@ public class Member implements UserDetails {
 
         ArrayList<GrantedAuthority> auth = new ArrayList<>();
         auth.add(new SimpleGrantedAuthority("USER"));
-        if(this.auth != null && this.auth.getAdminYn().equals("Y")){
+        if("Y".equals(this.auth.getAdminYn())) {
             auth.add(new SimpleGrantedAuthority("ADMIN"));
         }
         return auth;
     }
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "AUTH_NO", referencedColumnName = "AUTH_NO")
+    @JoinColumn(name = "AUTH_CD", referencedColumnName = "AUTH_NO")
     private Auth auth;
 
     @Override

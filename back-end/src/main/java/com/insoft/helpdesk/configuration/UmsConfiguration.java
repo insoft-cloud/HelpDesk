@@ -1,12 +1,13 @@
 package com.insoft.helpdesk.configuration;
 
-import kr.go.smes.ums.MockUmsClient;
 import kr.go.smes.ums.UmsClient;
 import kr.go.smes.ums.SmesUmsClient;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+@Data
 @Configuration
 public class UmsConfiguration {
     @Value("${ums.userId}")
@@ -20,6 +21,6 @@ public class UmsConfiguration {
 
     @Bean
     public UmsClient umsClient() {
-        return new MockUmsClient(userId, targetUrl, defaultFrom);
+        return new SmesUmsClient(userId, targetUrl, defaultFrom);
     }
 }

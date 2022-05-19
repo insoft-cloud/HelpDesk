@@ -1,20 +1,25 @@
-
-import {useEffect, useMemo, useRef, useState} from 'react'
+import {procGetAxios, procPostAxios} from "axios/Axios";
+import { useEffect, useMemo, useState} from 'react'
 import "component/modal/Modal.css";
 import { useTokenState } from 'utils/TokenContext';
 import TableComponent from 'component/table/TableComponent';
-import { procGetAxios, procPostAxios } from 'axios/Axios';
+import PagingComponent from 'component/list/PagingComponent';
+import {CodeDetail} from "../../utils/AdminCode";
 import sendEms from "../../utils/SendEms";
 import sendUms from "../../utils/SendUms";
-import { CodeDetail } from 'utils/AdminCode';
-import PagingComponent from 'component/list/PagingComponent';
-import { txtAlert } from 'utils/CommonText';
+import {txtAlert} from "../../utils/CommonText";
 
-let ddd= [];
+/**
+ * @Project     : HelpDesk
+ * @FileName    : ModalComponent.tsx
+ * @Date        : 2022-05-16
+ * @author      : 김지인
+ * @description : 담당자 지정 모달 컴포넌트
+ */
 
 export default function ModalComponent( { rqstId, open, close} ) {
 // EMS Object
- let obj_EMS: { reqTyCd: string; authDate: string; mailType: string; reqTitle: string; reqChargeName: string; tmpPwd: string; idList: any; userName: string, stats: string, comment: string };
+  let obj_EMS: { reqTyCd: string; authDate: string; mailType: string; reqTitle: string; reqChargeName: string; tmpPwd: string; idList: any; userName: string, stats: string, comment: string };
   obj_EMS = {
     // 필수 입력 값
     mailType: "", // 메일 유형 (charge - 담당자 지정, pwdReset - 임시 비밀번호 발급, auth - 회원가입 승인, stats - 상태 변경(보류/완료))
@@ -60,48 +65,162 @@ export default function ModalComponent( { rqstId, open, close} ) {
     stats: "" // 상태(hold/complete)
   }
 
-    const [selectChargeNameList, setSelectChargeNameList] = useState([])
-    const selectChargeList:any = useRef([])
-    const setSelectChargeList = (data) => {
-      selectChargeList.current = data
+  const [chargeList, setChargeList] : any = useState([]) // 전체 담당자 목록 (List)
+  const [currentChargeList, setCurrentChargeList] = useState([]) // 이미 저장되어있는 해당 요청 담당자의 목록
+  const [selectedCharge, setSelectedCharge] = useState({}) // 선택된 담당자 정보
+
+  const state = useTokenState()
+  const [contentType] = useState("application/json")
+
+  const [rqstData, setRqstData] = useState({})
+
+  const [pageSize] = useState(5)
+  const [page, setPage] = useState(0)
+  const [totalPages,setTotalPages] = useState(0)
+
+  const [searchTarget, setSearchTarget] = useState("jobCd")
+
+  const [jobCd, setJobCd] : any = useState([]) // 전체 jobCode 목록
+  const [selectedJobCd, setSelectedJobCd] = useState('전체') // 선택된 jobCode
+  const [searchJobCd, setSearchJobCd] = useState("") // 조회 조건 (jobCode)
+  const [searchKeyword, setSearchKeyword] = useState("") // 조회 조건 (input box)
+  const [searchOption, setSearchOption] = useState("username") // 검색 조건
+
+  useEffect( () => {
+    procGetAxios('/user/service/request/'+ rqstId, state.token, contentType, setRqstData)
+    procGetAxios("/user/service/request/chargeList/" + rqstId, state.token, contentType, setCurrentChargeList) // 현재 담당자로 저장되어있는 목록 조회
+    procGetAxios("/admin/group/"+CodeDetail.jobCd+"/details", state.token,contentType, setJobCode); // jobCode 목록 조회
+    if(searchTarget === 'jobCd') {
+      procGetAxios("/user/members/manager?search=" + encodeURI(searchJobCd), state.token,contentType, setManagerList); // 매니저 목록 조회
+    } else {
+      procGetAxios("/user/members/manager?search=" + encodeURI(searchKeyword), state.token,contentType, setManagerList); // 매니저 목록 조회
+    }
+    resetRadio()
+    setSelectedCharge({})
+  }, [page, selectedJobCd, searchTarget, searchKeyword])
+
+  function save() {
+    // 현재 담당자 적용 여부 확인
+    let existYn = false
+    currentChargeList.forEach( charge => {
+      if(charge === selectedCharge['userId']) {
+        existYn = true
+      }
+    })
+
+    if(existYn) {
+      alert("이미 담당자로 지정되어 있습니다.")
+    } else if(Object.keys(selectedCharge).length === 0) {
+      alert("담당자를 선택해주세요.")
+    } else {
+      // 담당자 저장 작업
+      let chargeData = {
+        userId : selectedCharge['userId'],
+        userNm : selectedCharge['username'],
+        agencyCode : selectedCharge['agencyCode'],
+        departmentName : selectedCharge['departmentName']
+      }
+      procPostAxios("/user/service/request/"+ rqstId +"/charge", state.token, contentType, chargeData, saveOk, error)
+    }
+  }
+
+  function saveOk() {
+    let postData = {
+      chrgprNm: selectedCharge['username']
+    }
+    procPostAxios('/user/service/request/' + rqstId, state.token, contentType, postData, alram, error)
+  }
+
+  function alram(){
+    obj_SMS.smsType = "charge"
+    obj_SMS.idList.push(rqstData['reqId'])
+    obj_SMS.reqTyCd = rqstData['tyCd']
+    obj_SMS.reqTitle = rqstData['ttl']
+    obj_SMS.reqChargeName = selectedCharge['username']
+
+    obj_EMS.mailType = "charge"
+    obj_EMS.userName = rqstData['reqNm']
+    obj_EMS.idList.push(rqstData['reqId'])
+    obj_EMS.reqTyCd = rqstData['tyCd']
+    obj_EMS.reqTitle = rqstData['ttl']
+    obj_EMS.reqChargeName = selectedCharge['username']
+
+    sendEms(obj_EMS, state, contentType)
+    sendUms(obj_SMS, state, contentType)
+
+    alert(txtAlert.createCharge)
+
+    let hisData = {
+      inputMsg :
+          '<p><span class="mention" data-index="0" data-denotation-char="@" data-value="'+selectedCharge['username']+'" data-id="'+selectedCharge['userId']+'"><span contenteditable="false"><span class="ql-mention-denotation-char">@</span>'+selectedCharge['username']+'</span></span>님이 담당자로 지정되었습니다.</>',
+      userId : state.user,
+      userNm : state.name,
+      delYn : false,
+      rqstCd : 'charge'
+    }
+    procPostAxios('/user/service/request/'+ rqstId +'/history', state.token, contentType, hisData, refresh, error )
+
+  }
+
+  function refresh(){
+    close()    
+  }
+
+  function error(data) {
+    alert(data)
+  }
+
+  function onEnter(e) {
+    if(e.key === 'Enter') {
+      keywordSearch();
+    }
+  }
+
+  function keywordSearch() {
+    setSearchTarget("keyword")
+
+    let jobCd = document.getElementsByName("jobCode")
+    for(let i = 0; i < jobCd.length; ++i) {
+      if(jobCd[i]['value'] === '전체') {
+        jobCd[i]['checked'] = true
+      }
     }
 
+    if(document.getElementById("searchKeyword") !== null && document.getElementById("searchKeyword") !== undefined) {
+      // @ts-ignore
+      if(document.getElementById("searchKeyword").value === "") {
+        setSearchKeyword("")
+      } else {
+        // @ts-ignore
+        setSearchKeyword('{"' + searchOption + '":"' + document.getElementById("searchKeyword").value + '"}')
+      }
+    }
+  }
 
-    const [rqstData, setRqstData] = useState({})
+  function resetRadio() {
+    let names = document.getElementsByName("name")
+    names.forEach( name => {
+      name['checked'] = false
+    })
+  }
 
-    const state = useTokenState();
-    const [contentType] = useState("application/json");
+  function setSelectedJobCode(data) {
+    setSearchTarget("jobCd")
 
-    const [chargeList, setChargeList] : any = useState(['a','a']);
-    const [chargeId, setChargeId] : any = useState();
+    if(data['name'] === '전체') {
+      setSearchJobCd("")
+    } else {
+      setSearchJobCd('{"jobCode":"' + data['name'] + '"}')
+    }
+    setPage(0)
+    setSelectedJobCd(data['name'])
+  }
 
-    const [check, setCheck] : any = useState();
-    
-    const [pageSize] = useState(5);
-    const [page, setPage] = useState(0);
-    const [totalPages,setTotalPages] = useState(0);
+  function setJobCode(data) {
+    setJobCd([{name:"전체", id:"all"}].concat(data['content']))
+  }
 
-    const [inputTxt, setInputTxt] = useState('');
-    const [isSelected, setIsSelected] : any = useState('username');
-
-    const [jobCd, setJobCd] : any = useState([]);
-    const [category, setCate] : any = useState([]);
-    const [search, setSearch] : any = useState('');
-
-    const [isChecked, setIsChecked] : any = useState();
-
-    let userData = [];
-
-    let table_sub_data;
-
-    useEffect( () => {
-      procGetAxios("/user/members/manager"+search, state.token + "", contentType, Member)
-      procGetAxios("/user/service/request/"+ rqstId +"/charges", state.token, contentType, getchargeId)      
-      setSelectChargeList([])
-      procGetAxios('/user/service/request/'+ rqstId, state.token, contentType, setRequestInfoData)
-  }, [page, pageSize, search]);
-
-  function Member(data){
+  function setManagerList(data) {
 
     let dataFiltered = data.filter(x => x.jobCode !== '')
     let arr:any=[];
@@ -110,172 +229,25 @@ export default function ModalComponent( { rqstId, open, close} ) {
         arr.push(e)
       }
     })
-    table_sub_data = arr;
-    procGetAxios("/admin/group/"+CodeDetail.jobCd+"/details", state.token,contentType, compareCodeDetail);
-    procGetAxios("/admin/group/"+CodeDetail.searchCategory+"/details", state.token,contentType, getCate);
-
+    setChargeList(arr)
     setTotalPages(Math.ceil(dataFiltered.length/pageSize));
-
-  }
-  function getCate(data){
-    setCate(data.content)
-  }
-  function compareCodeDetail(data)
-  {
-    setJobCd(data.content)
-  
-    table_sub_data.forEach(table => {
-        data.content.forEach(r => {
-          if(table.jobCode ===r.cdId){
-            table.jobCode = r.name;
-          }
-        });
-      });
-    
-      setChargeList(table_sub_data);
-      userData = table_sub_data;
-      console.log(userData)
   }
 
-  function getchargeId(data){
-    setChargeId(data.content.map(a => a.userId))
-  }
-  function clickSearch(){
-    let txt = '{"' + isSelected + '":"' + inputTxt + '"},'
-    setSearch('?search='+encodeURI(txt))
-  }
-  function clickOption(e){
-
-    
-    let myCheckbox = document.getElementsByName("operInst");
-    Array.prototype.forEach.call(myCheckbox,function(el){
-        el.checked = false;
-      });
-        e.target.checked = true;
-
-    if(e.target.checked){
-    
-      console.log(e.target)
-      let operInst = e.target.value;
-      let option = '{ "jobCode":"' + operInst + '"}'
-      setSearch('?search='+encodeURI(option))
-      setPage(0)
-    }
-    else{
-      setSearch('')
-      setPage(0)
-    }
-  }
-
-  function setRequestInfoData(data) {
-    setRqstData(data)
-  }
-
-
-  function checkbox(e, i) {
-
-    let myCheckbox = document.getElementsByName("name");
-    Array.prototype.forEach.call(myCheckbox,function(el){
-        el.checked = false;
-      });
-        e.target.checked = true;
-
-    if(e.target.checked){
-      let index = i      
-    setCheck(userData[index]) 
-
-    const tmpList = selectChargeList.current.concat({userId : userData[index]['userId'], userNm : userData[index]['username']})
-    setSelectChargeList(tmpList)
-  } else {
-    const tmpList = selectChargeList.current.concat()
-    tmpList.splice(tmpList.findIndex(d => d.userId === userData[i]['userId']), 1)
-    setSelectChargeList(tmpList)
-  }
-}
-
-  function ok(){
-    let postData = {
-      chrgprNm : check.username
-    }
-
-    procPostAxios('/user/service/request/'+rqstId, state.token + "", contentType, postData, alram, error)
-
-
-  function alram(){
-    let arr_nm = new Array()
-    selectChargeList.current.forEach(element => {
-       arr_nm.push(element.userNm)
-    })
-    obj_SMS.smsType = "charge"
-    obj_SMS.idList.push(rqstData['reqId'])
-    obj_SMS.reqTyCd = rqstData['tyCd']
-    obj_SMS.reqTitle = rqstData['ttl']
-    obj_SMS.reqChargeName = arr_nm.toString()
-
-    obj_EMS.mailType = "charge"
-    obj_EMS.userName = rqstData['reqNm']
-    obj_EMS.idList.push(rqstData['reqId'])
-    obj_EMS.reqTyCd = rqstData['tyCd']
-    obj_EMS.reqTitle = rqstData['ttl']
-    obj_EMS.reqChargeName = arr_nm.toString()
-
-    sendEms(obj_EMS, state, contentType)
-    sendUms(obj_SMS, state, contentType)
-
-    alert(txtAlert.createCharge)
-
-    let hisData ={
-      inputMsg :   
-      '<p><span class="mention" data-index="0" data-denotation-char="@" data-value="'+check.username+'" data-id="'+check.userId+'"><span contenteditable="false"><span class="ql-mention-denotation-char">@</span>'+check.username+'</span></span>님이 담당자로 지정되었습니다.</>',
-     // '@' + check.username + '님이 담당자로 지정되었습니다.'
-      userId : state.user,
-      userNm : state.name,
-      delYn : false
-    }
-  
-      procPostAxios('/user/service/request/'+ rqstId +'/history', state.token, contentType, hisData, refresh, error )
-    } 
-  }
-  function onKeyPress(e) {
-    if(e==='Enter'){
-      clickSearch();
-    }
-}
-
-  function refresh(){
-    close()
-    window.location.reload()
-  }
-
-  function error(){
-    console.log(error)
-  }
-
-  function saveHandler(){
-
-   let result = chargeId.some( a => { return a === check.userId})
-
-
-  if( result ){
-
-       alert(txtAlert.usedCharge)
-
-  } else{
-      let chargeData = {
-        userId : check.userId,
-        userNm : check.username,
-        agencyCode : check.agencyCode,
-        departmentName : check.departmentName
+  function setOption() {
+    // @ts-ignore
+    let option = document.getElementById("searchOption").children
+    for(let i = 0; i < option.length; ++i) {
+      if(option[i]['selected']) {
+        setSearchOption(option[i]['value'])
       }
-      procPostAxios("/user/service/request/"+ rqstId +"/charge", state.token+"", contentType, chargeData, ok, error)
-   }
+    }
   }
 
   const columns = useMemo( () => [
     {
       Header: '',
       id: 'index',
-      accessor: (_row: any, i : number) => <input name={'name'} type="checkbox" key={i} value={check} onChange={(e) => checkbox(e, i)} />
+      accessor: (_row: any, i : number) => <input name={'name'} type="radio" key={i} onClick={() => setSelectedCharge(_row)}/>
     },
     {
       Header: '아이디',
@@ -290,96 +262,73 @@ export default function ModalComponent( { rqstId, open, close} ) {
       accessor : 'rankCode'
     }
   ], [])
- 
+
   return (
-    <>
-     {/* tabindex="-1" */}
-     <div className={open?'openModal modal' : 'modal'}>
-     { open ? (
-      <div className="modal-dialog modal-lg modal-dialog-centered" style={{maxWidth:"1000px"}} role="document">
-        <div className="modal-content">
-          <div className="modal-body">
-    
-            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={close}></button>
-    
-            <h3 className="fw-bold mb-3 " id="modalExampleTitle">
-              담당자 지정
-            </h3>
-    
-            <div>
-
-             
-              <div className="rounded shadow mb-6">
-                <div className="input-group input-group-sm">
-                  <div className="col-auto ms-auto" > 
-
-                  {/* style="width: 100px;" */}
-
-                  <select className="form-select form-select-sm" onChange={(e) => setIsSelected(e.target.value)}>
-                      <option value='username'>이름</option>
-                      <option value='userId'>아이디</option> 
-                    </select>
+      <>
+        <div className={open?'openModal modal' : 'modal'}>
+          { open ? (
+              <div className="modal-dialog modal-lg modal-dialog-centered" style={{maxWidth:"1000px"}} role="document">
+                <div className="modal-content">
+                  <div className="modal-body">
+                    <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={close}></button>
+                    <h3 className="fw-bold mb-3 " id="modalExampleTitle">
+                      담당자 지정
+                    </h3>
+                    <div>
+                      <div className="rounded shadow mb-6">
+                        <div className="input-group input-group-sm">
+                          <div className="col-auto ms-auto" >
+                            <select id="searchOption" onChange={ () => { setOption() } } className="form-select form-select-sm">
+                              <option value='username'>이름</option>
+                              <option value='userId'>아이디</option>
+                            </select>
+                          </div>
+                          <span className="input-group-text border-0 pe-1">
+                            <i className="fe fe-search"></i>
+                          </span>
+                          <input id="searchKeyword" onKeyPress={ e => onEnter(e) } className="form-control form-control-sm border-0 px-1" type="text" aria-label="Search our blog..." placeholder="검색어를 입력해주세요"/>
+                          <span className="input-group-text border-0 py-0 ps-1 pe-3">
+                            <button className="btn btn-xs btn-primary" onClick={ () => keywordSearch() }>검색</button>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="row mt-3 fs-sm ml00 mr00">
+                      <div className="col-12 col-md-6 list-group-item">
+                        {jobCd.map( (a, index) =>
+                            <div key={index}>
+                              <div>
+                                <input name="jobCode" type="radio" value={a['name']} onClick={ () => setSelectedJobCode(a)} defaultChecked={a['name'] === selectedJobCd}/>
+                                <label className="" >{a['name']}</label>
+                              </div>
+                              <hr className="card-meta-divider mb-2" />
+                            </div>
+                        )}
+                      </div>
+                      <div className="col-12 col-md-6 p-0 pl10 ">
+                        <div className="table-responsive fs-sm">
+                          <TableComponent data={chargeList} columns={columns}/>
+                        </div>
+                        <div className="d-flex justify-content-center">
+                          <nav aria-label="Page navigation example">
+                            <PagingComponent page={page} setPage={setPage} totalPages={totalPages}/>
+                          </nav>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="text-end">
+                      <button className="btn btn-primary btn-sm mt-3 lift" onClick={ () => save() }>
+                        저장
+                      </button>
+                      <button className="btn btn-secondary btn-sm mt-3 lift" onClick={close} >
+                        닫기
+                      </button>
+                    </div>
                   </div>
-
-                  <span className="input-group-text border-0 pe-1">
-                    <i className="fe fe-search"></i>
-                  </span>
-
-                  <input className="form-control form-control-sm border-0 px-1" type="text" aria-label="Search our blog..." placeholder="검색어를 입력해주세요" onChange={(e) => setInputTxt(e.target.value)}  onKeyPress={e=>onKeyPress(e.key)} value={inputTxt} />
-
-                  <span className="input-group-text border-0 py-0 ps-1 pe-3">
-                    <button className="btn btn-xs btn-primary" onClick={clickSearch}>검색</button>
-                  </span>
-
                 </div>
               </div>
-              
-            </div>
-            
-
-            <div className="row mt-3 fs-sm ml00 mr00">
-              <div className="col-12 col-md-6 list-group-item">
-              {jobCd.map( (a, index) => 
-                <div key={index}>
-                  <div>
-                    <input name="operInst" type="checkbox" value={a.name} defaultChecked  onClick={e => { clickOption(e);}}  />
-                    <label className="" >{a.name}</label>
-                  </div>
-                  <hr className="card-meta-divider mb-2" />
-                </div>
-              )}
-              </div>
-              <div className="col-12 col-md-6 p-0 pl10 ">
-                <div className="table-responsive fs-sm">
-
-                  <TableComponent data={chargeList} columns={columns}/>
-    
-                  
-                </div>
-                
-                <div className="d-flex justify-content-center">
-                    <nav aria-label="Page navigation example">
-                    <PagingComponent page={page} setPage={setPage} totalPages={totalPages} />
-                  </nav>
-                </div>
-              </div>
-            </div>
-            
-            <div className="text-end">
-              
-              <button className="btn btn-primary btn-sm mt-3 lift" onClick={saveHandler}>
-                저장
-              </button>
-              <button className="btn btn-secondary btn-sm mt-3 lift" onClick={close} >
-                닫기
-              </button>
-            </div>
-          </div>
+          ) : null}
         </div>
-      </div>
-     ) : null}
-</div>
-  </>
-
+      </>
   )
 }

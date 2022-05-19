@@ -40,6 +40,9 @@ public class MemberAdapter implements MemberOutPort {
     public Page<Member> getMembers(Page<Member> members) {return members;}
 
     @Override
+    public Page<Member> getAdmins(Page<Member> members) {return members;}
+
+    @Override
     public List<Member> getManagers(List<Member> members) {return members;}
 
     @Override
@@ -64,5 +67,14 @@ public class MemberAdapter implements MemberOutPort {
     public List<Member> getMembers() {
         return null;
     }
+
+    @Override
+    public List<Map> getMentionMember(List<Map> member){ return member; }
+
+    @Override
+    public List<Map> getMention(List<Map> member){ return member; }
+
+    @Override
+    public String getTokenForFindId(String email){ return memberRepo.findByEmailAndUserId(email); }
 
 }

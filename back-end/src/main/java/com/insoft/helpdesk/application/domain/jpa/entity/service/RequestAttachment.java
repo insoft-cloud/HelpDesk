@@ -3,7 +3,6 @@ package com.insoft.helpdesk.application.domain.jpa.entity.service;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,13 +10,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.*;
 
-import javax.persistence.*;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Schema(description = "요청 첨부 파일 모델")
 @Entity
@@ -46,13 +43,13 @@ public class RequestAttachment {
     @ManyToOne(fetch = FetchType.LAZY)
     private Request svcReqNo;
 
-    @Column(name = "FILE_NM", nullable = false)
+    @Column(name = "FILE_NM", length = 256, nullable = false)
     @Comment("파일 이름")
     @Schema(description = "파일 이름")
-    @Size(max = 255)
+    @Size(max = 256)
     private String fileNm;
 
-    @Column(name = "FILE_PATH", length = 512)
+    @Column(name = "FILE_PATH", length = 512, nullable = false)
     @Comment("파일 경로")
     @Schema(description = "파일 경로")
     @Size(max = 512)

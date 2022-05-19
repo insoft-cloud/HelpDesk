@@ -12,6 +12,7 @@ export type InputType = {
     onChange? : ChangeEventHandler<HTMLInputElement> | null
     ref? : RefObject<any>
     placeholder? : string | ""
+    maxLength? : number | ""
 }
 
 export type DivType = {

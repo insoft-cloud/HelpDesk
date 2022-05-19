@@ -1,22 +1,31 @@
-import axios from 'axios';
 import { procGetAxios, procPostAxios } from 'axios/Axios';
 import { ButtonComponent } from 'component/button/ButtonComponent';
 import TittleComponent from 'component/div/TittleComponent';
-import PageComponent from 'component/list/PageComponent'
 import PagingComponent from 'component/list/PagingComponent';
-import TableComponent from 'component/table/TableComponent';
+import TableComponent2 from 'component/table/TableComponent2';
 import moment from 'moment';
-import React, { Fragment, useEffect, useMemo, useState } from 'react'
+import { Fragment, useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom';
 import { AuthCode, CodeDetail } from 'utils/AdminCode';
 import { API_DOMAIN_PATH, ContextPath } from 'utils/ContextPath';
 import { useTokenDispatch, useTokenState } from 'utils/TokenContext';
+import SortButtonComponent from "../../component/button/SortButtonComponent";
+
+
+/**
+ * @Project     : HelpDesk
+ * @FileName    : NoticeComponent.tsx
+ * @Date        : 2022-05-16
+ * @author      : 김지인
+ * @description : 공지사항 목록 화면 컴포넌트
+ */
+
 
 export default function NoticeComponent() {
 
     let dispatch = useTokenDispatch();
     const state = useTokenState();
-    const auth = sessionStorage.getItem("auth");
+    const auth = state.auth;
 
     const [tableData, setTableData] = useState([]);
     const [contentType] = useState("application/json");
@@ -27,17 +36,18 @@ export default function NoticeComponent() {
     const [totalPages,setTotalPages] = useState(0);
     const [pageSize] = useState(7);
 
+    const [sort, setSort] = useState('sort=registDt,desc');
+
     let table_sub_data;
 
     useEffect(() => {
-        dispatch({ type: 'SET_PAGE', page: "notice"})
-
-        if(auth === AuthCode.superAdmin || auth === AuthCode.Admin){
-        procGetAxios('/user/notices?sort=registDt,desc'+"&page="+page+"&size="+pageSize, state.token, contentType, getTableData )
-      } else {
-        procGetAxios('/user/notices?sort=registDt,desc&search='+search+"&page="+page+"&size="+pageSize, state.token, contentType, getTableData )
-      }
-    }, [state.user, search, page, pageSize])
+        dispatch({ type: 'SET_PAGE', page: "notice", actTime: new Date().getTime().toString()})
+        if(auth === AuthCode.Admin || auth === AuthCode.Manager){
+            procGetAxios('/user/notices?'+ sort +"&page="+page+"&size="+pageSize, state.token, contentType, getTableData )
+        } else {
+            procGetAxios('/user/notices?' + sort + '&search='+search+"&page="+page+"&size="+pageSize, state.token, contentType, getTableData )
+        }
+    }, [contentType, auth, pageSize, state.token, state.user, search, page, sort])
 
 
     function getTableData(data){
@@ -58,11 +68,9 @@ export default function NoticeComponent() {
   }
   function viewCount(view, id){
     let postData ={
-      rdcnt : parseInt(view) +1
+      rdcnt : view +1
     }
-    procPostAxios('/user/notice/'+id, state.token, contentType, postData, op, error)
-  
-    console.log(postData)
+    procPostAxios('/user/notice/'+id, state.token, contentType, postData, op, error)  
   }
   function op(){
     console.log('성공')
@@ -75,27 +83,25 @@ export default function NoticeComponent() {
     const columns = useMemo( () => [
         {
           Header: '번호',
-          id: 'index',
-          accessor: (_row: any, i : number) => i + 1
+          accessor: (_row: any, i : number) => (i + 1 ) + (page *pageSize) 
         },
         {
-            Header: '카테고리',
-            accessor:'ctgrycd'
+            Header: <SortButtonComponent sort={sort} setSort={setSort} sortData={'sort=ttl'} btnName='제목'/>, id: 'ttl',
+            accessor : a => <Link  to={ContextPath(API_DOMAIN_PATH.noticeDetail)+`/${a.id}`} onClick={ () => viewCount(a.rdcnt, a.id) } >{a.ttl.length < 50 ? a.ttl : a.ttl.slice(0, 50) + '...'}</Link>
         },
         {
-          Header: '제목', id: 'ttl',
-          accessor : a => <Link  to={ContextPath(API_DOMAIN_PATH.noticeDetail)+`/${a.id}`} onClick={ () => viewCount(a.rdcnt, a.id) } >{a.ttl}</Link>
-
+          Header : <SortButtonComponent sort={sort} setSort={setSort} sortData={'sort=ctgrycd'} btnName='카테고리'/>, id: 'category',
+          accessor:'ctgrycd'
         },
         {
-            Header : '등록일', id : 'registDt',
-            accessor: a => <Fragment>{moment(a.registDt).format("YYYY.MM.DD")}</Fragment>
+          Header: <SortButtonComponent sort={sort} setSort={setSort} sortData={'sort=registDt'} btnName='등록일'/>, id: 'registDt',
+          accessor: a => <Fragment>{moment(a.registDt).format("YYYY.MM.DD")}</Fragment>
         },
         {
-            Header: '조회수', 
-            accessor: 'rdcnt'
-          },        
-    ], [])
+          Header: <SortButtonComponent sort={sort} setSort={setSort} sortData={'sort=rdcnt'} btnName='조회수'/>, id: 'rdcnt',
+          accessor: 'rdcnt'
+        }        
+    ], [page, sort])
 
   
 
@@ -114,14 +120,14 @@ export default function NoticeComponent() {
           <div className="card mt-3">
             <div className="card-body pb-0">
 
-              {(auth === AuthCode.superAdmin || auth === AuthCode.Admin) 
+              {(auth === AuthCode.Admin)
               ?
               <div className="text-end mb-2">
                   <ButtonComponent url={ContextPath(API_DOMAIN_PATH.newNotice)} btnName={'신규 등록'} btnClassName={"btn btn-primary btn-xs"}/>
               </div>
               : <></>}
               
-              <TableComponent data={tableData} columns={columns}/>
+              <TableComponent2 data={tableData} columns={columns}/>
               <div className="d-flex justify-content-center">
                 <PagingComponent page={page} setPage={setPage} totalPages={totalPages} />
               </div>  

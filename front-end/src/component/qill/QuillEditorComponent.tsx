@@ -5,7 +5,7 @@ import "quill-mention";
 import "quill-mention/dist/quill.mention.css";
 import { procGetAxios } from "axios/Axios";
 import { useTokenState } from "utils/TokenContext";
-import { CodeDetail } from "utils/AdminCode";
+import { AuthCode, CodeDetail } from "utils/AdminCode";
 
 
 
@@ -23,32 +23,45 @@ const QuillEditorComponent = memo(({ quillRef, content, setContent, imageHandler
 
   const [contentType] = useState("application/json");
   const state = useTokenState();  
-  const [data, setData] = useState([])
   const [totalData, setTotalData] = useState()
+  const auth = state.auth;
+
     let test = [];
 
     let sub_data;
     
   useEffect( () => {
-    procGetAxios("/user/members?page=0&size=999", state.token, contentType, getData) 
+    if( auth === AuthCode.Admin || auth === AuthCode.Manager) {
+      procGetAxios("/user/members/mention", state.token, contentType, getData) 
+    } else {
+      procGetAxios("/user/members/mention/"+state.user, state.token, contentType, getData) 
+    }
   }, [totalData])
     
   function getData(data){
-    setTotalData(data.totalElements)
-    sub_data = data.content
-      // test = data.content.map( (i) =>  {return { value: i.username, id: i.userId }} );
-    procGetAxios("admin/group/"+CodeDetail.sysCd+"/details",state.token,"application.json", sysAdminCode)
+    sub_data = data
+    setTotalData(data.totalElements)  
+    procGetAxios("admin/group/"+CodeDetail.sysCd+"/details_list",state.token,"application.json", sysAdminCode)
 
   }
   function sysAdminCode(data){
     sub_data.forEach(tab => {
-        data.content.forEach(e => {
-            if(tab.agencyCode===e.cdId){
-                tab.agencyCode = e.name;
-            }
-        })
-    })
-    test = sub_data.map( (i) =>  {return { value: i.username+`(${i.agencyCode}/${i.departmentName})` , id: i.userId, departmentName : i.departmentName, agencyCode : i.agencyCode, email : i.email  }} );
+      data.forEach(e => {
+          if(tab.psitn_instt_cd===e.cdId){
+              tab.psitn_instt_cd = e.name;
+          }
+      })
+  })
+
+  test = sub_data.map( (i) =>  {
+    return { 
+      value: i.nm+`(${i.psitn_instt_cd}/${i.psitn_dept_nm})` , 
+      id: i.user_id, 
+      departmentName : i.psitn_dept_nm, 
+      agencyCode : i.psitn_instt_cd, 
+      email : i.email_addr  
+    }
+  } ); 
 }
   const modules = useMemo(
       () => ({
@@ -60,9 +73,7 @@ const QuillEditorComponent = memo(({ quillRef, content, setContent, imageHandler
                       { list: "ordered" },
                       { list: "bullet" },
                       { align: [] },
-                  ],
-                  ['image'],
-                
+                  ],                
               ],
               handlers: {
                 image: imageHandler,
@@ -72,7 +83,6 @@ const QuillEditorComponent = memo(({ quillRef, content, setContent, imageHandler
             allowedChars : /^[가-힣a-zA-Z]*$/,
             mentionDenotationChars: ["@"],            
             linkTarget: '_self',
-//            fixMentionsToQuill : true,
             positioningStrategy : 'fixed',
 
             source: function(searchTerm, renderItem, mentionChar) {
@@ -97,7 +107,6 @@ const QuillEditorComponent = memo(({ quillRef, content, setContent, imageHandler
   return (
       <>
           <ReactQuill
-            //  ref={quillRef}
               ref={(element) => {
                   if (element !== null) {
                       quillRef.current = element;
@@ -107,7 +116,7 @@ const QuillEditorComponent = memo(({ quillRef, content, setContent, imageHandler
               onChange={setContent}
               modules={modules}
               theme="snow"
-              style={{height: '85%', marginBottom: '1%'}} // style    
+              style={{height: '85%', marginBottom: '1%'}}
           />
       </>
   )

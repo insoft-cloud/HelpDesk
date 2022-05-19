@@ -59,7 +59,7 @@ public class Notice {
 
     @Column(name = "RDCNT")
     @Comment("조회수")
-    private String rdcnt;
+    private int rdcnt;
 
     @Column(name = "DEL_YN", length = 1, nullable = false)
     @Comment("삭제여부(Y,N)")
@@ -88,7 +88,7 @@ public class Notice {
         this.cnts = notice.cnts == null ? this.cnts : notice.cnts;
         this.delYn = notice.delYn == null ? this.delYn : notice.delYn;
         this.ntcregistyn = notice.ntcregistyn == null ? this.ntcregistyn : notice.ntcregistyn;
-        this.rdcnt = notice.rdcnt == null ? this.rdcnt : notice.rdcnt;
+        this.rdcnt = notice.rdcnt < 0 ? this.rdcnt : notice.rdcnt;
         return this;
     }
 

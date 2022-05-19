@@ -4,10 +4,7 @@ import com.insoft.helpdesk.application.biz.notice.port.in.NoticeAttachmentInPort
 import com.insoft.helpdesk.application.biz.notice.port.out.NoticeAttachmentOutPort;
 import com.insoft.helpdesk.application.domain.jpa.entity.notice.Notice;
 import com.insoft.helpdesk.application.domain.jpa.entity.notice.NoticeAttachment;
-import com.insoft.helpdesk.application.domain.jpa.entity.service.RequestAttachmentHistory;
-import com.insoft.helpdesk.application.domain.jpa.entity.service.RequestHistory;
 import com.insoft.helpdesk.application.domain.jpa.repo.notice.NoticeAttachmentRepo;
-import com.insoft.helpdesk.application.domain.jpa.repo.service.RequestAttachmentHistoryRepo;
 import com.insoft.helpdesk.util.content.HelpDeskSearchExecutor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -28,7 +25,7 @@ public class NoticeAttachmentService implements NoticeAttachmentInPort {
 
     @Override
     public Page<NoticeAttachment> getNoticeAttachments(String ntcNo, Map<String, String> keyParams, Map<String, String> searchParams, Pageable pageable) {
-        return noticeAttachmentOutPort.getNoticeAttachments(noticeAttachmentRepo.findAll(helpDeskSearchExecutor.Search(searchParams,keyParams, Notice.class, ntcNo, "ntcNo", "id"),pageable));
+        return noticeAttachmentOutPort.getNoticeAttachments(noticeAttachmentRepo.findAll(helpDeskSearchExecutor.search(searchParams,keyParams, Notice.class, ntcNo, "ntcNo", "id"),pageable));
     }
 
     @Override

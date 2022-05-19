@@ -3,7 +3,6 @@ package com.insoft.helpdesk.application.biz.service.service;
 import com.insoft.helpdesk.application.biz.service.port.in.RequestHistoryInPort;
 import com.insoft.helpdesk.application.biz.service.port.out.RequestHistoryOutPort;
 import com.insoft.helpdesk.application.domain.jpa.entity.service.Request;
-import com.insoft.helpdesk.application.domain.jpa.entity.service.RequestCharge;
 import com.insoft.helpdesk.application.domain.jpa.entity.service.RequestHistory;
 import com.insoft.helpdesk.application.domain.jpa.repo.service.RequestHistoryRepo;
 import com.insoft.helpdesk.util.content.HelpDeskSearchExecutor;
@@ -13,7 +12,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -30,22 +28,22 @@ public class RequestHistoryService implements RequestHistoryInPort {
 
     @Override
     public Page<RequestHistory> getRequestHistories(Map<String,String> keyParams, Map<String,String> searchParams, Pageable pageable) {
-        return requestHistoryOutPort.getRequestHistories(requestHistoryRepo.findAll(helpDeskSearchExecutor.Search(searchParams, keyParams), pageable));
+        return requestHistoryOutPort.getRequestHistories(requestHistoryRepo.findAll(helpDeskSearchExecutor.search(searchParams, keyParams), pageable));
     }
 
     @Override
     public Long getRequestsCount(Map<String,String> keyParams, Map<String,String> searchParams) {
-        return requestHistoryOutPort.getRequestsCount(requestHistoryRepo.count(helpDeskSearchExecutor.Search(searchParams, keyParams)));
+        return requestHistoryOutPort.getRequestsCount(requestHistoryRepo.count(helpDeskSearchExecutor.search(searchParams, keyParams)));
     }
 
     @Override
     public Long getRequestsCount(String requestId, Map<String, String> keyParams, Map<String, String> searchParams) {
-        return requestHistoryOutPort.getRequestsCount(requestHistoryRepo.count(helpDeskSearchExecutor.Search(searchParams, keyParams, Request.class, requestId, "svcReqNo", "id")));
+        return requestHistoryOutPort.getRequestsCount(requestHistoryRepo.count(helpDeskSearchExecutor.search(searchParams, keyParams, Request.class, requestId, "svcReqNo", "id")));
     }
 
     @Override
     public Page<RequestHistory> getRequestHistories(String requestId, Map<String,String> keyParams, Map<String,String> searchParams,  Pageable pageable) {
-        return requestHistoryOutPort.getRequestHistories(requestHistoryRepo.findAll(helpDeskSearchExecutor.Search(searchParams, keyParams, Request.class, requestId, "svcReqNo", "id"),pageable));
+        return requestHistoryOutPort.getRequestHistories(requestHistoryRepo.findAll(helpDeskSearchExecutor.search(searchParams, keyParams, Request.class, requestId, "svcReqNo", "id"),pageable));
     }
 
     @Override

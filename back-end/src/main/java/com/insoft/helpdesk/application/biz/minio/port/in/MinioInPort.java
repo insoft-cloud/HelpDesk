@@ -1,8 +1,5 @@
 package com.insoft.helpdesk.application.biz.minio.port.in;
 
-import io.minio.ObjectWriteResponse;
-import io.minio.Result;
-import io.minio.messages.Item;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;

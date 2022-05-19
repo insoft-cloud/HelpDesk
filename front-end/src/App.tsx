@@ -24,10 +24,12 @@ import NoticeDetailComponent from 'domain/notice/NoticeDetailComponent';
 import FindIdComponent from 'domain/sign/FindIdComponent';
 import FindPwComponent from 'domain/sign/FindPwComponent';
 import ErrorPageComponent from 'domain/error/ErrorPageComponent';
+import ResetPwComponent from 'domain/sign/ResetPwComponent';
 
 function App() {
 
     const state = useTokenState();
+    const refreshToken = localStorage.getItem('refreshToken') ?? false
 
     return (
         <BrowserRouter>
@@ -35,11 +37,12 @@ function App() {
                 state.page === "LOGIN" ? null : <HeaderComponent/>
             }
             <Routes>
-                <Route path={ContextPath(API_DOMAIN_PATH.main)} element={<HomeComponent/>}/>
+                <Route path={ContextPath(API_DOMAIN_PATH.main)} element={!refreshToken ? <HomeComponent/> : <PrivateRoute component={HomeComponent} status={state}/>}/>
                     <Route path={ContextPath(API_LOGIN.singIn)} element={<SignInComponent prePath={window.location.pathname} />}/>
                     <Route path={ContextPath(API_LOGIN.singUp)} element={<SignUpComponent/>}/>
                     <Route path={ContextPath(API_LOGIN.findId)} element={<FindIdComponent/>}/>
                     <Route path={ContextPath(API_LOGIN.findPw)} element={<FindPwComponent/>}/>
+                    <Route path={ContextPath(API_LOGIN.resetPw)} element={<ResetPwComponent />} />
                     <Route path={ContextPath(API_DOMAIN_PATH.serviceAll)} element={<PrivateRoute component={ServiceAllComponent} status={state}/>}/>
                     <Route path={ContextPath(API_DOMAIN_PATH.myWork)} element={<PrivateRoute component={MyWorkComponent} status={state}/>}/>
                     <Route path={ContextPath(API_DOMAIN_PATH.myRequest)} element={<PrivateRoute component={MyRequestComponent} status={state}/>}/>

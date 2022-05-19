@@ -1,0 +1,41 @@
+
+/* th :nth-child(2) {
+    width: 5%;         
+ } */
+
+#tableComponent2 table{
+    width: 100%;
+    align-content: center;
+    align-items: center;
+}
+#tableComponent2 tr, td {
+    font-size: medium;
+    align-content: center;
+    align-items: center;
+    text-align: center;
+    vertical-align:middle;
+    
+}
+#tableComponent2 th:nth-child(1) {
+ }
+#tableComponent2 th:nth-child(2) {
+    width: 50%;
+ }
+#tableComponent2 th:nth-child(3) {
+   width: 25%;
+}
+#tableComponent2 th:nth-child(4) {
+    width: 10%;
+}
+#tableComponent2 th:nth-child(5) {
+    width: 15%;
+}
+#tableComponent2 th:nth-child(6) {
+    width: 5%;
+}
+#tableComponent2 th:nth-child(7) {
+     width: 5%;
+}
+/* td :nth-child(3) {
+    width: 50%;        
+ } */

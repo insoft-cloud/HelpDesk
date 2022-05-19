@@ -23,20 +23,20 @@ import java.util.Optional;
 @HelpDeskRestController
 public class UmsController {
     @Autowired
-    private UmsClient umsClient;
+    private transient UmsClient umsClient;
     @Autowired
-    private TransmissionService transmissionService;
+    private transient TransmissionService transmissionService;
     @Autowired
-    private MemberService memberService;
+    private transient MemberService memberService;
 
     @Tag(name = "UMS")
     @Operation(summary  = "SMS 전송", description  = "SMS 전송")
-    @PostMapping(value = "/sms/sendSms")
+    @PostMapping("/sms/sendSms")
     public void send(HttpServletResponse response, @RequestBody SmsInfo smsInfo) {
-        try {
+        try(PrintWriter printWriter = response.getWriter()) {
             String contents = null;
-            String stats_kr = smsInfo.getStats().equals("hold") ? "보류"
-                    : smsInfo.getStats().equals("complete") ? "완료"
+            String statsKr = "hold".equals(smsInfo.getStats()) ? "보류"
+                    : "complete".equals(smsInfo.getStats()) ? "완료"
                     : "";
 
             switch(smsInfo.getSmsType()) {
@@ -50,19 +50,21 @@ public class UmsController {
                     }
                     break;
                 case "stats" :
-                    if(!"".equals(smsInfo.getReqTyCd()) && !"".equals(smsInfo.getReqTitle()) && !"".equals(stats_kr)) {
-                        contents = MessageFormat.format("요청 서비스 [{0}] {1}\n요청 서비스의 처리가 {2}되었습니다.\n자세한 내용은 Help Desk를 확인해주세요.", smsInfo.getReqTyCd(), smsInfo.getReqTitle(), stats_kr);
+                    if(!"".equals(smsInfo.getReqTyCd()) && !"".equals(smsInfo.getReqTitle()) && !"".equals(statsKr)) {
+                        contents = MessageFormat.format("요청 서비스 [{0}] {1}\n요청 서비스의 처리가 {2}되었습니다.\n자세한 내용은 Help Desk를 확인해주세요.", smsInfo.getReqTyCd(), smsInfo.getReqTitle(), statsKr);
                     }
+                    break;
+                default :
             }
 
-            PrintWriter printWriter = response.getWriter();
+
             for(String id : smsInfo.getIdList()) {
                 Optional<Member> member = memberService.getMember(id);
                 String phone = member.get().getPhoneNumber();
-                if(member.get().getSmsRcptYN().equals("Y")){
+                if("Y".equals(member.get().getSmsRcptYN())){
                     UmsResponse result = umsClient.send(phone, "[중소벤처24 헬프데스크]", contents);
                     String status = result.isSuccess() ? "SUCCESS" : "FAIL";
-                    if(status.equals("SUCCESS")) {
+                    if("SUCCESS".equals(status)) {
                         Transmission transmission = new Transmission();
                         transmission.setRecvId(member.get().getUserId());
                         transmission.setTtl(smsInfo.getReqTitle());
@@ -76,16 +78,16 @@ public class UmsController {
 
             }
             printWriter.flush();
-            printWriter.close();
+//            printWriter.close();
         }
         catch (Exception ex) {
             ex.printStackTrace();
             String message = ex.getMessage();
-            try {
-                PrintWriter printWriter = response.getWriter();
+            try(PrintWriter printWriter = response.getWriter()) {
+
                 printWriter.println("<html><head><title>FAIL!</title></head><body><h1>" + message + "</h1></body></html>");
                 printWriter.flush();
-                printWriter.close();
+//                printWriter.close();
             }
             catch (Exception exx) {
                 exx.printStackTrace();

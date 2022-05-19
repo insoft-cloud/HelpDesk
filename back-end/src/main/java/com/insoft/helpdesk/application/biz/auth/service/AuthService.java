@@ -25,7 +25,7 @@ public class AuthService implements AuthInPort {
 
     @Override
     public Page<Auth> getAuths(Map keyParams, Map searchParams, Pageable pageable) {
-        return authOutPort.getAuths(authRepo.findAll(helpDeskSearchExecutor.Search(searchParams,keyParams), pageable));
+        return authOutPort.getAuths(authRepo.findAll(helpDeskSearchExecutor.search(searchParams,keyParams), pageable));
     }
 
     @Override

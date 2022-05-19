@@ -17,7 +17,6 @@ public class TransmissionService implements TransmissionInPort {
 
     final TransmissionRepo transmissionRepo;
     final TransmissionOutPort transmissionOutPort;
-    final
 
     @Override
     public Page<Transmission> getTransmissions(String recvId, Pageable pageable) {

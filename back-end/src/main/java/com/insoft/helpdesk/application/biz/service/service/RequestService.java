@@ -32,15 +32,23 @@ public class RequestService implements RequestInPort {
 
     final RequestOutPort requestOutPort;
 
+    private static final String SELECT_QUERY = "SELECT new Request(A.id, A.reqId, A.tyCd, A.priortCd, A.sysCd, A.chrgprNm, A.reqNm, A.prcsSttsCd, A.evl, A.ttl, A.cnts, A.registDt, A.updateDt, A.goalDt) FROM ";
+    private static final String ORDER_BY = " ORDER BY ";
+    private static final String AND = " AND ";
+    private static final String A_registDt_Between = "A.registDt between ";
+    private static final String AND_BRACKET = "and ( ";
+    private static final String PERCENT_OR = "%' or ";
+    private static final String LIKE_PERCENT = " like '%";
+
     @Override
     public Page<Request> getRequests(Map<String,String> keyParams, Map<String,String> searchParams, Pageable pageable) {
-        return requestOutPort.getRequests(requestRepo.findAll(helpDeskSearchExecutor.Search(searchParams,keyParams), pageable));
+        return requestOutPort.getRequests(requestRepo.findAll(helpDeskSearchExecutor.search(searchParams,keyParams), pageable));
     }
 
     @Override
     public  Page<Request> getRequestsDate(String userId, String all, String startTime, String endTime, Map<String,String> searchParams, Pageable pageable){
         StringBuffer stringBuffer = new StringBuffer();
-        stringBuffer.append("SELECT new Request(A.id, A.reqId, A.tyCd, A.priortCd, A.sysCd, A.chrgprNm, A.reqNm, A.prcsSttsCd, A.evl, A.ttl, A.cnts, A.delYn, A.registDt, A.updateDt, A.goalDt) FROM ");
+        stringBuffer.append(SELECT_QUERY);
         if(all != null && all.equals("Y")){
             stringBuffer.append("Request as A where A.sysCd = ");
             stringBuffer.append("(select B.agencyCode FROM Member as B WHERE B.userId = '");
@@ -50,21 +58,21 @@ public class RequestService implements RequestInPort {
             stringBuffer.append("Request as A ");
             stringBuffer.append("where (");
         }
-        if(searchParams != null && searchParams.size()>0){
-            for (String key:searchParams.keySet()) {
-                stringBuffer.append("A."+ key + " like '%"+searchParams.get(key)+"%' or ");
+        if(searchParams != null && !searchParams.isEmpty()){
+            for (Map.Entry<String, String> key : searchParams.entrySet()) {
+                stringBuffer.append("A."+ key.getKey() + LIKE_PERCENT+searchParams.get(key.getKey())+PERCENT_OR);
             }
             stringBuffer.delete(stringBuffer.length()-4, stringBuffer.length());
             stringBuffer.append(")");
-            stringBuffer.append("and ( ");
+            stringBuffer.append(AND_BRACKET);
         }
-        stringBuffer.append("A.registDt between ");
+        stringBuffer.append(A_registDt_Between);
         stringBuffer.append("'"+startTime+"'");
-        stringBuffer.append(" and ");
+        stringBuffer.append(AND);
         stringBuffer.append("'"+endTime+"'");
         stringBuffer.append(" )");
         if(pageable.getSort().isSorted()){
-            stringBuffer.append(" ORDER BY ");
+            stringBuffer.append(ORDER_BY);
             pageable.getSort().stream().forEach(sort -> {
                 stringBuffer.append("A."+sort.getProperty()+ " " + sort.getDirection());
             });
@@ -82,7 +90,7 @@ public class RequestService implements RequestInPort {
     @Override
     public  Page<Request> getRequestPrcsSttsCd(String userId, String prcsSttsCd, String all, String startTime, String endTime, Map<String,String> searchParams, Pageable pageable){
         StringBuffer stringBuffer = new StringBuffer();
-        stringBuffer.append("SELECT new Request(A.id, A.reqId, A.tyCd, A.priortCd, A.sysCd, A.chrgprNm, A.reqNm, A.prcsSttsCd, A.evl, A.ttl, A.cnts, A.delYn, A.registDt, A.updateDt, A.goalDt) FROM ");
+        stringBuffer.append(SELECT_QUERY);
         if(all != null && all.equals("Y")){
             stringBuffer.append("Request as A where A.sysCd = ");
             stringBuffer.append("(select B.agencyCode FROM Member as B WHERE B.userId = '");
@@ -93,23 +101,23 @@ public class RequestService implements RequestInPort {
             stringBuffer.append("where ");
         }
         stringBuffer.append("A.prcsSttsCd ");
-        stringBuffer.append(" like '%"+prcsSttsCd+"%'");
-        if(searchParams != null && searchParams.size()>0){
+        stringBuffer.append(LIKE_PERCENT+prcsSttsCd+"%'");
+        if(searchParams != null && !searchParams.isEmpty()){
             stringBuffer.append(" AND (");
-            for (String key:searchParams.keySet()) {
-                stringBuffer.append("A."+ key + " like '%"+searchParams.get(key)+"%' or ");
+            for (Map.Entry<String, String> key : searchParams.entrySet()) {
+                stringBuffer.append("A."+ key.getKey() + LIKE_PERCENT+searchParams.get(key.getKey())+PERCENT_OR);
             }
             stringBuffer.delete(stringBuffer.length()-4, stringBuffer.length());
             stringBuffer.append(")");
         }
-        stringBuffer.append("and ( ");
-        stringBuffer.append("A.registDt between ");
+        stringBuffer.append(AND_BRACKET);
+        stringBuffer.append(A_registDt_Between);
         stringBuffer.append("'"+startTime+"'");
-        stringBuffer.append(" and ");
+        stringBuffer.append(AND);
         stringBuffer.append("'"+endTime+"'");
         stringBuffer.append(" )");
         if(pageable.getSort().isSorted()){
-            stringBuffer.append(" ORDER BY ");
+            stringBuffer.append(ORDER_BY);
             pageable.getSort().stream().forEach(sort -> {
                 stringBuffer.append("A."+sort.getProperty()+ " " + sort.getDirection());
             });
@@ -121,34 +129,34 @@ public class RequestService implements RequestInPort {
     };
 
     @Override
-    public  Page<Request> getRequestUserId(String userId, ArrayList<String> prcsSttsCdList, Pageable pageable) {
+    public  Page<Request> getRequestUserId(String userId, List<String> prcsSttsCdList, Pageable pageable) {
         return requestOutPort.getRequestUserId(requestRepo.findByReqIdAndPrcsSttsCdInOrderByRegistDtDesc(userId, prcsSttsCdList, pageable));
     }
 
     @Override
     public  Page<Request> getRequestUserId(String userId, String startTime, String endTime, Map<String,String> searchParams, Pageable pageable){
         StringBuffer stringBuffer = new StringBuffer();
-        stringBuffer.append("SELECT new Request(A.id, A.reqId, A.tyCd, A.priortCd, A.sysCd, A.chrgprNm, A.reqNm, A.prcsSttsCd, A.evl, A.ttl, A.cnts, A.delYn, A.registDt, A.updateDt, A.goalDt) FROM ");
+        stringBuffer.append(SELECT_QUERY);
         stringBuffer.append("Request as A ");
         stringBuffer.append("where ");
         stringBuffer.append("A.reqId = '");
         stringBuffer.append(userId+"'");
-        if(searchParams != null && searchParams.size()>0){
+        if(searchParams != null && !searchParams.isEmpty()){
             stringBuffer.append(" AND (");
-            for (String key:searchParams.keySet()) {
-                stringBuffer.append("A."+ key + " like '%"+searchParams.get(key)+"%' or ");
+            for (Map.Entry<String, String> key : searchParams.entrySet()) {
+                stringBuffer.append("A."+ key.getKey() + LIKE_PERCENT+searchParams.get(key.getKey())+PERCENT_OR);
             }
             stringBuffer.delete(stringBuffer.length()-4, stringBuffer.length());
             stringBuffer.append(")");
         }
-        stringBuffer.append("and ( ");
-        stringBuffer.append("A.registDt between ");
+        stringBuffer.append(AND_BRACKET);
+        stringBuffer.append(A_registDt_Between);
         stringBuffer.append("'"+startTime+"'");
-        stringBuffer.append(" and ");
+        stringBuffer.append(AND);
         stringBuffer.append("'"+endTime+"'");
         stringBuffer.append(" )");
         if(pageable.getSort().isSorted()){
-            stringBuffer.append(" ORDER BY ");
+            stringBuffer.append(ORDER_BY);
             pageable.getSort().stream().forEach(sort -> {
                 stringBuffer.append("A."+sort.getProperty()+ " " + sort.getDirection());
             });
@@ -162,28 +170,28 @@ public class RequestService implements RequestInPort {
     @Override
     public Page<Request> getRequestChargeUserId(String userId, String startTime, String endTime, Map<String, String> searchParams, Pageable pageable) {
         StringBuffer stringBuffer = new StringBuffer();
-        stringBuffer.append("SELECT new Request(A.id, A.reqId, A.tyCd, A.priortCd, A.sysCd, A.chrgprNm, A.reqNm, A.prcsSttsCd, A.evl, A.ttl, A.cnts, A.delYn, A.registDt, A.updateDt, A.goalDt) FROM ");
+        stringBuffer.append(SELECT_QUERY);
         stringBuffer.append("Request as A JOIN RequestCharge as B on A.id = B.svcReqNo ");
         stringBuffer.append("where ");
         stringBuffer.append("B.userId = '");
         stringBuffer.append(userId+"'");
         stringBuffer.append(" and B.delYn = 'N' ");
-        if(searchParams != null && searchParams.size()>0){
+        if(searchParams != null && !searchParams.isEmpty()){
             stringBuffer.append(" AND (");
-            for (String key:searchParams.keySet()) {
-                stringBuffer.append("A."+ key + " like '%"+searchParams.get(key)+"%' or ");
+            for (Map.Entry<String, String> key : searchParams.entrySet()) {
+                stringBuffer.append("A."+ key.getKey() + LIKE_PERCENT+searchParams.get(key.getKey())+PERCENT_OR);
             }
             stringBuffer.delete(stringBuffer.length()-4, stringBuffer.length());
             stringBuffer.append(")");
         }
-        stringBuffer.append("and ( ");
-        stringBuffer.append("A.registDt between ");
+        stringBuffer.append(AND_BRACKET);
+        stringBuffer.append(A_registDt_Between);
         stringBuffer.append("'"+startTime+"'");
-        stringBuffer.append(" and ");
+        stringBuffer.append(AND);
         stringBuffer.append("'"+endTime+"'");
         stringBuffer.append(" )");
         if(pageable.getSort().isSorted()){
-            stringBuffer.append(" ORDER BY ");
+            stringBuffer.append(ORDER_BY);
             pageable.getSort().stream().forEach(sort -> {
                 stringBuffer.append("A."+sort.getProperty()+ " " + sort.getDirection());
             });

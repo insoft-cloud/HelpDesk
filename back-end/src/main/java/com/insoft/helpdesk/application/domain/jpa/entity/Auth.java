@@ -38,7 +38,7 @@ public class Auth {
     private String name;
 
     @Column(name = "AUTH_CD", length = 256, nullable = false)
-    @Comment("권한명")
+    @Comment("권한코드")
     @Size(max = 256)
     private String cdId;
 

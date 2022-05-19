@@ -1,13 +1,9 @@
 package com.insoft.helpdesk.application.adapter.out.db.code;
 
 import com.insoft.helpdesk.application.biz.code.port.out.CodeDetailOutPort;
-import com.insoft.helpdesk.application.domain.entity.code.CodeDetailList;
 import com.insoft.helpdesk.application.domain.jpa.entity.code.Detail;
-import com.insoft.helpdesk.application.domain.jpa.entity.code.Group;
-import com.insoft.helpdesk.application.domain.jpa.repo.code.DetailRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +16,11 @@ public class CodeDetailAdapter implements CodeDetailOutPort {
 
     @Override
     public Page<Detail> getDetails(Page<Detail> details) {
+        return details;
+    }
+
+    @Override
+    public List<Detail> getDetailsList(List<Detail> details) {
         return details;
     }
 

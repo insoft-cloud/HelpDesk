@@ -27,7 +27,7 @@ function ManagerModalComponent({open, close, header,modalSize}){
     const checkedArray: number[] = [];
     let key = '{"agencyCode":"'+chkValue+'"}';
     useEffect(()=>{
-        dispatch({ type: 'SET_PAGE', page: "codeGroup"})
+        dispatch({ type: 'SET_PAGE', page: "codeGroup", actTime: new Date().getTime().toString() })
         getData()
     },[state.token,chkValue,page]);
 

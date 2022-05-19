@@ -9,7 +9,8 @@ export const API_LOGIN = {
     singIn : "/signIn",
     singUp : "/singUp",
     findId : "/findId",
-    findPw : "/findPw"
+    findPw : "/findPw",
+    resetPw : "/resetPw"
 }
 
 export const API_MYPAGE = {

@@ -26,7 +26,7 @@ public class NoticeService implements NoticeInPort {
 
     @Override
     public Page<Notice> getNotices(Map<String,String>keyParams, Map<String, String> searchParams, Pageable pageable){
-        return noticeOutPort.getNotices(noticeRepo.findAll(helpDeskSearchExecutor.Search(searchParams, keyParams), pageable));
+        return noticeOutPort.getNotices(noticeRepo.findAll(helpDeskSearchExecutor.search(searchParams, keyParams), pageable));
     }
 
     @Override

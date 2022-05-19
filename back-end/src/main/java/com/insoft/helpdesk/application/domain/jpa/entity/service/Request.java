@@ -23,7 +23,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @DynamicUpdate
-@Where(clause = "del_yn='N'")
 public class Request {
 
     @Id
@@ -39,7 +38,7 @@ public class Request {
     @Size(max = 32)
     private String reqId;
 
-    @Column(name = "TY_CD", length = 16)
+    @Column(name = "TY_CD", length = 16, nullable = false)
     @Comment("유형 코드")
     @Size(max = 16)
     private String tyCd;
@@ -49,7 +48,7 @@ public class Request {
     @Size(max = 16)
     private String priortCd;
 
-    @Column(name = "SYS_CD", length = 16, nullable = false)
+    @Column(name = "SYS_DVSN_CD", length = 16, nullable = false)
     @Comment("시스템 코드")
     @Size(max = 16)
     private String sysCd;
@@ -64,7 +63,7 @@ public class Request {
     @Size(max = 16)
     private String reqNm;
 
-    @Column(name = "PRCS_STTS_CD", length = 16)
+    @Column(name = "PROCS_STTS_CD", length = 16)
     @Comment("처리상태코드")
     @Size(max = 16)
     private String prcsSttsCd;
@@ -82,11 +81,6 @@ public class Request {
     @Column(name = "CNTS", nullable = false, columnDefinition = "text")
     @Comment("내용")
     private String cnts;
-
-    @Column(name = "DEL_YN", length = 1, nullable = false)
-    @Comment("삭제여부")
-    @Convert(converter = HelpDeskYNConverter.class)
-    private Boolean delYn;
 
     @Column(name = "REGIST_DT", nullable = false)
     @Comment("등록일시")
@@ -111,7 +105,6 @@ public class Request {
         this.chrgprNm = request.chrgprNm == null ? this.chrgprNm : request.chrgprNm;
         this.ttl = request.ttl == null ? this.ttl : request.ttl;
         this.cnts = request.cnts == null ? this.cnts : request.cnts;
-        this.delYn = request.delYn == null ? this.delYn : request.delYn;
         this.goalDt = request.goalDt == null ? this.goalDt : request.goalDt;
         this.evl = request.evl == null ? this.evl : request.evl;
         return this;

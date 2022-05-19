@@ -1,7 +1,6 @@
 package com.insoft.helpdesk.application.biz.notice.port.in;
 
 import com.insoft.helpdesk.application.domain.jpa.entity.notice.NoticeAttachment;
-import com.insoft.helpdesk.application.domain.jpa.entity.service.RequestAttachmentHistory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

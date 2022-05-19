@@ -28,12 +28,12 @@ public class RequestAttachmentService implements RequestAttachmentInPort {
 
     @Override
     public Page<RequestAttachment> getRequestAttachments(Map<String,String> keyParams, Map<String,String> searchParams, Pageable pageable) {
-        return requestAttachmentOutPort.getRequestAttachments(requestAttachmentRepo.findAll(helpDeskSearchExecutor.Search(searchParams, keyParams), pageable));
+        return requestAttachmentOutPort.getRequestAttachments(requestAttachmentRepo.findAll(helpDeskSearchExecutor.search(searchParams, keyParams), pageable));
     }
 
     @Override
     public Page<RequestAttachment> getRequestAttachments(String reqId, Map<String,String> keyParams, Map<String,String> searchParams, Pageable pageable) {
-        return requestAttachmentOutPort.getRequestAttachments(requestAttachmentRepo.findAll(helpDeskSearchExecutor.Search(searchParams, keyParams, Request.class, reqId, "svcReqNo", "id"), pageable));
+        return requestAttachmentOutPort.getRequestAttachments(requestAttachmentRepo.findAll(helpDeskSearchExecutor.search(searchParams, keyParams, Request.class, reqId, "svcReqNo", "id"), pageable));
     }
 
     @Override
@@ -43,12 +43,12 @@ public class RequestAttachmentService implements RequestAttachmentInPort {
 
     @Override
     public Long countRequestAttachments(Map<String,String> keyParams, Map<String,String> searchParams) {
-        return requestAttachmentOutPort.countRequestAttachments(requestAttachmentRepo.count(helpDeskSearchExecutor.Search(searchParams, keyParams)));
+        return requestAttachmentOutPort.countRequestAttachments(requestAttachmentRepo.count(helpDeskSearchExecutor.search(searchParams, keyParams)));
     }
 
     @Override
     public Long countRequestAttachments(String reqId, Map<String,String> keyParams, Map<String,String> searchParams) {
-        return requestAttachmentOutPort.countRequestAttachments(requestAttachmentRepo.count(helpDeskSearchExecutor.Search(searchParams, keyParams, Request.class, reqId, "svcReqNo", "id")));
+        return requestAttachmentOutPort.countRequestAttachments(requestAttachmentRepo.count(helpDeskSearchExecutor.search(searchParams, keyParams, Request.class, reqId, "svcReqNo", "id")));
     }
 
     @Override

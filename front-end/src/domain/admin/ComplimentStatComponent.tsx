@@ -17,7 +17,7 @@ function ComplimentStatComponent() {
     const [contentType] = useState("application/json");
     const [year,setYear] = useState(moment().format('YYYY'));
     const [month,setMonth] = useState(moment().format('MM'));
-    const [chkArr,setChkArr] = useState<any[]>([]);
+    const [chkArr,setChkArr] = useState<any[]>(["start"]);
     const [selectDt,setSelectDt] = useState('');
     const [selType,setSelType] = useState('');
     const [selCount,setSelCount] = useState('');
@@ -26,20 +26,15 @@ function ComplimentStatComponent() {
     let sendData = {
         selDt : selectDt,
         selCnt : selCount,
-        selSys : selChk,
+        selSys : selChk.length===sysData.length?["전체"]:selChk,
         selChk : chkArr,
         selTy : selType
     }
     useEffect(() => {
-        dispatch({ type: 'SET_PAGE', page: "codeDetail" })
+        dispatch({ type: 'SET_PAGE', page: "codeDetail", actTime: new Date().getTime().toString() })
         getData();
-        // return () => {
-        //     // window.removeEventListener('beforeunload', alertUser)
-        // }
     }, [state.token,chkArr]);
-    useEffect(() => {
-        search();
-    }, [state.token]);
+
     //modal
     const openModal = () => {
         setIsModalOpen(true);
@@ -48,15 +43,19 @@ function ComplimentStatComponent() {
         setIsModalOpen(false);
     }
     function setting(date, type, cnt) {
+        if(date==="합계"){
+            date = year+"/"+month+"/~";
+            if(Number(moment().month()+1)===Number(month)){
+                date += moment().date();
+            }else{
+                date += new Date(Number(year),Number(month),0).getDate();
+            }
+        }
         setSelectDt(date);
         setSelType(type);
         setSelCount(cnt);
         openModal();
     }
-    // const alertUser = e => {
-    //     e.preventDefault();
-    //     e.returnValue = "새로고침"
-    // }
     function getData() {
         procGetAxios("/admin/group/SYS/details/count",state.token,"application.json",getSys);
     }
@@ -84,6 +83,7 @@ function ComplimentStatComponent() {
     }
     function setSys(data){
         setSysData(data.content);
+
     }
     function yearRender() {
         const result : any[] = [];
@@ -142,7 +142,7 @@ function ComplimentStatComponent() {
                 setMonth(m);
             }
 
-    },[year,month])
+    },[month])
     function search() {
         let dayForm = year+"/"+month+"/";
         let lastDay = new Date(Number(year),Number(month),0).getDate();
@@ -184,7 +184,7 @@ function ComplimentStatComponent() {
                 Header: "일별 소계",
                 accessor: a => <button className="fr btn btn-xs btn-link small underline" onClick={() => { setting(a.regist,"cnt",a.cnt) }} >{a.cnt}</button>
             }
-        ], [])
+        ], [setting])
     const testKey = useMemo(
         () => [
             {label: "날짜",key: "regist"},
@@ -253,7 +253,7 @@ function ComplimentStatComponent() {
                             {tableData.length>0?
                                 <div>
                                     <h5>{year}년 {month}월 01일 ~ {year}년 {month}월 {Number(moment().month()+1)===Number(month)?moment().date():new Date(Number(year),Number(month),0).getDate()}일</h5>
-                                    <BarChart count={tableData.filter((e,i)=> i!=tableData.length).map(a => a.cnt)} labels={tableData.filter((e,i)=> i!=tableData.length-1).map(a => a.regist)}/>
+                                    <BarChart count={tableData.filter((e,i)=> i!==tableData.length).map(a => a.cnt)} labels={tableData.filter((e,i)=> i!==tableData.length-1).map(a => a.regist)}/>
                                 </div>
                             :""}
                     </div>

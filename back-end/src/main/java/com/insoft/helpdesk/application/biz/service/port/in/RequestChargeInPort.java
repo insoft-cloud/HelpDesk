@@ -4,7 +4,7 @@ import com.insoft.helpdesk.application.domain.jpa.entity.service.RequestCharge;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -12,7 +12,7 @@ public interface RequestChargeInPort {
 
     Page<RequestCharge> getRequestCharges(Map<String,String> keyParams, Map<String,String> searchParams, Pageable pageable);
     Page<RequestCharge> getRequestCharges(String requestId, Map<String,String> keyParams, Map<String,String> searchParams, Pageable pageable);
-    ArrayList<String> getRequestChargeList(String rqstId);
+    List<String> getRequestChargeList(String rqstId);
 
     Long getRequestChargesCount(Map<String,String> keyParams, Map<String,String> searchParams);
     Long getRequestChargesCount(String requestChargeId, Map<String,String> keyParams, Map<String,String> searchParams);

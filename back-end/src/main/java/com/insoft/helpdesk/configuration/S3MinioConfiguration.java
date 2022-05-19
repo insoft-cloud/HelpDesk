@@ -2,6 +2,7 @@ package com.insoft.helpdesk.configuration;
 
 import io.minio.*;
 import io.minio.errors.*;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,7 +11,7 @@ import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
-
+@Data
 @Configuration
 public class S3MinioConfiguration {
 
@@ -45,23 +46,7 @@ public class S3MinioConfiguration {
             if(!minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucket3).build())) {
                 minioClient.makeBucket(MakeBucketArgs.builder().bucket(bucket3).objectLock(false).build());
             }
-        } catch (ErrorResponseException e) {
-            e.printStackTrace();
-        } catch (InsufficientDataException e) {
-            e.printStackTrace();
-        } catch (InternalException e) {
-            e.printStackTrace();
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-        } catch (InvalidResponseException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (ServerException e) {
-            e.printStackTrace();
-        } catch (XmlParserException e) {
+        } catch (ErrorResponseException | InvalidResponseException | InsufficientDataException | InternalException | InvalidKeyException | IOException | NoSuchAlgorithmException | ServerException | XmlParserException e) {
             e.printStackTrace();
         }
         return minioClient;

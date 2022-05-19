@@ -6,9 +6,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-import java.util.ArrayList;
+import java.util.List;
 
 
 public interface RequestRepo extends JpaRepository<Request, String>, JpaSpecificationExecutor<Request> {
-    Page<Request> findByReqIdAndPrcsSttsCdInOrderByRegistDtDesc(String userId, ArrayList<String> prcsSttsCdList, Pageable pageable);
+    Page<Request> findByReqIdAndPrcsSttsCdInOrderByRegistDtDesc(String userId, List<String> prcsSttsCdList, Pageable pageable);
 }

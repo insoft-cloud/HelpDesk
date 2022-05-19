@@ -31,7 +31,7 @@ public class Transmission {
     @Size(max = 36)
     private String id;
 
-    @Column(name = "CNTS", nullable = false)
+    @Column(name = "CNTS", nullable = false, columnDefinition = "text")
     @Comment("내용")
     private String cnts;
 
@@ -48,7 +48,7 @@ public class Transmission {
     @Comment("제목")
     private String ttl;
 
-    @Column(name = "RECV_ID", length = 32, nullable = false)
+    @Column(name = "RCVER_ID", length = 32, nullable = false)
     @Comment("수신자 아이디")
     private String recvId;
 

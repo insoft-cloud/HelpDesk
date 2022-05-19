@@ -6,29 +6,16 @@ buildscript {
 
     repositories {
         mavenLocal()
-//        maven { url "http://10.0.201.173:8081/repository/maven-central/"
         maven { url "http://172.30.20.35:8081/repository/maven-central/"
             allowInsecureProtocol = true
         }
-//        maven { url "https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-parent/"
-//        allowInsecureProtocol = true
-//        }
-//        		mavenLocal()
-//		maven { url 'https://maven.aliyun.com/repository/google/' }
-//		maven { url 'https://maven.aliyun.com/repository/public/' }
-//		maven { url 'https://maven.aliyun.com/repository/spring/' }
-//		maven { url 'https://maven.aliyun.com/repository/gradle-plugin/' }
-//		maven { url 'https://maven.aliyun.com/repository/spring-plugin/' }
-//		maven {
-//			url "https://plugins.gradle.org/m2/"
-//		}
+
 		mavenCentral()
     }
 
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:2.5.7")
         classpath("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.7")
-//        classpath("org.springframework.boot:spring-boot-starter-parent:2.5.7")
         
     }
 }

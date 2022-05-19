@@ -2,7 +2,6 @@ package com.insoft.helpdesk.application.biz.service.service;
 
 import com.insoft.helpdesk.application.biz.service.port.in.RequestStatsInPort;
 import com.insoft.helpdesk.application.biz.service.port.out.RequestStatsOutPort;
-import com.insoft.helpdesk.application.domain.jpa.entity.service.Request;
 import com.insoft.helpdesk.application.domain.jpa.repo.service.RequestStatsRepo;
 import com.insoft.helpdesk.util.content.HelpDeskSearchExecutor;
 import lombok.RequiredArgsConstructor;
@@ -47,6 +46,10 @@ public class RequestStatsService implements RequestStatsInPort {
     public  List<Map> getRequestNumCount(LocalDateTime startTime, LocalDateTime endTime){
         return requestStatsOutPort.getRequestNumCount(requestStatsRepo.findById(startTime, endTime));
     }
+    @Override
+    public  List<Map> getRequestCompleteTime(LocalDateTime startTime, LocalDateTime endTime){
+        return requestStatsOutPort.getRequestCompleteTime(requestStatsRepo.findByRegistDtAndGoalDt(startTime, endTime));
+    }
 
     @Override
     public List<Map> getRequestUserIdTyCdCount(String userId ,LocalDateTime startTime, LocalDateTime endTime){
@@ -66,6 +69,11 @@ public class RequestStatsService implements RequestStatsInPort {
     @Override
     public  List<Map> getRequestUserIdNumCount(String userId, LocalDateTime startTime, LocalDateTime endTime){
         return requestStatsOutPort.getRequestUserIdNumCount(requestStatsRepo.findById(userId, startTime, endTime));
+    }
+
+    @Override
+    public  List<Map> getRequestUserIdCompleteTime(String userId, LocalDateTime startTime, LocalDateTime endTime){
+        return requestStatsOutPort.getRequestUserIdCompleteTime(requestStatsRepo.findByRegistDt(userId, startTime, endTime));
     }
 
     @Override
@@ -94,8 +102,23 @@ public class RequestStatsService implements RequestStatsInPort {
     }
 
     @Override
+    public  List<Map> getRequestChargeIdCompleteTime(String userId, LocalDateTime startTime, LocalDateTime endTime){
+        return requestStatsOutPort.getRequestChargeIdCompleteTime(requestStatsRepo.findByRegistDtAndChrgprNm(userId, startTime, endTime));
+    }
+
+    @Override
     public List<Map> getRequestAll(String selectDate, String selectType, List<String> items) {
         return requestStatsOutPort.getRequestAll(requestStatsRepo.findByCount(selectDate, selectType,items));
+    }
+
+    @Override
+    public List<Map> getRequestAllExcDate(String selectType, List<String> items) {
+        return requestStatsOutPort.getRequestAllExcDate(requestStatsRepo.findByCountExcDate(selectType,items));
+    }
+
+    @Override
+    public List<Map> getRequestAllExcTyCd(String selectDate, List<String> items) {
+        return requestStatsOutPort.getRequestAllExcTyCd(requestStatsRepo.findByCountExcTyCd(selectDate,items));
     }
 
     @Override

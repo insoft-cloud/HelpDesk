@@ -43,8 +43,8 @@ public class RequestHistory {
     @ManyToOne(fetch = FetchType.LAZY)
     private Request svcReqNo;
 
-    @Column(name = "RQST_CD", length = 8, nullable = false)
-    @Comment("요청 코드")
+    @Column(name = "RQST_CD", length = 8)
+    @Comment("요청 코드(서비스처리 시간 통계자료 구분용)")
     private String rqstCd;
 
     @Column(name = "INPUT_MSG", columnDefinition = "text", nullable = false)
@@ -60,11 +60,6 @@ public class RequestHistory {
     @Comment("등록일시")
     @CreationTimestamp
     private LocalDateTime registDt;
-
-//    @Column(name = "REGIST_DT", nullable = false)
-//    @Comment("등록일시")
-//    @CreationTimestamp
-//    private LocalDateTime registDt;
 
     @Column(name = "UPD_DT", length = 8)
     @Comment("수정일시")
@@ -87,6 +82,7 @@ public class RequestHistory {
         this.inputMsg = requestHistory.inputMsg == null ? this.inputMsg : requestHistory.inputMsg;
         this. userId = requestHistory.userId == null ? this.userId : requestHistory.userId;
         this. userNm = requestHistory.userNm == null ? this.userNm : requestHistory.userNm;
+        this.rqstCd = requestHistory.rqstCd == null ? this.rqstCd : requestHistory.rqstCd;
         return this;
     }
 }

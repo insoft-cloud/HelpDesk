@@ -11,20 +11,25 @@ public interface RequestStatsOutPort {
     List<Map> getRequestSysCdCount(List<Map> requests);
     List<Map> getRequestPrcsSttsCdCount(List<Map> requests);
     List<Map> getRequestNumCount(List<Map> requests);
+    List<Map> getRequestCompleteTime(List<Map> requests);
 
     List<Map> getRequestUserIdTyCdCount(List<Map> requests);
     List<Map> getRequestUserIdSysCdCount(List<Map> requests);
     List<Map> getRequestUserIdPrcsSttsCdCount(List<Map> requests);
     List<Map> getRequestUserIdNumCount(List<Map> requests);
+    List<Map> getRequestUserIdCompleteTime(List<Map> requests);
 
     List<Map> getRequestChargeIdTyCdCount(List<Map> requests);
     List<Map> getRequestChargeIdSysCdCount(List<Map> requests);
     List<Map> getRequestChargeIdPrcsSttsCdCount(List<Map> requests);
     List<Map> getRequestChargeIdNumCount(List<Map> requests);
+    List<Map> getRequestChargeIdCompleteTime(List<Map> requests);
 
     List<Map> getRequestReqIdPrcsSttsCdCount(List<Map> requests);
 
     List<Map> getRequestAll(List<Map> requests);
+    List<Map> getRequestAllExcDate(List<Map> requests);
+    List<Map> getRequestAllExcTyCd(List<Map> requests);
     List<Map> getRequestAllCount(List<Map> requests);
 
 }

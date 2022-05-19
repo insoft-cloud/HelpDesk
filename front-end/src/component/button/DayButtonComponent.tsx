@@ -10,8 +10,6 @@
 
 import { useState } from "react";
 
-
-
 export default function DayButtonComponent({day, setDay}) {
 
   const [color, setColor] = useState<string>('btn btn-outline-primary btn-xs mb-1 m-1')

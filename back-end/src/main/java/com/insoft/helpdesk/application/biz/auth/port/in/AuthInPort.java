@@ -1,7 +1,6 @@
 package com.insoft.helpdesk.application.biz.auth.port.in;
 
 import com.insoft.helpdesk.application.domain.jpa.entity.Auth;
-import com.insoft.helpdesk.application.domain.jpa.entity.code.Detail;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

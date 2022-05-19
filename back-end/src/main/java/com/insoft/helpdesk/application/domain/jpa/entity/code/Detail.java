@@ -14,7 +14,6 @@ import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.math.BigInteger;
 import java.time.LocalDateTime;
 
 @Entity
@@ -52,11 +51,6 @@ public class Detail {
     @Comment("코드설명")
     @Size(max = 512)
     private String cdExplnt;
-
-//    @Column(name = "CD_GRP_NO", length = 16, nullable = false)
-//    @Comment("코드 그룹 번호")
-//    @Size(max = 16)
-//    private String cdGroupNo;
 
     @Column(name = "DEL_YN", length = 1, nullable = false)
     @Comment("삭제여부(Y,N)")

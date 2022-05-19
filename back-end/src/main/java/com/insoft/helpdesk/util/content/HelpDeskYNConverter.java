@@ -7,7 +7,7 @@ import javax.persistence.Converter;
 public class HelpDeskYNConverter implements AttributeConverter<Boolean, String> {
     @Override
     public String convertToDatabaseColumn(Boolean attribute) {
-        return (attribute!=null && attribute) ? "Y" : "N";
+        return attribute!=null && attribute ? "Y" : "N";
     }
 
     @Override

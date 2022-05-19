@@ -24,7 +24,7 @@ public class HelpDeskLog {
                 (user == null ? "" : "user='" + user + "\n" + ", ") +
                 "requestUrl='" + requestUrl + "\n" +
                 ", method='" + method + "\n" +
-                ((body == null || body.isEmpty()) ? "" : ", body='" + body) +
+                (body == null || body.isEmpty() ? "" : ", body='" + body) +
                 '}';
     }
 }

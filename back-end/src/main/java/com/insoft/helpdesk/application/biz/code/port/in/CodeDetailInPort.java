@@ -12,6 +12,7 @@ import java.util.Optional;
 
 public interface CodeDetailInPort {
     Page<Detail> getDetails(Map<String,String> keyParams, Map<String,String> searchParams, Pageable pageable);
+    List<Detail> getDetailsList(String id);
     Long getDetailsCount(Map<String,String> keyParams, Map<String,String> searchParams);
     Page<Detail> getDetails(String groupId, Map<String,String> keyParams, Map<String,String> searchParams, Pageable pageable);
     Long getDetailsCount(String groupId, Map<String,String> keyParams, Map<String,String> searchParams);

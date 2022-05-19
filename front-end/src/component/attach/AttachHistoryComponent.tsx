@@ -3,6 +3,14 @@ import { procGetAxios } from 'axios/Axios';
 import React, { useEffect, useState } from 'react'
 import { useTokenState } from 'utils/TokenContext';
 
+/**
+ * @Project     : HelpDesk
+ * @FileName    : AttachHistoryComponent.tsx
+ * @Date        : 2022-05-16
+ * @author      : 김지인
+ * @description : 이력(댓글) 첨부파일 다운로드 컴포넌트
+ */
+
 export default function AttachHistoryComponent({hisId}) {
 
     
@@ -12,7 +20,7 @@ export default function AttachHistoryComponent({hisId}) {
 
   useEffect(() => {
     procGetAxios("/user/service/request/charge/history/"+hisId+"/attaches", state.token, contentType, setData)
-}, [hisId])
+}, [contentType, state.token, hisId])
 
 function setData(data) {
     setAttach(data.content)

@@ -46,7 +46,7 @@ obj_EMS = {
 */
 
 function SendEms(obj : object, state, contentType) {
-    const url = "/user/ems/sendEms"
+    const url = "/user/ems/send_ems"
 
     return procPostAxios(url, state.token, contentType, obj, ok, error)
 

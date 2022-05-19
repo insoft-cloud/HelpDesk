@@ -1,4 +1,3 @@
-import axios from "axios";
 import { ButtonComponent } from "component/button/ButtonComponent";
 import moment from "moment"
 import TableComponent from "component/table/TableComponent";
@@ -11,12 +10,12 @@ import TittleComponent from "component/div/TittleComponent";
 import DayButtonComponent from "component/button/DayButtonComponent";
 import ServiceInfoComponent from "./ServiceInfoComponent";
 import SortButtonComponent from "component/button/SortButtonComponent";
-import { SelectedComponent } from "component/select/SelectComponent";
 import { AuthCode, CodeDetail } from "utils/AdminCode";
 import { procGetAxios } from "axios/Axios";
 import PagingComponent from "component/list/PagingComponent";
-import { txtDiv } from "utils/CommonText";
+import {txtBlock, txtDiv} from "utils/CommonText";
 import { CountComponent } from "component/service/ServiceCountComponent";
+import {useNavigate} from "react-router-dom";
 
 
 /**
@@ -45,18 +44,16 @@ import { CountComponent } from "component/service/ServiceCountComponent";
 
     const [prcsSttsCdCount, setPrcsSttsCdCount ] : any = useState([]);
 
-    const auth = sessionStorage.getItem("auth");
-    const [all] =  useState( (auth === AuthCode.superAdmin || auth === AuthCode.Admin) ? '&All=N' : '&All=Y' )
+    const auth = state.auth;
 
     let table_sub_data;
 
     useEffect(() => {
-        dispatch({ type: 'SET_PAGE', page: "myRequest"})
+        dispatch({ type: 'SET_PAGE', page: "myRequest", actTime: new Date().getTime().toString()})
 
         procGetAxios("/user/service/requests/" + state.user +day+sort + "&page=" + page + "&size=" + pageSize, state.token, contentType, getTableData )
-        procGetAxios("user/service/request/"+state.user+"/myRequest/prcsSttsCd/count"+day, state.token, contentType, getPrcsSttsCdCountData)       
-
-    }, [state.user, day, rqstId, sort, page, pageSize] );
+        procGetAxios("user/service/request/"+state.user+"/myRequest/prcsSttsCd/count"+day, state.token, contentType, getPrcsSttsCdCountData)
+    }, [contentType, state.token, state.user, day, rqstId, sort, page, pageSize] );
     
     function getPrcsSttsCdCountData(data){
         setPrcsSttsCdCount(data)
@@ -98,11 +95,10 @@ import { CountComponent } from "component/service/ServiceCountComponent";
        setTableData(table_sub_data);    
    }
 
-    const columns = [
+    const columns = useMemo( () => [
         {
           Header: '번호',
-          id: 'index',
-          accessor: (_row: any, i : number) => i + 1
+          accessor: (_row: any, i : number) => (i + 1 ) + (page *pageSize) 
         },
         {
             Header:  <SortButtonComponent sort={sort} setSort={setSort} sortData={'&sort=tyCd'} btnName='유형'/>,
@@ -110,7 +106,7 @@ import { CountComponent } from "component/service/ServiceCountComponent";
         },
         {
           Header: <SortButtonComponent sort={sort} setSort={setSort} sortData={'&sort=ttl'} btnName='제목'/>, id: 'ttl',
-          accessor : a => <button className="btn btn-link" onClick={() =>setRqstId(a.id) }>{a.ttl}</button>
+          accessor : a => <span className="link-primary" style={{ cursor:'pointer' }} onClick={() =>setRqstId(a.id) }>{a.ttl.length < 35 ? a.ttl : a.ttl.slice(0, 35) + '...'}</span>
         },
         {
             Header : <SortButtonComponent sort={sort} setSort={setSort} sortData={'&sort=registDt'} btnName='요청일'/>, id : 'registDt',
@@ -128,16 +124,15 @@ import { CountComponent } from "component/service/ServiceCountComponent";
             Header: '평가', id: 'evl',
             accessor: a =><Fragment key={a.id}>{a.prcsSttsCd === '완료' && a.evl == null ? '평가' : a.evl }</Fragment>                        
         }
-    ]
+    ], [page, sort])
     
 
     return (
         <section>
             <TittleComponent tittle={"서비스 요청 현황"} subTittle={"나의 업무 및 요청의 진행 현황을 확인할 수 있습니다."}/>                  
             <div className="content_wrap">
-                
                     <ul className="my_desk nav nav-pills mb-3 mt-5 justify-content-center">
-                        {auth === AuthCode.superAdmin || auth === AuthCode.Admin 
+                        {auth === AuthCode.Admin || auth === AuthCode.Manager
                         ?
                         <li className="nav-item">
                             <ButtonComponent url={ContextPath(API_DOMAIN_PATH.myWork)} btnName='담당 업무' btnClassName='nav-link' />
@@ -156,54 +151,45 @@ import { CountComponent } from "component/service/ServiceCountComponent";
                         <DayButtonComponent day={day} setDay={setDay}/>
                     </div>
                 </div>
-
-            <div className="row mt-7 help_desk">
-
+                <div className="row mt-7 help_desk">
                     <div className="col-12 col-md-6 border-right">
-            
                         <div className="row mb-3 align-items-center">
-                         <div className="col-auto">
+                        <div className="col-auto">
                             <div className="icon-circle bg-primary text-white">
                             <i className="fe fe-chevrons-right"></i>
                             </div>
-                         </div>
+                        </div>
                             <div className="col ms-n5">
                                 <h3 className="mb-0">나의 요청 현황</h3>
                             </div>
                         </div> 
-
                         <CountComponent data={prcsSttsCdCount}/>
-
-                    <div className="card mt-3">
-                        <div className="card-body">
-                            <div className="d-flex justify-content-between mb-2">
-                                <span>
-                                    목록({totaldata})
-                                </span>
-                                <div className="col-auto ms-auto">
-                                        {/* <SelectPrcComponent urlData={CodeDetail.prcsSttsCd} onChange={(e) => prcsSttsCdHandler(e)} /> */}
+                        <div className="card mt-3">
+                            <div className="card-body">
+                                <div className="d-flex justify-content-between mb-2">
+                                    <span>
+                                        목록({totaldata})
+                                    </span>
+                                    <div className="col-auto ms-auto">
+                                    </div>
+                            </div>                                                                        
+                                {tableData.length === 0 ? txtDiv.tableData :
+                                <>
+                                <TableComponent data={tableData} columns={columns} /> 
+                                <div className="d-flex justify-content-center">
+                                    <PagingComponent page={page} setPage={setPage} totalPages={totalPages} />
                                 </div>
-                           </div>                                                                        
-                            {tableData.length === 0 ? txtDiv.tableData :
-                            <>
-                            <TableComponent data={tableData} columns={columns} /> 
-                            <div className="d-flex justify-content-center">
-                                <PagingComponent page={page} setPage={setPage} totalPages={totalPages} />
+                                </>
+                                }
                             </div>
-                            </>
-                            }
                         </div>
                     </div>
-                </div>
-            
-
                     <div  className="col-12 col-md-6 pl00">
                         <div className="row mb-3 align-items-center pl30">
                             <div className="col-auto">
                                 <div className="icon-circle bg-primary text-white">
                                 <i className="fe fe-chevrons-right"></i>
                                 </div>
-
                             </div>
                             <div className="col ms-n5">
                                 <h3 className="mb-0">서비스 요청 상세 정보</h3>
@@ -212,7 +198,7 @@ import { CountComponent } from "component/service/ServiceCountComponent";
                         <ServiceInfoComponent rqstId={rqstId} />
                     </div>
                 </div>                        
-        </div>
+            </div>
         </section>
     )
 }

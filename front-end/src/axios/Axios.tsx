@@ -24,6 +24,24 @@ export function procGetAxios(url, token, contentType : string, callback : Functi
         });
 }
 
+export function procGetAxiosParameter(url, token, contentType : string, param, callback : Function ){
+    axios.get(url, {
+        headers: {
+            'Content-Type' : contentType,
+            'X-AUTH-TOKEN' : token
+        }
+    })
+        .then(function (response){
+            callback(response['data'], param);
+        })
+        .then(function (error:any){
+
+        })
+        .then(function (){
+
+        });
+}
+
 
 export function procGetAxiosHeader(url : string, header : AxiosRequestHeaders, callback : Function ){
     axios.get(url, {

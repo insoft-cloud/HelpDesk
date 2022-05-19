@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useEffect, useRef, useState} from "react";
+import React, {ChangeEvent, useEffect, useState} from "react";
 import LoginModel from "../../interface/Login/LoginModel";
 import {procPostAxios, procPostAxiosHeader} from "../../axios/Axios";
 import {useTokenDispatch} from "../../utils/TokenContext";
@@ -12,13 +12,12 @@ export default function SignInComponent({prePath : path}) {
     let [password, setPassword] = useState("");
     let dispatch = useTokenDispatch();
     const navigate = useNavigate();
-    let [refreshToken ] = useState(sessionStorage.getItem("refreshToken"));
-    let [refreshTokenExpired ]  = useState(sessionStorage.getItem("refreshTokenExpired"));
+    let [refreshToken] = useState(localStorage.getItem("refreshToken"));
+    let [refreshTokenExpired] = useState(localStorage.getItem("refreshTokenExpired"));
 //   const [prePath] = useState(path);
 
     useEffect(() => {
-
-        dispatch({ type: 'SET_PAGE', page: "LOGIN"});
+        dispatch({ type: 'SET_PAGE', page: "LOGIN", actTime: new Date().getTime().toString() });
     }, []);
 
     useState(() => {
@@ -87,7 +86,6 @@ export default function SignInComponent({prePath : path}) {
 
     function login(){
         let loginModel : LoginModel = new LoginModel(email, password);
-        console.log(API_SIGN_PATH);
         procPostAxios(API_SIGN_PATH+"/signin","","application/json", loginModel, ok, error);
     }
 
@@ -99,12 +97,9 @@ export default function SignInComponent({prePath : path}) {
 
     function ok(data : any){
         dispatch({ type: 'SET_TOKEN', token: data['accessToken'],
-            tokenExpired: data['tokenExpired'], user: data['userId'], name : data['userName'] });
-        sessionStorage.setItem("refreshToken", data['refreshToken']);
-        sessionStorage.setItem("refreshTokenExpired", data['refreshTokenExpired']);
-        if(data['auth']){
-            sessionStorage.setItem("auth",data['auth']['cdId']);
-        }
+            tokenExpired: data['tokenExpired'], user: data['userId'], name : data['userName'], auth : data['auth'], actTime: new Date().getTime().toString() });
+        localStorage.setItem("refreshToken", data['refreshToken']);
+        localStorage.setItem("refreshTokenExpired", data['refreshTokenExpired']);
         if(path.toString().toLowerCase().indexOf("sign") > 0){
             navigate(ContextPath(API_DOMAIN_PATH.main));
         }else {

@@ -5,8 +5,8 @@ import io.minio.Result;
 import io.minio.errors.*;
 import io.minio.messages.Item;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,34 +16,19 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class MinioAdapter implements MinioOutPort {
-
     @Override
     public List<String> getObjects(Iterable<Result<Item>> items) {
         List<String> objectResponses = new ArrayList<>();
         items.forEach(r -> {
             try {
                 objectResponses.add(r.get().objectName());
-            } catch (ErrorResponseException e) {
-                e.printStackTrace();
-            } catch (InsufficientDataException e) {
-                e.printStackTrace();
-            } catch (InternalException e) {
-                e.printStackTrace();
-            } catch (InvalidKeyException e) {
-                e.printStackTrace();
-            } catch (InvalidResponseException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            } catch (ServerException e) {
-                e.printStackTrace();
-            } catch (XmlParserException e) {
+            } catch (ErrorResponseException | InsufficientDataException | InternalException | InvalidKeyException | InvalidResponseException | IOException | NoSuchAlgorithmException | ServerException | XmlParserException e) {
                 e.printStackTrace();
             }
         });
@@ -52,23 +37,47 @@ public class MinioAdapter implements MinioOutPort {
 
     @Override
     public File multiToFile(MultipartFile multipartFile) {
+        File file = null;
+        FileOutputStream fileOutputStream = null;
         try {
-            File file = new File(multipartFile.getOriginalFilename());
-            file.createNewFile();
-            FileOutputStream fileOutputStream = new FileOutputStream(file);
+            file = new File(Objects.requireNonNull(multipartFile.getOriginalFilename()));
+            if(file.createNewFile()) {
+                if(log.isInfoEnabled()) {
+                    log.info("파일 생성 => " + file.getName());
+                }
+            } else {
+                if(log.isInfoEnabled()) {
+                    log.info("파일 생성 실패");
+                }
+            }
+            fileOutputStream = new FileOutputStream(file);
             fileOutputStream.write(multipartFile.getBytes());
-            fileOutputStream.close();
-            return file;
-        } catch (IOException e) {
+        } catch (IOException | NullPointerException e) {
             e.printStackTrace();
+        } finally {
+            if(fileOutputStream != null) {
+                try {
+                    fileOutputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
-        return null;
+        return file;
     }
 
     @Override
     public void deleteFile(File file) {
         if(file != null && file.exists()){
-            file.delete();
+            if(file.delete()) {
+                if(log.isInfoEnabled()) {
+                    log.info(file.getName() + " 파일 제거 성공");
+                }
+            } else {
+                if(log.isInfoEnabled()) {
+                    log.info(file.getName() + " 파일 제거 실패");
+                }
+            }
         }
     }
 
@@ -89,8 +98,12 @@ public class MinioAdapter implements MinioOutPort {
             e.printStackTrace();
         }finally {
             try {
-                out.close();
-                in.close();
+                if(out != null) {
+                    Objects.requireNonNull(out).close();
+                }
+                if(in != null) {
+                    Objects.requireNonNull(in).close();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }

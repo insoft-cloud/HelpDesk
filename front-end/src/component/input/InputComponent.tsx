@@ -1,5 +1,4 @@
-import React from "react";
-import HeaderComponent from "../layout/HeaderComponent";
+
 
 function InputComponent({InputType : input}){
     return (
@@ -11,7 +10,11 @@ function InputComponent({InputType : input}){
             {
                 null === input.onChange ? null : input.onChange
             }
-            placeholder={input.placeholder}/>
+            maxLength={
+                null === input.maxLength ? null : input.maxLength
+            }   
+            placeholder={input.placeholder}    
+            />
     )
 }
 export default InputComponent;

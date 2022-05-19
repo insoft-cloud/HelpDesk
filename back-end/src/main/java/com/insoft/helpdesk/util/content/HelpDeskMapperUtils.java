@@ -5,7 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.Map;
 
-public class HelpDeskMapper {
+public final class HelpDeskMapperUtils {
+    private HelpDeskMapperUtils() {}
+
     static ObjectMapper mapper = new ObjectMapper();
 
     public static Map mapToJson(String json){

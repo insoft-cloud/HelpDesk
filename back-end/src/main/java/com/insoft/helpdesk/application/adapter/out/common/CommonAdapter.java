@@ -11,20 +11,22 @@ import java.time.LocalTime;
 @RequiredArgsConstructor
 @Service
 public class CommonAdapter implements CommonOutPort {
+
+    static final int ZERO = 0;
     @Override
     public LocalDateTime startDataTime(String day) {
         LocalDateTime startDatetime = null;
         switch (day){
-            case "day" : startDatetime = LocalDateTime.of(LocalDate.now(), LocalTime.of(0,0,0,000000)); break;
-            case "week" : startDatetime = LocalDateTime.of(LocalDate.now().minusWeeks(1), LocalTime.of(0,0,0,000000)); break;
-            case "month" : startDatetime = LocalDateTime.of(LocalDate.now().minusMonths(1), LocalTime.of(0,0,0,000000)); break;
-            default : startDatetime = LocalDateTime.of(LocalDate.of(2020,1,1), LocalTime.of(0,0,0,000000)); break;
+            case "day" : startDatetime = LocalDateTime.of(LocalDate.now(), LocalTime.of(0,0,0,0)); break;
+            case "week" : startDatetime = LocalDateTime.of(LocalDate.now().minusWeeks(1), LocalTime.of(0,0,0,0)); break;
+            case "month" : startDatetime = LocalDateTime.of(LocalDate.now().minusMonths(1), LocalTime.of(0,0,0,0)); break;
+            default : startDatetime = LocalDateTime.of(LocalDate.of(2020,1,1), LocalTime.of(0,0,0,0)); break;
         }
         return startDatetime;
     }
 
     @Override
     public LocalDateTime endDataTime() {
-        return LocalDateTime.of(LocalDate.now(), LocalTime.of(23,59,59,000000));
+        return LocalDateTime.of(LocalDate.now(), LocalTime.of(23,59,59, 0));
     }
 }

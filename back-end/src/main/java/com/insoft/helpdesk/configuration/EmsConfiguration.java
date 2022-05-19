@@ -1,12 +1,13 @@
 package com.insoft.helpdesk.configuration;
 
 import kr.go.smes.ems.EmsClient;
-import kr.go.smes.ems.MockEmsClient;
 import kr.go.smes.ems.SmesEmsClient;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+@Data
 @Configuration
 public class EmsConfiguration {
     @Value("${ems.linkName}")
@@ -23,6 +24,6 @@ public class EmsConfiguration {
 
     @Bean
     public EmsClient emsClient() {
-        return new MockEmsClient(linkName, targetUrl, defaultFrom, defaultCategory);
+        return new SmesEmsClient(linkName, targetUrl, defaultFrom, defaultCategory);
     }
 }

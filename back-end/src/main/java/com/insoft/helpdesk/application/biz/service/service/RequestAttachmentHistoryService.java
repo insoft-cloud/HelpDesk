@@ -11,7 +11,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -32,17 +31,17 @@ public class RequestAttachmentHistoryService implements RequestAttachmentHistory
 
     @Override
     public Page<RequestAttachmentHistory> getRequestAttachmentHistories(Map<String, String> keyParams, Map<String, String> searchParams, Pageable pageable) {
-        return requestAttachmentHistoryOutPort.getRequestAttachmentHistories(historyRepo.findAll(helpDeskSearchExecutor.Search(searchParams,keyParams),pageable));
+        return requestAttachmentHistoryOutPort.getRequestAttachmentHistories(historyRepo.findAll(helpDeskSearchExecutor.search(searchParams,keyParams),pageable));
     }
 
     @Override
     public Page<RequestAttachmentHistory> getRequestAttachmentHistories(String historyId, Map<String, String> keyParams, Map<String, String> searchParams, Pageable pageable) {
-        return requestAttachmentHistoryOutPort.getRequestAttachmentHistories(historyRepo.findAll(helpDeskSearchExecutor.Search(searchParams,keyParams, RequestHistory.class, historyId, "svcReqHistNo", "id"),pageable));
+        return requestAttachmentHistoryOutPort.getRequestAttachmentHistories(historyRepo.findAll(helpDeskSearchExecutor.search(searchParams,keyParams, RequestHistory.class, historyId, "svcReqHistNo", "id"),pageable));
     }
 
     @Override
     public Long countRequestAttachmentHistories(Map<String, String> keyParams, Map<String, String> searchParams) {
-        return requestAttachmentHistoryOutPort.countRequestAttachmentHistories(historyRepo.count(helpDeskSearchExecutor.Search(searchParams,keyParams)));
+        return requestAttachmentHistoryOutPort.countRequestAttachmentHistories(historyRepo.count(helpDeskSearchExecutor.search(searchParams,keyParams)));
     }
 
     @Override

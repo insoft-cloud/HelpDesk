@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -33,33 +34,33 @@ public class RequestChargeService implements RequestChargeInPort {
 
     @Override
     public Page<RequestCharge> getRequestCharges(Map<String,String> keyParams, Map<String,String> searchParams, Pageable pageable) {
-        return requestChargeOutPort.getRequestCharges(requestChargeRepo.findAll(helpDeskSearchExecutor.Search(searchParams, keyParams), pageable));
+        return requestChargeOutPort.getRequestCharges(requestChargeRepo.findAll(helpDeskSearchExecutor.search(searchParams, keyParams), pageable));
     }
 
     @Override
     public Page<RequestCharge> getRequestCharges(String requestId, Map<String,String> keyParams, Map<String,String> searchParams, Pageable pageable) {
-        return requestChargeOutPort.getRequestCharges(requestChargeRepo.findAll(helpDeskSearchExecutor.Search(searchParams, keyParams,Request.class, requestId, "svcReqNo", "id"), pageable));
+        return requestChargeOutPort.getRequestCharges(requestChargeRepo.findAll(helpDeskSearchExecutor.search(searchParams, keyParams,Request.class, requestId, "svcReqNo", "id"), pageable));
     }
 
     @Override
-    public ArrayList<String> getRequestChargeList(String rqstId) {
+    public List<String> getRequestChargeList(String rqstId) {
         Request request = requestRepo.findById(rqstId).get();
-        ArrayList<RequestCharge> requestCharges = requestChargeRepo.findBySvcReqNoAndDelYn(request, false);
+        ArrayList<RequestCharge> requestCharges = (ArrayList<RequestCharge>) requestChargeRepo.findBySvcReqNoAndDelYn(request, false);
         ArrayList<String> requestChargeIdList = new ArrayList<>();
-        for(int i = 0; i < requestCharges.size(); ++i) {
-            requestChargeIdList.add(requestCharges.get(i).getUserId());
+        for(RequestCharge i : requestCharges) {
+            requestChargeIdList.add(i.getUserId());
         }
         return requestChargeOutPort.getRequestChargeList(requestChargeIdList);
     }
 
     @Override
     public Long getRequestChargesCount(Map<String,String> keyParams, Map<String,String> searchParams) {
-        return requestChargeOutPort.getRequestChargesCount(requestChargeRepo.count(helpDeskSearchExecutor.Search(searchParams, keyParams)));
+        return requestChargeOutPort.getRequestChargesCount(requestChargeRepo.count(helpDeskSearchExecutor.search(searchParams, keyParams)));
     }
 
     @Override
     public Long getRequestChargesCount(String requestId, Map<String,String> keyParams, Map<String,String> searchParams) {
-        return requestChargeOutPort.getRequestChargesCount(requestChargeRepo.count(helpDeskSearchExecutor.Search(searchParams, keyParams,Request.class, requestId, "svcReqNo", "id")));
+        return requestChargeOutPort.getRequestChargesCount(requestChargeRepo.count(helpDeskSearchExecutor.search(searchParams, keyParams,Request.class, requestId, "svcReqNo", "id")));
     }
 
     @Override

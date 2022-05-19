@@ -5,6 +5,6 @@ import org.springframework.http.ResponseEntity;
 
 public interface LoginInPort {
 
-    Member SignIn(Member member);
-    ResponseEntity SignUp(Member member);
+    Member signIn(Member member);
+    ResponseEntity signUp(Member member);
 }

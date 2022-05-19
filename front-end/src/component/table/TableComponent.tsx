@@ -1,11 +1,7 @@
 
-
-import PageComponent from 'component/list/PageComponent';
-
-import { useState } from 'react';
-import { usePagination, useTable } from 'react-table';
+import { useTable } from 'react-table';
 import { txtDiv } from 'utils/CommonText';
-
+import "component/table/Table.css";
 
 
 /**
@@ -37,7 +33,7 @@ function TableComponent({ columns, data }) {
               {headerGroups.map((headerGroup) => (
                 <tr {...headerGroup.getHeaderGroupProps()}>
                   {headerGroup.headers.map((column) => (
-                        <th scope="col" {...column.getHeaderProps()}>
+                        <th scope="col" {...column.getHeaderProps()} >
                       {column.render("Header")}
                     </th>
                   ))}
@@ -50,7 +46,7 @@ function TableComponent({ columns, data }) {
                 return (
                   <tr {...row.getRowProps()}>
                     {row.cells.map((cell) => (
-                      <td className="text-center" {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                      <td{...cell.getCellProps()}>{cell.render("Cell")}</td>
                     ))}
                   </tr>
                 );

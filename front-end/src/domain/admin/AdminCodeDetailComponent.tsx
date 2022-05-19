@@ -7,9 +7,10 @@ import AddRowTableComponent from "component/table/AddRowTableComponent";
 import moment from "moment";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { API_ADMIN_PATH, ContextPath } from "utils/ContextPath";
+import {API_ADMIN_PATH, API_DOMAIN_PATH, ContextPath} from "utils/ContextPath";
 import { useTokenDispatch, useTokenState } from "utils/TokenContext";
-import {txtAlert, txtButton} from "../../utils/CommonText";
+import {txtAlert, txtBlock, txtButton, txtConfirm} from "../../utils/CommonText";
+import {AuthCode} from "../../utils/AdminCode";
 
 /**
  * @Project     : HelpDesk
@@ -43,9 +44,12 @@ function AdminCodeDetailComponent() {
     const [page, setPage] = useState(1);
     const offset = (page - 1) * limitCnt;
     const numPages = Math.ceil(tableData.length / limitCnt);
-    let pageSize = 0;
     useEffect(() => {
-        dispatch({ type: 'SET_PAGE', page: "codeDetail" })
+        if(state.auth!==AuthCode.Admin){
+            alert(txtBlock.authBlock);
+            navigate(ContextPath(API_DOMAIN_PATH.main));
+        }
+        dispatch({ type: 'SET_PAGE', page: "codeDetail", actTime: new Date().getTime().toString() })
         getSysCnt();
         window.addEventListener('beforeunload', alertUser);
 
@@ -157,7 +161,7 @@ function AdminCodeDetailComponent() {
         let create: any[] = [];
         let update: any[] = [];
         let del: any[] = [];
-        if (window.confirm("입력하신 내용을 저장하시겠습니까?")) {
+        if (window.confirm(txtConfirm.saveCode)) {
             let idCheck = 0;
             addDataList.map((editdata, i) => {
                 create.map(e => {
@@ -247,14 +251,6 @@ function AdminCodeDetailComponent() {
                                 </div>
                             </div>
                         }
-
-                            {/* 
-                                <div className="d-flex justify-content-center">
-                                    <nav aria-label="Page navigation example">
-                                        <Pagination numPages={numPages} page={page} setPage={setPage} setChkArr="" />
-                                    </nav>
-                                </div> 
-                            */}
                     </div>
                 </div>
             </div>

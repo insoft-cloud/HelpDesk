@@ -66,7 +66,7 @@ function AlertHistoryComponent(){
         }
     }, [tab])
     useEffect(() => {
-        dispatch({ type: 'SET_PAGE', page: "alertHistory"})
+        dispatch({ type: 'SET_PAGE', page: "alertHistory", actTime: new Date().getTime().toString()})
         getData()
     }, [url])
     function getData(){
@@ -75,11 +75,11 @@ function AlertHistoryComponent(){
     function setData(data) {
         setTotalPages(data.totalPages)        
         table_sub_data = data.content;
-        procGetAxios("admin/group/"+CodeDetail.tyCd+"/details",state.token,"application.json", tyCdAdminCode)
+        procGetAxios("admin/group/"+CodeDetail.tyCd+"/details_list",state.token,"application.json", tyCdAdminCode)
     }
     function tyCdAdminCode(data){
         table_sub_data.forEach(tab => {
-            data.content.forEach(e => {
+            data.forEach(e => {
                 if(tab.tyCd===e.cdId){
                     tab.tyCd = e.name;
                 }

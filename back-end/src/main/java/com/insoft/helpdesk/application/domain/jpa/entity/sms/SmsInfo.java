@@ -3,12 +3,13 @@ package com.insoft.helpdesk.application.domain.jpa.entity.sms;
 import lombok.Data;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Data
 public class SmsInfo {
     // 필수 전달 정보 (문자 유형, 연락처, 유형 코드, 요청 제목)
     private String smsType; // 문자 유형 (smsType : charge, comment, stats)
-    private ArrayList<String> idList;
+    private List<String> idList;
     private String reqTyCd;
     private String reqTitle;
 
