@@ -1,0 +1,42 @@
+
+/* th :nth-child(2) {
+    width: 5%;         
+ } */
+table{
+    width: 100%;
+    align-content: center;
+    align-items: center;
+}
+tr, td {
+    font-size: medium;
+    align-content: center;
+    align-items: center;
+    text-align: center;
+    vertical-align:middle;
+    
+}
+th:nth-child(1) {    
+    width: 6%;        
+ }
+th:nth-child(2) {    
+    width: 14%;        
+ }
+th:nth-child(3) :not(.modal) {    
+   width: 35%;
+}
+th:nth-child(4) {    
+    width: 12%;        
+}
+th:nth-child(5) {    
+    width: 12%;        
+}
+th:nth-child(6) {    
+    width: 12%;        
+}
+th:nth-child(7) {    
+     width: 11%;
+}
+/* td :nth-child(3) {
+    width: 50%;        
+ } */
+ 

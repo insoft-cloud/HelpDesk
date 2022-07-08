@@ -1,0 +1,16 @@
+.complete{
+    color:#df4759;
+}
+.progress{
+    color:#42ba96;
+    height:auto;
+    background: none;
+    box-shadow: none;
+    display: block;
+}
+.hold{
+    color:#869ab8;
+}
+.open{
+    color:#6c8aec;
+}

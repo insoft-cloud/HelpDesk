@@ -1,5 +1,13 @@
 import React from 'react'
 import footerImg from "assets/img/ect-logo-big.svg"
+import './FooterComponent.css'
+/**
+ * @Project     : HelpDesk
+ * @FileName    : FooterComponent.tsx
+ * @Date        : 2021-01-17
+ * @author      : 김지인
+ * @description : 화면 하단에 고정되는 푸터 컴포넌트
+ */
 
 function FooterComponent() {
     return (

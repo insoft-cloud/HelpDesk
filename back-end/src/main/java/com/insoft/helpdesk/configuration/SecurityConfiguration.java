@@ -1,18 +1,20 @@
 package com.insoft.helpdesk.configuration;
 
-import com.insoft.helpdesk.application.domain.common.JwtAuthFilter;
+import com.insoft.helpdesk.util.filter.JwtAuthFilter;
 import com.insoft.helpdesk.application.domain.common.JwtTokenProvider;
+import com.insoft.helpdesk.util.filter.HelpDeskFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -56,9 +58,36 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/signin", "/signup", "/test", "/refresh-token").permitAll()
-                .anyRequest().hasRole("USER")
+                .antMatchers("/api/v1/sign/**").permitAll()
+                .antMatchers("/swagger-ui/**").permitAll()
+                .antMatchers("/swagger-resources/**").permitAll()
+                .antMatchers("/api/v1/user/service/request/*/attach/image/download").permitAll()
+                .antMatchers("/api/v1/admin/group/*/details_list").permitAll()
+                .antMatchers("/api/v1/user/ems/sendEms/password").permitAll()
+                .antMatchers("/api/v1/user/notices").permitAll()
+                .antMatchers("/api/v1/user/service/request/*/attach/download").permitAll()
+                .antMatchers("/api/v1/user/service/request/charge/history/*/attache/download").permitAll()
+                .antMatchers("/api/v1/user/notice/*/attach/download").permitAll()
+                .anyRequest().hasAuthority("USER")
                 .and()
-                .addFilterBefore(new JwtAuthFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new JwtAuthFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(new HelpDeskFilter(jwtTokenProvider),  WebAsyncManagerIntegrationFilter.class);
     }
+
+    @Override
+    public void configure(WebSecurity web)
+    {
+        web
+                .ignoring()
+                .antMatchers( "/v3/api-docs")
+                .antMatchers( "/configuration/ui")
+                .antMatchers("/swagger-resources")
+                .antMatchers( "/configuration/security")
+                .antMatchers( "/swagger-ui.html")
+                .antMatchers( "/webjars/**")
+                .antMatchers( "/swagger/**");
+
+    }
+
+
 }

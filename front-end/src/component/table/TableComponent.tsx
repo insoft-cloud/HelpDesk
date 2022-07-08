@@ -1,36 +1,69 @@
-import React from "react";
 
-function TableComponent({tableClassName, tableData} : any) {
-        return (
-            <div className="card-body">
-                <div className='table-responsive'>
-                    <table className={tableClassName}>
-                        <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">First</th>
-                            <th scope="col">Last</th>
-                            <th scope="col">Handle</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {tableData.map((table_data : any, index : number) => (
-                            <tr key={index}>
-                                <th scope="row">{index}</th>
-                                <td>{table_data.firstname}</td>
-                                <td>{table_data.lastname}</td>
-                                <td>{table_data.testValue}</td>
-                            </tr>
-                        ))}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        );
-}
+import { useTable } from 'react-table';
+import { txtDiv } from 'utils/CommonText';
+import "component/table/Table.css";
 
-TableComponent.defaultProps={
-    tableClassName: 'table'
-}
 
-export default TableComponent
+/**
+ * @Project     : HelpDesk
+ * @FileName    : TableComponent.tsx
+ * @Date        : 2022-02-10
+ * @author      : 김지인
+ * @description : 재사용 가능한 테이블 컴포넌트(domin쪽에서 data 받아옴)
+ */
+
+
+function TableComponent({ columns, data }) {
+    const {
+        getTableProps,
+        getTableBodyProps,
+        headerGroups,
+        prepareRow,
+        rows,    
+        } = useTable({ columns, data });
+
+
+      return (
+         <>
+         {data.length === 0 ? <>{txtDiv.tableData}</> 
+         : <> 
+          <div className="table-responsive fs-sm">
+          <table className="table table-striped border-top" {...getTableProps()} >
+            <thead>
+              {headerGroups.map((headerGroup) => (
+                <tr {...headerGroup.getHeaderGroupProps()}>
+                  {headerGroup.headers.map((column) => (
+                        <th scope="col" {...column.getHeaderProps()} >
+                      {column.render("Header")}
+                    </th>
+                  ))}
+                </tr>
+              ))}
+            </thead>
+            <tbody {...getTableBodyProps()}>
+              {rows.map((row) => {
+                prepareRow(row);
+                return (
+                  <tr {...row.getRowProps()}>
+                    {row.cells.map((cell) => (
+                      <td{...cell.getCellProps()}>{cell.render("Cell")}</td>
+                    ))}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+          </div> 
+          
+        </> 
+        } 
+        </>    
+      );
+    }
+    
+export default TableComponent;
+
+
+
+
+

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    <label>Redis Test</label>
+    <label th:text="${Redis}"/>
+</div>
+<div>
+    <label>postgresql Test</label>
+    <table>
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>data</th>
+        </tr>
+        </thead>
+        <tbody>
+    <tr th:each="sql : ${Postgresql}">
+        <td><span th:text="${sql.getIdx()}"></span></td>
+        <td><span th:text="${sql.getData()}"></span></td>
+    </tr>
+        </tbody>
+    </table>
+</div>
+<div>
+    <label>S3 Minio Test</label>
+    <table>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>CreateAt</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="mini : ${Minio}">
+            <td><span th:text="${mini.get().objectName()}"></span></td>
+            <td><span th:text="${mini.get().size()}"></span></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<form method="post" enctype="multipart/form-data">
+<div>
+    <input type="file" accept="*" name="file">
+    <button>파일 업로드</button>
+</div>
+</form>
+</body>
+</html>

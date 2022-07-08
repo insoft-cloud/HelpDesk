@@ -1,7 +1,6 @@
 package com.insoft.helpdesk.configuration;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,8 +19,7 @@ public class RedisConfiguration {
 
     @Bean
     public RedisConnectionFactory redisConnectionFactory(){
-        LettuceConnectionFactory lettuceConnectionFactory = new LettuceConnectionFactory(redisProperties.getHost(),redisProperties.getPort());
-        return lettuceConnectionFactory;
+        return new LettuceConnectionFactory(redisProperties.getHost(),redisProperties.getPort());
     }
 
     @Bean

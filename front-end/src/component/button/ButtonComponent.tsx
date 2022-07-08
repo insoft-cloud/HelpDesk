@@ -1,11 +1,21 @@
-import React from "react";
-import ButtonModel from "../../interface/ButtonInterface";
+import { Link } from 'react-router-dom';
+import { ButtonModel } from '../../interface/ButtonInterface';
 
-export const ButtonComponent = ({url} : ButtonModel) => {
+/**
+ * @Project     : HelpDesk
+ * @FileName    : ButtonComponent.tsx
+ * @Date        : 2022-01-20
+ * @author      : 김지인
+ * @description : interface 선언에 따라 재사용 가능한 버튼 컴포넌트
+ */
+
+
+export const ButtonComponent = ({url, btnName, btnClassName} : ButtonModel) => {
     return (
-        <a className="navbar-btn btn btn-sm btn-primary lift ms-auto"
-           href={url} target="_blank" rel="noopener noreferrer">
-            Buy now
-        </a>
+        <Link className={btnClassName}
+           to={url} target="_self" rel="noopener noreferrer">
+            {btnName}
+        </Link>
     );
 }
+

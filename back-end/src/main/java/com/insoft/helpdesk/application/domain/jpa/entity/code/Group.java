@@ -4,10 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.Comment;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.Where;
 
-import javax.persistence.*;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
@@ -18,12 +22,11 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Where(clause = "del_yn='N'")
 public class Group {
 
     @Id
-    @Column(name = "CD_NO", length = 16, nullable = false, updatable = false)
-//    @GenericGenerator(name = "uuid2", strategy = "uuid2")
-//    @GeneratedValue(generator = "uuid2")
+    @Column(name = "CD_GRP_NO", length = 16, nullable = false, updatable = false)
     @Comment("코드번호")
     @Size(max = 16)
     private String id;
@@ -34,7 +37,7 @@ public class Group {
     private String name;
 
 
-    @Column(name = "DEL_YN", length = 1)
+    @Column(name = "DEL_YN", length = 1, nullable = false)
     @Comment("삭제여부(Y,N)")
     @Size(max = 1)
     private String delYn;
@@ -45,7 +48,7 @@ public class Group {
     private String userId;
 
     @Column(name = "REGIST_DT", length = 8, nullable = false)
-    @Comment("등록일시: 디폴트 CURRENT_TIMESTAMP")
+    @Comment("등록일시")
     @CreationTimestamp
     private LocalDateTime registDt;
 
@@ -54,4 +57,13 @@ public class Group {
     @UpdateTimestamp
     private LocalDateTime updateDt;
 
+
+
+    public Group updateGroup(Group group){
+        this.id = group.id == null ? this.id : group.id;
+        this.name = group.name == null ? this.name : group.name;
+        this.delYn = group.delYn == null ? this.delYn : group.delYn;
+        this.userId = group.userId == null ? this.userId : group.userId;
+        return this;
+    }
 }

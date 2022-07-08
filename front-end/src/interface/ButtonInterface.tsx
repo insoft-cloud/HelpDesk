@@ -1,8 +1,10 @@
 
-interface ButtonInterface{
-    url : string  | undefined;
+
+export type ButtonModel = {
+    url? : any;
+    btnName : string | undefined;
+    btnClassName? : string | undefined;
 }
 
-export default class ButtonModel implements ButtonInterface{
-    public url: string | undefined;
-}
+
+
